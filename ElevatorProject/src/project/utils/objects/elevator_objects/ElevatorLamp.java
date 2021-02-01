@@ -1,4 +1,4 @@
-package Project.Utils.ElevatorObjects;
+package project.utils.objects.elevator_objects;
 
 public class ElevatorLamp {
 

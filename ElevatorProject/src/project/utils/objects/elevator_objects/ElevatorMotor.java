@@ -1,5 +1,5 @@
 package project.utils.objects.elevator_objects;
 
-public class ElevatorButton {
-
+public class ElevatorMotor {
+	
 }

@@ -1,5 +1,6 @@
-package Project.Utils.Sensors;
+package project.utils.objects.sensors;
 
-public class ArrivalSensors {
+
+public class ArrivalSensor {
 
 }

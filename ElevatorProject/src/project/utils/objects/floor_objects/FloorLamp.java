@@ -1,4 +1,4 @@
-package Project.Utils.FloorObjects;
+package project.utils.objects.floor_objects;
 
 public class FloorLamp {
 

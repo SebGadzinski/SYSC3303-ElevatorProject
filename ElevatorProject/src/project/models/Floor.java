@@ -1,4 +1,7 @@
-package Project;
+package project.models;
+
+import project.utils.objects.floor_objects.*;
+import project.utils.objects.general.DirectionLamp;
 
 /*
  * Info:
@@ -17,8 +20,8 @@ public class Floor extends Thread {
 	public FloorButton upButton;
 	public FloorButton downButton;
 
-	public FloorLamp upButton;
-	public FloorLamp downButton;
+	public FloorLamp upLamp;
+	public FloorLamp downLamp;
 
 	public DirectionLamp upDirectionLamp;
 	public DirectionLamp downDirectionLamp;

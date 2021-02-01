@@ -1,6 +1,5 @@
-package Project;
+package project.systems;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-import project.Utils.DataStructures.InfoPacket;
+import project.utils.*;
 
 /*
  * Info:

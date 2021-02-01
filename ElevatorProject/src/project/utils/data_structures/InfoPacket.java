@@ -1,4 +1,4 @@
-package Project.Utils.DataStructures;
+package project.utils.data_structures;
 
 public class InfoPacket {
 	

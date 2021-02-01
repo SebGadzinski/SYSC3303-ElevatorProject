@@ -1,4 +1,8 @@
-package Project;
+package project.models;
+
+import project.utils.objects.elevator_objects.*;
+import project.utils.objects.general.DirectionLamp;
+import project.utils.objects.sensors.*;
 
 import java.util.ArrayList;
 
@@ -15,9 +19,9 @@ public class Elevator extends Thread {
 
 	public ArrayList<ElevatorButton> buttons;
 	public ArrayList<ElevatorLamp> lamps;
-	public ArrayList<ArivalSensor> arrivalSensors;
-	public Motor motor = new Motor();
-	public Door door = new Door();
+	public ArrayList<ArrivalSensor> arrivalSensors;
+	public ElevatorMotor motor = new ElevatorMotor();
+	public ElevatorDoor door = new ElevatorDoor();
 	// Shared
 	public DirectionLamp upDirectionLamp;
 	public DirectionLamp downDirectionLamp;
