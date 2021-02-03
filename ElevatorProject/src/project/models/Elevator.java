@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Receiving:
  * 	Replies from Scheduler
  */
-public class Elevator extends Thread {
+public class Elevator implements Runnable {
 
 	public ArrayList<ElevatorButton> buttons;
 	public ArrayList<ElevatorLamp> lamps;

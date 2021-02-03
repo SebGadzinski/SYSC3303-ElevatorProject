@@ -14,7 +14,7 @@ import project.systems.*;
  * 	Calls from Elevator
  */
 
-public class Scheduler extends Thread {
+public class Scheduler implements Runnable {
 
 	public FloorSubSystem floorSubSystem;
 	public ElevatorSubSystem elevatorSubSystem;

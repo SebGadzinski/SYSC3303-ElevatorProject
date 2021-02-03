@@ -5,7 +5,7 @@ package project.systems;
  * Creates all elevators, and connects them to the scheduler
  */
 
-public class ElevatorSubSystem extends Thread {
+public class ElevatorSubSystem implements Runnable {
 
 	@Override
 	public void run() {

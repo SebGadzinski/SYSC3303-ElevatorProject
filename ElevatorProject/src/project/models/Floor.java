@@ -15,7 +15,7 @@ import project.utils.objects.general.DirectionLamp;
  * 	information from the scheduler
  */
 
-public class Floor extends Thread {
+public class Floor implements Runnable {
 
 	public FloorButton upButton;
 	public FloorButton downButton;

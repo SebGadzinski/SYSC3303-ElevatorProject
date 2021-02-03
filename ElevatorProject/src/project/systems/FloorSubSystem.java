@@ -15,7 +15,7 @@ import project.utils.*;
  * Takes input to input file and sends to the floors
  */
 
-public class FloorSubSystem extends Thread {
+public class FloorSubSystem implements Runnable {
 
 	/*
 	 * 
