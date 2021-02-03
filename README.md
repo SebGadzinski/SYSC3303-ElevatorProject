@@ -1,4 +1,4 @@
-# SYSC 3303, Winter 2021 - Elevator Project
+# SYSC 3303, Winter 2021 &mdash; Elevator Project
 Course project for SYSC 3303.
 
 ## How To Run
@@ -6,4 +6,4 @@ Directions go here..
 
 ## Authors
 Sebastian Gadzinski
-Paul Roode (101056469)
+<br /> Paul Roode (101056469)
