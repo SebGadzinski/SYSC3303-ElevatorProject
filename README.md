@@ -2,7 +2,7 @@
 Course project for SYSC 3303.
 
 ## How To Run
-Directions go here..
+Follow Instructions on README.txt in Elevator Project Folder
 
 ## Authors
 Sebastian Gadzinski
