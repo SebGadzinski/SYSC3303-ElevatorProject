@@ -122,6 +122,7 @@ public class FloorSubsystem implements Runnable {
             fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
+        System.exit(0);
     }
 
 }

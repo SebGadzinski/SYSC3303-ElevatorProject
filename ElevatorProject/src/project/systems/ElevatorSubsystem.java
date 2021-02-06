@@ -27,7 +27,7 @@ public class ElevatorSubsystem implements Runnable {
     }
 
     /**
-     * 
+     * send the received data back to the scheduler
      * @param response the data to send to the scheduler
      */
     public synchronized void sendResponse(ConcurrentMap<Request.Key, Object> response) {
@@ -39,7 +39,12 @@ public class ElevatorSubsystem implements Runnable {
         }
     }
     
-
+    
+    /**
+     * Wait until the queue receives a packet where this thread will be notified, wake up,
+     * and then parse the packet
+     * @return the received packet
+     */
     public synchronized ConcurrentMap<Request.Key, Object> fetchRequest() {
         try {
             ConcurrentMap<Request.Key, Object> fetchedRequest = incomingRequests.take();
@@ -58,9 +63,13 @@ public class ElevatorSubsystem implements Runnable {
         
     }
 
+    /**
+     * attempt to fetch a packet.  When this gets fetched 
+     * send the response to the scheduler
+     */
     @Override
     public void run() {
-        System.out.println("Elevator System up and running ...\n");
+        System.out.println("Elevator System operational ...\n");
         while (true) {
         	ConcurrentMap<Request.Key, Object> fetchedRequest = fetchRequest();
             sendResponse(fetchedRequest);
