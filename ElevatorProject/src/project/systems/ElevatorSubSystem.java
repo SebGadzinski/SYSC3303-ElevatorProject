@@ -1,23 +1,16 @@
 package project.systems;
 
-import project.utils.datastructs.Request;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
-
-/**
- * Class description...
+/*
+ * Info:
+ * Creates all elevators, and connects them to the scheduler
  */
-public class ElevatorSubsystem implements Runnable {
 
-    public ElevatorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
-                             BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
+public class ElevatorSubSystem implements Runnable {
 
-    }
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 
-    @Override
-    public void run() {
-
-    }
+	}
 
 }
