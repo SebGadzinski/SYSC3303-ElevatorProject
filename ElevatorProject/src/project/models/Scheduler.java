@@ -1,6 +1,7 @@
 package project.models;
 
 import project.systems.*;
+import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 
 import java.util.concurrent.BlockingQueue;
@@ -26,6 +27,8 @@ public class Scheduler implements Runnable {
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem;
     public FloorSubsystem floorSubsystem;
     public ElevatorSubsystem elevatorSubSystem;
+    private int sizeOfIncomingRequestsFloorSubSystem = 0;
+    private int sizeOfIncomingRequestsElevatorSubSystem = 0;
     //private static State state;
 
     /* <!-- not sure if needed for iter1 -Paul
@@ -52,6 +55,72 @@ public class Scheduler implements Runnable {
     
     //Views the requests from floor subsystem and if anything inside review it and add to elevator
     
+    public synchronized void sendRequestToFloorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+        try {
+        	requestsToFloorSubsystem.put(request);
+            System.out.println("Schedueler sent a request to FloorSubsystem\n");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized void sendRequestToElevatorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+        try {
+        	requestsToElevatorSubsystem.put(request);
+            System.out.println("Schedueler sent a request to ElevatorSubsystem\n");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized void fetchFromElevatorSubsystemRequest() {
+        try {
+            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromElevatorSubsystem.take();
+            System.out.println("Request received by Scheduler from Elevator Subsystem:");
+            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
+            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
+            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized void fetchFromFloorSubsystemRequest() {
+        try {
+            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromFloorSubsystem.take();
+            System.out.println("Request received by Scheduler from Floor Subsystem:");
+            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
+            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
+            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //check both queues and see if any requests inside
+    
+    public synchronized ConcurrentMap<Request.Key, Object> fetchRequest() {
+    	while(requestsFromElevatorSubsystem.size() <= sizeOfIncomingRequestsElevatorSubSystem && requestsFromFloorSubsystem.size() <= sizeOfIncomingRequestsFloorSubSystem) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                return null;
+            }
+    	}
+    	
+    	//If from elevator subsystem
+    	if (requestsFromElevatorSubsystem.size() <= sizeOfIncomingRequestsElevatorSubSystem) {
+    		// Send that to the floor subsystem
+    		
+    		requestsToElevatorSubsystem.put(e);
+    	}
+    	//If from floor subsystem
+    	else {
+    		// Send that to elevator subsystem
+    	}
+    
+    }
+    
     //Views the requests from elevator class and if anything 
 
     /**
@@ -64,7 +133,11 @@ public class Scheduler implements Runnable {
     //}
     @Override
     public void run() {
-
+    	System.out.println("Scheduler operational...\n");
+    	boolean running = true;
+        while (running) {
+            ConcurrentMap<Request.Key, Object> fetchedRequest = fetchRequest();
+        }
     }
 
 }

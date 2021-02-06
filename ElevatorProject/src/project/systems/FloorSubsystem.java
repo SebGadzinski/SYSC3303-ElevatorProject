@@ -119,7 +119,6 @@ public class FloorSubsystem implements Runnable {
             sendRequest(readRequestResult.getRequest());
             fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
-            System.out.println("FloorSubsystem First Thing Completed");
         }
     }
 
