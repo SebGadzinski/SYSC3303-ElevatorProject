@@ -13,6 +13,13 @@ import project.utils.objects.general.DirectionLamp;
  * Receiving:
  * 	Should be able to read commands from floorSubsystem class
  * 	information from the scheduler
+ * 
+ */
+
+/**
+ * 
+ * @author Chase Fridgen
+ *
  */
 
 public class Floor implements Runnable {
@@ -46,11 +53,13 @@ public class Floor implements Runnable {
 	 */
 
 	private void setUpButtons() {
-		// code
+		this.upButton = new FloorButton();
+		this.downButton = new FloorButton();
 	}
 
 	private void setUpLamps() {
-		// code
+		this.upLamp = new FloorLamp();
+		this.downLamp = new FloorLamp();
 	}
 
 	private void setUpArrivalSensors() {
