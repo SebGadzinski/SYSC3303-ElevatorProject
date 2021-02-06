@@ -7,3 +7,4 @@ Directions go here..
 ## Authors
 Sebastian Gadzinski
 <br /> Paul Roode (101056469)
+<br /> Chase Badalato (101072570)
