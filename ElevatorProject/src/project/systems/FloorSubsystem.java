@@ -3,6 +3,9 @@ package project.systems;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -27,13 +30,17 @@ public class FloorSubsystem implements Runnable {
      *
      * @param incomingRequests Incoming fulfilled requests.
      * @param outgoingRequests Outgoing requests to be fulfilled.
+     * @throws FileNotFoundException 
      */
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
-                          BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
+                          BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) throws FileNotFoundException {
 
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
-        scanner = new Scanner(REQUEST_BATCH_FILENAME);
+        
+        String path = Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString();
+        
+        scanner = new Scanner(new File(path));
 
     }
 
@@ -113,6 +120,7 @@ public class FloorSubsystem implements Runnable {
             fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
+        System.exit(0);
     }
 
 }
