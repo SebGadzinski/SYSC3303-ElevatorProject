@@ -3,7 +3,7 @@
 
 This project aims to design a real time elevator control system that will quickly and efficiently transport passengers between floors.
 
-## Classes:
+## Programs:
 
 ### FloorSubsystem
 * Acts as the client, sends floor requests to the scheduler for relaying to an elevator, manages the sending and receiving requests for all the floors
