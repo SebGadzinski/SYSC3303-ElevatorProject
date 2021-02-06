@@ -97,35 +97,10 @@ public class Scheduler implements Runnable {
         }
     }
     
-    //check both queues and see if any requests inside
-    
-    public synchronized ConcurrentMap<Request.Key, Object> fetchRequest() {
-    	while(requestsFromElevatorSubsystem.size() <= sizeOfIncomingRequestsElevatorSubSystem && requestsFromFloorSubsystem.size() <= sizeOfIncomingRequestsFloorSubSystem) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                return null;
-            }
-    	}
-    	
-    	//If from elevator subsystem
-    	if (requestsFromElevatorSubsystem.size() <= sizeOfIncomingRequestsElevatorSubSystem) {
-    		// Send that to the floor subsystem
-    		
-    		requestsToElevatorSubsystem.put(e);
-    	}
-    	//If from floor subsystem
-    	else {
-    		// Send that to elevator subsystem
-    	}
-    
-    }
-    
     //Views the requests from elevator class and if anything 
 
     /**
      * Gets the state of this Scheduler.
-     *
      * @return The state of this Scheduler.
      */
     //public static State getState() {
@@ -136,7 +111,19 @@ public class Scheduler implements Runnable {
     	System.out.println("Scheduler operational...\n");
     	boolean running = true;
         while (running) {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = fetchRequest();
+        	while(requestsFromElevatorSubsystem.size() <= 0 && requestsFromFloorSubsystem.size() <= 0) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    return;
+                }
+        	}
+        	if(requestsFromElevatorSubsystem.size() > 0) {
+        		
+        	}
+        	if(requestsFromFloorSubsystem.size() > 0) {
+        		
+        	}
         }
     }
 
