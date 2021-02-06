@@ -20,7 +20,10 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Scheduler implements Runnable {
 
-    // declare queue fields etc.
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem;
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem;
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem;
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem;
     public FloorSubsystem floorSubsystem;
     public ElevatorSubsystem elevatorSubSystem;
     //private static State state;
@@ -37,11 +40,19 @@ public class Scheduler implements Runnable {
 					 BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem,
 					 BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem,
 					 ElevatorSubsystem elevatorSubsystem, FloorSubsystem floorSubsystem) {
-
+    	this.requestsFromElevatorSubsystem = requestsFromElevatorSubsystem;
+    	this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
+    	this.requestsFromFloorSubsystem = requestsFromFloorSubsystem;
+    	this.requestsToFloorSubsystem = requestsToFloorSubsystem;
+    	this.elevatorSubSystem = elevatorSubsystem;
+    	this.floorSubsystem = floorSubsystem;
         // init queue fields etc.
         //state = State.WAITING_FOR_REQUEST;
-
     }
+    
+    //Views the requests from floor subsystem and if anything inside review it and add to elevator
+    
+    //Views the requests from elevator class and if anything 
 
     /**
      * Gets the state of this Scheduler.
