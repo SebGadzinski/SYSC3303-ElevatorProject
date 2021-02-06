@@ -6,6 +6,7 @@ import project.utils.datastructs.Request;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -23,6 +24,7 @@ public class FloorSubsystem implements Runnable {
 
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // fulfilled requests
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // requests to be fulfilled
+    private ArrayList<Request> requests = new ArrayList<Request>();
     Scanner scanner; // for reading request batch files
 
     /**

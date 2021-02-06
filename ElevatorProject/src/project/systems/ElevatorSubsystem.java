@@ -64,8 +64,6 @@ public class ElevatorSubsystem implements Runnable {
         while (true) {
         	ConcurrentMap<Request.Key, Object> fetchedRequest = fetchRequest();
             sendResponse(fetchedRequest);
-            fetchRequest();
-            System.out.println("ElevatorSubsystem forwarded packet to scheduler");
         }
     }
 

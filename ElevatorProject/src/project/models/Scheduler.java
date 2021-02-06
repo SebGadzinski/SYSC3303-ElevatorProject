@@ -7,16 +7,10 @@ import project.utils.datastructs.Request;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
 
-/*
- * Info:
- * 	Communication between Floor and Elevator
- * 	This is a client to the Scheduler
- * Sending:
- * 	Reply to elevator when work is to be done
- * 	Send data from Elevator to Floor
- * Receiving:
- * 	Input from Floor
- * 	Calls from Elevator
+/**
+ * Reads input from either elevator and floor subsystems and output to corresponding systems
+ *
+ * @author Sebastian Gadzinski
  */
 
 public class Scheduler implements Runnable {
@@ -53,8 +47,12 @@ public class Scheduler implements Runnable {
         //state = State.WAITING_FOR_REQUEST;
     }
     
-    //Views the requests from floor subsystem and if anything inside review it and add to elevator
-    
+    /**
+     * Inserts the given request into the outgoing floor request queue,
+     * waiting if necessary for space to become available.
+     *
+     * @param request The request to be inserted into the outgoing floor request queue.
+     */
     public synchronized void sendRequestToFloorSubsystem(ConcurrentMap<Request.Key, Object> request) {
         try {
         	requestsToFloorSubsystem.put(request);
@@ -64,6 +62,12 @@ public class Scheduler implements Runnable {
         }
     }
     
+    /**
+     * Inserts the given request into the outgoing elevator request queue,
+     * waiting if necessary for space to become available.
+     *
+     * @param request The request to be inserted into the outgoing elevator request queue.
+     */
     public synchronized void sendRequestToElevatorSubsystem(ConcurrentMap<Request.Key, Object> request) {
         try {
         	requestsToElevatorSubsystem.put(request);
@@ -73,32 +77,42 @@ public class Scheduler implements Runnable {
         }
     }
     
-    public synchronized void fetchFromElevatorSubsystemRequest() {
+    /**
+     * Retrieves and removes the head of the incoming elevator requests queue,
+     * waiting if necessary until a request becomes available.
+     */
+    public synchronized ConcurrentMap<Request.Key, Object> fetchFromElevatorSubsystemRequest() {
         try {
             ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromElevatorSubsystem.take();
             System.out.println("Request received by Scheduler from Elevator Subsystem:");
             System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
             System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
             System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+            return fetchedRequest;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
     
-    public synchronized void fetchFromFloorSubsystemRequest() {
+    /**
+     * Retrieves and removes the head of the incoming floor requests queue,
+     * waiting if necessary until a request becomes available.
+     */
+    public synchronized ConcurrentMap<Request.Key, Object> fetchFromFloorSubsystemRequest() {
         try {
             ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromFloorSubsystem.take();
             System.out.println("Request received by Scheduler from Floor Subsystem:");
             System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
             System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
             System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+            return fetchedRequest;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
     
-    //Views the requests from elevator class and if anything 
-
     /**
      * Gets the state of this Scheduler.
      * @return The state of this Scheduler.
@@ -106,23 +120,19 @@ public class Scheduler implements Runnable {
     //public static State getState() {
     //    return state;
     //}
+    
     @Override
     public void run() {
     	System.out.println("Scheduler operational...\n");
     	boolean running = true;
         while (running) {
-        	while(requestsFromElevatorSubsystem.size() <= 0 && requestsFromFloorSubsystem.size() <= 0) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    return;
-                }
-        	}
         	if(requestsFromElevatorSubsystem.size() > 0) {
-        		
+				ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromElevatorSubsystemRequest();
+				sendRequestToFloorSubsystem(fetchedRequest);
         	}
         	if(requestsFromFloorSubsystem.size() > 0) {
-        		
+					ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromFloorSubsystemRequest();
+					sendRequestToElevatorSubsystem(fetchedRequest);
         	}
         }
     }
