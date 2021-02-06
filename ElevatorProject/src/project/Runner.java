@@ -5,6 +5,7 @@ import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.Request;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -18,7 +19,7 @@ import static project.Config.REQUEST_QUEUE_CAPACITY;
  */
 public class Runner {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         // initialize thread-safe request queues
         BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
