@@ -1,5 +1,6 @@
 package project.models;
 
+import project.Config;
 import project.utils.objects.elevator_objects.*;
 import project.utils.objects.general.DirectionLamp;
 import project.utils.objects.sensors.*;
@@ -14,6 +15,13 @@ import java.util.ArrayList;
  * 	Send data to Scheduler to be sent to the floor
  * Receiving:
  * 	Replies from Scheduler
+ * 
+ */
+
+/**
+ * 
+ * @author Chase Fridgen
+ *
  */
 public class Elevator implements Runnable {
 
@@ -44,19 +52,28 @@ public class Elevator implements Runnable {
 	 */
 
 	private void setUpButtons() {
-//		code
+		this.buttons = new ArrayList<ElevatorButton>();
+		for(int i=0; i < Config.NUMBER_OF_FLOORS; i++) {
+			this.buttons.add(new ElevatorButton());
+		}
 	}
 
 	private void setUpLamps() {
-//		code
+		this.lamps = new ArrayList<ElevatorLamp>();
+		for(int i=0; i < Config.NUMBER_OF_FLOORS; i++) {
+			this.lamps.add(new ElevatorLamp());
+		}
 	}
 
 	private void setUpArrivalSensors() {
-//		code
+		this.arrivalSensors = new ArrayList<ArrivalSensor>();
+		for(int i=0; i < Config.NUMBER_OF_FLOORS; i++) {
+			this.arrivalSensors.add(new ArrivalSensor());
+		}
 	}
 
 	private void selectDestination() {
-//		code
+		
 	}
 
 	@Override
