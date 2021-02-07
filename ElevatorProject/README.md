@@ -20,9 +20,7 @@ This project aims to design a real time elevator control system that will quickl
 #### Elevator
 * Node of the ElevatorSubsystem; handles it's own movement, opening/closing of doors, keeps track of all pending floor requests, lamps, and updates the scheduler about its status
 
-Chase Fridgen 101077379 contributions:
--Two UML diagrams
--coded methods for Floor.java and Elevator.java
+Chase Fridgen 101077379 contributions: Created two UML diagrams, One for the whole Elevator project and one for the subsystems. worked on and coded the methods for the Elevator class as well as the Floor class. Also created the JUNIT test for the floorSubsystem.
 
 
 Sebastian Gadzinski: Set up class and folder architecture, set up project on github, worked on Schedular class and connection between ElevatorSubsystem and FloorSubsystem.
