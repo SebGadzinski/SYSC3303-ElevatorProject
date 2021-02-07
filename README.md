@@ -39,7 +39,7 @@ Chase Fridgen
 
 ---
 
-*** Running the application ***
+***Running the application***
 
 Runner.java is the driver.
 
