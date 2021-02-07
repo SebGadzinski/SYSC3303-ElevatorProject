@@ -30,17 +30,18 @@ public class FloorSubsystem implements Runnable {
      *
      * @param incomingRequests Incoming fulfilled requests.
      * @param outgoingRequests Outgoing requests to be fulfilled.
-     * @throws FileNotFoundException 
      */
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
-                          BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) throws FileNotFoundException {
+                          BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
 
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
-        
-        String path = Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString();
-        
-        scanner = new Scanner(new File(path));
+
+        try {
+            scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -64,11 +65,8 @@ public class FloorSubsystem implements Runnable {
 
         // check for another request
         boolean isThereAnotherRequest;
-        if (scanner.hasNext()) {
+        if (isThereAnotherRequest = scanner.hasNext()) {
             scanner.nextLine();
-            isThereAnotherRequest = true;
-        } else {
-            isThereAnotherRequest = false;
         }
 
         // multi-return

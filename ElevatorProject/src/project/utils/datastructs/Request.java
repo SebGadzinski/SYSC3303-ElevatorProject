@@ -21,7 +21,7 @@ public class Request {
      *
      * @param <K> The key.
      * @param <V> The value.
-     * @return A thread-safe map representation of a request.
+     * @return A thread-safe hashmap representation of a request.
      */
     public static <K, V> ConcurrentHashMap<K, V> newInstance() {
         return new ConcurrentHashMap<>();
