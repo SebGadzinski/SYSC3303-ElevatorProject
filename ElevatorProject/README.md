@@ -26,3 +26,5 @@ Chase Fridgen 101077379 contributions: Created two UML diagrams, One for the who
 Sebastian Gadzinski: Set up class and folder architecture, set up project on github, worked on Schedular class and connection between ElevatorSubsystem and FloorSubsystem.
 
 Chase Badalato: Implemented the Sequence UML diagram and the Floor Subsystem classes to establish connection between the Floors and the Scheduler.  Created JUNIT tests to confirm proper operation of all the classes.
+
+Oluwaseyi Sehinde-Ibini: Worked through and understood what the classes for the whole Elevator project and all the subsystems were doing. Used this knowledge to create the Read Me file which explains the aims of the project as well as explanations on what the classes within the project are doing
