@@ -13,67 +13,65 @@ import project.utils.objects.general.DirectionLamp;
  * Receiving:
  * 	Should be able to read commands from floorSubsystem class
  * 	information from the scheduler
- * 
+ *
  */
 
 /**
- * 
  * @author Chase Fridgen
- *
  */
 
 public class Floor implements Runnable {
 
-	public FloorButton upButton;
-	public FloorButton downButton;
+    public FloorButton upButton;
+    public FloorButton downButton;
 
-	public FloorLamp upLamp;
-	public FloorLamp downLamp;
+    public FloorLamp upLamp;
+    public FloorLamp downLamp;
 
-	public DirectionLamp upDirectionLamp;
-	public DirectionLamp downDirectionLamp;
+    public DirectionLamp upDirectionLamp;
+    public DirectionLamp downDirectionLamp;
 
-	public Scheduler scheduler;
+    public Scheduler scheduler;
 
-	/*
-	 * Constructors
-	 */
+    /*
+     * Constructors
+     */
 
-	public Floor(Scheduler scheduler, DirectionLamp upDirectionLamp, DirectionLamp downDirectionLamp) {
-		setUpButtons();
-		setUpLamps();
-		setUpArrivalSensors();
-		this.scheduler = scheduler;
-		this.upDirectionLamp = upDirectionLamp;
-		this.downDirectionLamp = downDirectionLamp;
-	}
+    public Floor(Scheduler scheduler, DirectionLamp upDirectionLamp, DirectionLamp downDirectionLamp) {
+        setUpButtons();
+        setUpLamps();
+        setUpArrivalSensors();
+        this.scheduler = scheduler;
+        this.upDirectionLamp = upDirectionLamp;
+        this.downDirectionLamp = downDirectionLamp;
+    }
 
-	/*
-	 * Functions
-	 */
+    /*
+     * Functions
+     */
 
-	private void setUpButtons() {
-		this.upButton = new FloorButton();
-		this.downButton = new FloorButton();
-	}
+    private void setUpButtons() {
+        this.upButton = new FloorButton();
+        this.downButton = new FloorButton();
+    }
 
-	private void setUpLamps() {
-		this.upLamp = new FloorLamp();
-		this.downLamp = new FloorLamp();
-	}
+    private void setUpLamps() {
+        this.upLamp = new FloorLamp();
+        this.downLamp = new FloorLamp();
+    }
 
-	private void setUpArrivalSensors() {
-		// code
-	}
+    private void setUpArrivalSensors() {
+        // code
+    }
 
-	private void requestElevator() {
-		// code
-	}
+    private void requestElevator() {
+        // code
+    }
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }
