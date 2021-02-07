@@ -23,3 +23,6 @@ This project aims to design a real time elevator control system that will quickl
 Chase Fridgen 101077379 contributions:
 -Two UML diagrams
 -coded methods for Floor.java and Elevator.java
+
+
+Sebastian Gadzinski: Set up class and folder architecture, set up project on github, worked on Schedular class and connection between ElevatorSubsystem and FloorSubsystem.
