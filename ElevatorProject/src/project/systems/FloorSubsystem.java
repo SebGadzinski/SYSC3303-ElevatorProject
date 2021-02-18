@@ -1,5 +1,7 @@
 package project.systems;
 
+import project.Config;
+import project.models.Floor;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 
@@ -17,12 +19,15 @@ import static project.Config.REQUEST_BATCH_FILENAME;
  * Reads requests from a batch file and sends them to the Scheduler;
  * coordinates with the Scheduler on thread-safe queues comprising requests.
  *
- * @author Paul Roode
+ * @author Paul Roode (Iteration One)
+ * @author Chase Badalato (Iteration Two)
+ * 
  */
 public class FloorSubsystem implements Runnable {
 
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // fulfilled requests
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // requests to be fulfilled
+    private Floor[] floors;
     Scanner scanner; // for reading request batch files
 
     /**
@@ -34,6 +39,13 @@ public class FloorSubsystem implements Runnable {
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
                           BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
 
+    	Thread[] floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+        this.floors = new Floor[Config.NUMBER_OF_FLOORS];
+        for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
+        	this.floors[i] = new Floor(outgoingRequests);
+        	floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
+        	floorThreads[i].start();
+        }
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
 
@@ -81,12 +93,13 @@ public class FloorSubsystem implements Runnable {
      * @param request The request to be inserted into the outgoing request queue.
      */
     public synchronized void sendRequest(ConcurrentMap<Request.Key, Object> request) {
-        try {
-            outgoingRequests.put(request);
-            System.out.println("FloorSubsystem sent a request\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    	try {
+        	this.floors[(int)request.get(Request.Key.ORIGIN_FLOOR)].putRequest(request);;
+            System.out.println("FloorSubsystem sent a request to floor " + (int)request.get(Request.Key.ORIGIN_FLOOR));
+    	}
+    	catch(IndexOutOfBoundsException e) {
+    		System.out.println("The requested floor " + (int)request.get(Request.Key.ORIGIN_FLOOR) + " does not exist!");
+    	}
     }
 
     /**
@@ -115,7 +128,7 @@ public class FloorSubsystem implements Runnable {
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
             sendRequest(readRequestResult.getRequest());
-            fetchRequest();
+            //fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
         System.exit(0);

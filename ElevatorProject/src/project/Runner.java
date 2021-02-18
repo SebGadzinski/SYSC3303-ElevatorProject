@@ -1,5 +1,6 @@
 package project;
 
+import project.models.Floor;
 import project.models.Scheduler;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
@@ -25,10 +26,10 @@ public class Runner {
         BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-
+        
         // initialize active components
         ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsFromFloorSubsystem, requestsToFloorSubsystem);
         Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
                                                             requestsFromFloorSubsystem, requestsToFloorSubsystem,
                                                             elevatorSubsystem, floorSubsystem);

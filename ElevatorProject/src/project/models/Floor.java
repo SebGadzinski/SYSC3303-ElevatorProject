@@ -1,5 +1,12 @@
 package project.models;
 
+import static project.Config.REQUEST_QUEUE_CAPACITY;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentMap;
+
+import project.utils.datastructs.Request;
 import project.utils.objects.floor_objects.*;
 import project.utils.objects.general.DirectionLamp;
 
@@ -17,7 +24,8 @@ import project.utils.objects.general.DirectionLamp;
  */
 
 /**
- * @author Chase Fridgen
+ * @author Chase Fridgen (Iteration One)
+ * @author Chase Badalato (Iteration Two)
  */
 
 public class Floor implements Runnable {
@@ -30,48 +38,40 @@ public class Floor implements Runnable {
 
     public DirectionLamp upDirectionLamp;
     public DirectionLamp downDirectionLamp;
+    
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> floorQueue; // fulfilled requests
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue;
 
-    public Scheduler scheduler;
-
-    /*
-     * Constructors
-     */
-
-    public Floor(Scheduler scheduler, DirectionLamp upDirectionLamp, DirectionLamp downDirectionLamp) {
-        setUpButtons();
-        setUpLamps();
-        setUpArrivalSensors();
-        this.scheduler = scheduler;
-        this.upDirectionLamp = upDirectionLamp;
-        this.downDirectionLamp = downDirectionLamp;
+    public Floor(BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue) {
+    	this.serverQueue = serverQueue;
+    	this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+    	//this.floorQueue = new BlockingQueue<ConcurrentMap<Request.Key, Object>>();
     }
 
-    /*
-     * Functions
-     */
-
-    private void setUpButtons() {
-        this.upButton = new FloorButton();
-        this.downButton = new FloorButton();
+    public void putRequest(ConcurrentMap<Request.Key, Object> item) {
+    	try {
+    		
+			this.floorQueue.put(item);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
-
-    private void setUpLamps() {
-        this.upLamp = new FloorLamp();
-        this.downLamp = new FloorLamp();
+    
+    public void getRequest() {
+    	try {
+    		ConcurrentMap<Request.Key, Object> temp = this.floorQueue.take();
+			System.out.println("Floor " + temp.get(Request.Key.ORIGIN_FLOOR) + " received a request");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
-
-    private void setUpArrivalSensors() {
-        // code
-    }
-
-    private void requestElevator() {
-        // code
-    }
+    
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-
+    	while(true) {
+    		this.getRequest();
+    	}
     }
 
 }
