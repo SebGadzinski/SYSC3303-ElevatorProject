@@ -39,15 +39,16 @@ public class FloorSubsystem implements Runnable {
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
                           BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
 
-    	Thread[] floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+        this.incomingRequests = incomingRequests;
+        this.outgoingRequests = outgoingRequests;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
+        
+    	Thread[] floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
         for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
-        	this.floors[i] = new Floor(outgoingRequests);
+        	this.floors[i] = new Floor(this.incomingRequests);
         	floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
         	floorThreads[i].start();
         }
-        this.incomingRequests = incomingRequests;
-        this.outgoingRequests = outgoingRequests;
 
         try {
             scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
@@ -94,11 +95,12 @@ public class FloorSubsystem implements Runnable {
      */
     public synchronized void sendRequest(ConcurrentMap<Request.Key, Object> request) {
     	try {
-        	this.floors[(int)request.get(Request.Key.ORIGIN_FLOOR)].putRequest(request);;
+        	this.floors[(int)request.get(Request.Key.ORIGIN_FLOOR)].putRequest(request);
             System.out.println("FloorSubsystem sent a request to floor " + (int)request.get(Request.Key.ORIGIN_FLOOR));
     	}
     	catch(IndexOutOfBoundsException e) {
     		System.out.println("The requested floor " + (int)request.get(Request.Key.ORIGIN_FLOOR) + " does not exist!");
+    		System.out.println("Ignoring this floor ...");
     	}
     }
 
@@ -131,7 +133,10 @@ public class FloorSubsystem implements Runnable {
             //fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
-        System.exit(0);
+        while(true) {
+        	
+        }
+        //System.exit(0);
     }
 
 }

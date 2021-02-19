@@ -39,15 +39,18 @@ public class Floor implements Runnable {
     public DirectionLamp upDirectionLamp;
     public DirectionLamp downDirectionLamp;
     
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> floorQueue; // fulfilled requests
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue;
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> floorQueue; //input to the floor
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue; //output to the server
 
     public Floor(BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue) {
     	this.serverQueue = serverQueue;
     	this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-    	//this.floorQueue = new BlockingQueue<ConcurrentMap<Request.Key, Object>>();
     }
 
+    public void realtimeWait() {
+    	
+    }
+    
     public void putRequest(ConcurrentMap<Request.Key, Object> item) {
     	try {
     		
@@ -59,9 +62,21 @@ public class Floor implements Runnable {
     
     public void getRequest() {
     	try {
-    		ConcurrentMap<Request.Key, Object> temp = this.floorQueue.take();
-			System.out.println("Floor " + temp.get(Request.Key.ORIGIN_FLOOR) + " received a request");
+    		ConcurrentMap<Request.Key, Object> packet = this.floorQueue.take();
+			System.out.println("Floor " + packet.get(Request.Key.ORIGIN_FLOOR) + " received a request");
+			this.sendServer(packet);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void sendServer(ConcurrentMap<Request.Key, Object> packet) {
+    	try {
+    		Thread.sleep((int)(Math.random() * (5000 - 500 + 1) + 500));
+    		System.out.println("\nFloor " + packet.get(Request.Key.ORIGIN_FLOOR) + " sending packet to scheduler");
+			this.serverQueue.put(packet);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

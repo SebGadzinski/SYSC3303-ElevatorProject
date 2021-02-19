@@ -109,11 +109,11 @@ public class Scheduler implements Runnable {
         while (true) {
             if (requestsFromElevatorSubsystem.size() > 0) {
                 ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromElevatorSubsystemRequest();
-                sendRequestToFloorSubsystem(fetchedRequest);
+                //sendRequestToFloorSubsystem(fetchedRequest);
             }
             if (requestsFromFloorSubsystem.size() > 0) {
                 ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromFloorSubsystemRequest();
-                sendRequestToElevatorSubsystem(fetchedRequest);
+                //sendRequestToElevatorSubsystem(fetchedRequest);
             }
         }
     }
