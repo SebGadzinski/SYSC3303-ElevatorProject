@@ -1,11 +1,19 @@
 package project.systems;
 
+<<<<<<< Updated upstream
+=======
+import project.Config;
+import project.models.Floor;
+import project.utils.datastructs.HashMapCompare;
+>>>>>>> Stashed changes
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -24,6 +32,7 @@ public class FloorSubsystem implements Runnable {
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // fulfilled requests
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // requests to be fulfilled
     Scanner scanner; // for reading request batch files
+    private ArrayList<ConcurrentMap<Request.Key, Object>> tempList;
 
     /**
      * A parameterized constructor.
@@ -31,11 +40,25 @@ public class FloorSubsystem implements Runnable {
      * @param incomingRequests Incoming fulfilled requests.
      * @param outgoingRequests Outgoing requests to be fulfilled.
      */
+<<<<<<< Updated upstream
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
                           BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
 
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
+=======
+    public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler) {
+
+    	this.tempList = new ArrayList<ConcurrentMap<Request.Key, Object>>();
+        this.requestsToScheduler = requestsToScheduler;
+        this.floors = new Floor[Config.NUMBER_OF_FLOORS];
+    	this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+        for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
+        	this.floors[i] = new Floor(this.requestsToScheduler);
+        	floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
+        	floorThreads[i].start();
+        }
+>>>>>>> Stashed changes
 
         try {
             scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
@@ -114,11 +137,25 @@ public class FloorSubsystem implements Runnable {
         boolean hasInput = true;
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
+            //this.tempList.add(readRequestResult.getRequest());
             sendRequest(readRequestResult.getRequest());
             fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
+<<<<<<< Updated upstream
         System.exit(0);
+=======
+
+        for(int i = 0; i < this.floors.length; i++) {
+        	try {
+				this.floorThreads[i].join();
+			} catch (InterruptedException e) {
+				System.out.println("Could not wait for all floor threads to finish");
+				e.printStackTrace();
+			}
+        }
+        //System.exit(0);
+>>>>>>> Stashed changes
     }
 
 }
