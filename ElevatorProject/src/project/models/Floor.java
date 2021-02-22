@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
 
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Key;
 import project.utils.objects.floor_objects.*;
 import project.utils.objects.general.DirectionLamp;
 
@@ -27,7 +28,6 @@ import project.utils.objects.general.DirectionLamp;
  * @author Chase Fridgen (Iteration One)
  * @author Chase Badalato (Iteration Two)
  */
-
 public class Floor implements Runnable {
 
     public FloorButton upButton;
@@ -47,10 +47,23 @@ public class Floor implements Runnable {
     	this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
     }
 
-    public void realtimeWait() {
+    /**
+     * Each thread waits for a given amount of time in real time before
+     * it sends a packet off the the scheduler
+     * 
+     * @param packet the received packet from the floor subsystem
+     */
+    public void realtimeWait(ConcurrentMap<Request.Key, Object> packet) {
     	
     }
     
+    /**
+     * This is a method for the FloorSubsystem to access.  I doesn't need to be synchronized because
+     * there is only 1 floor subsystem working on this floor AND the floor queue that it is using is 
+     * thread safe (it has its own wait() etc. already implemented
+     * 
+     * @param item the packet to place in the Floor's queue
+     */
     public void putRequest(ConcurrentMap<Request.Key, Object> item) {
     	try {
     		
@@ -60,23 +73,36 @@ public class Floor implements Runnable {
 		}
     }
     
-    public void getRequest() {
+    /**
+     * check in the queue to see if there is a packet in it
+     * 
+     * @return the received packet
+     */
+    public ConcurrentMap<Key, Object> getRequest() {
     	try {
     		ConcurrentMap<Request.Key, Object> packet = this.floorQueue.take();
 			System.out.println("Floor " + packet.get(Request.Key.ORIGIN_FLOOR) + " received a request");
-			this.sendServer(packet);
+			return packet;
+			
 		} catch (InterruptedException e) {
+			System.out.println("Could not receive packet from FloorSubsystem");
 			e.printStackTrace();
 		}
+    	return null;
     }
     
+    /**
+     * send the packet to the scheduler
+     * 
+     * @param packet the packet to send
+     */
     public void sendServer(ConcurrentMap<Request.Key, Object> packet) {
     	try {
     		Thread.sleep((int)(Math.random() * (5000 - 500 + 1) + 500));
     		System.out.println("\nFloor " + packet.get(Request.Key.ORIGIN_FLOOR) + " sending packet to scheduler");
 			this.serverQueue.put(packet);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Could not send packet to server");
 			e.printStackTrace();
 		}
     }
@@ -85,7 +111,9 @@ public class Floor implements Runnable {
     @Override
     public void run() {
     	while(true) {
-    		this.getRequest();
+    		ConcurrentMap<Key, Object> packet = this.getRequest();
+    		//this.realTimeWait(packet);
+    		this.sendServer(packet);
     	}
     }
 

@@ -25,29 +25,27 @@ import static project.Config.REQUEST_BATCH_FILENAME;
  */
 public class FloorSubsystem implements Runnable {
 
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // fulfilled requests
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // requests to be fulfilled
+    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler; // fulfilled requests
     private Floor[] floors;
+    private Thread[] floorThreads;
     Scanner scanner; // for reading request batch files
 
     /**
      * A parameterized constructor.
      *
-     * @param incomingRequests Incoming fulfilled requests.
+     * @param requestsToScheduler Incoming fulfilled requests.
      * @param outgoingRequests Outgoing requests to be fulfilled.
      */
-    public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
-                          BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
+    public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler) {
 
-        this.incomingRequests = incomingRequests;
-        this.outgoingRequests = outgoingRequests;
+        this.requestsToScheduler = requestsToScheduler;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
-        
-    	Thread[] floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+    	this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+    	
         for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
-        	this.floors[i] = new Floor(this.incomingRequests);
-        	floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
-        	floorThreads[i].start();
+        	this.floors[i] = new Floor(this.requestsToScheduler);
+        	this.floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
+        	this.floorThreads[i].start();
         }
 
         try {
@@ -110,7 +108,7 @@ public class FloorSubsystem implements Runnable {
      */
     public synchronized void fetchRequest() {
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = incomingRequests.take();
+            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsToScheduler.take();
             System.out.println("Request received by FloorSubsystem:");
             System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
             System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
@@ -133,8 +131,13 @@ public class FloorSubsystem implements Runnable {
             //fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
-        while(true) {
-        	
+        for(int i = 0; i < this.floors.length; i++) {
+        	try {
+				this.floorThreads[i].join();
+			} catch (InterruptedException e) {
+				System.out.println("Could not wait for all floor threads to finish");
+				e.printStackTrace();
+			}
         }
         //System.exit(0);
     }

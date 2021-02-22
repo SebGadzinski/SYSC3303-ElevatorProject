@@ -39,7 +39,7 @@ class testElevatorSubsystem  {
 	
 	    // initialize active components
 	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
+	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem);
 	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
 	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
 	                                                        elevatorSubsystem, floorSubsystem);
@@ -66,7 +66,7 @@ class testElevatorSubsystem  {
 	
 	    // initialize active components
 	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
+	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem);
 	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
 	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
 	                                                        elevatorSubsystem, floorSubsystem);

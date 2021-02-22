@@ -1,6 +1,5 @@
 package project;
 
-import project.models.Floor;
 import project.models.Scheduler;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
@@ -29,7 +28,7 @@ public class Runner {
         
         // initialize active components
         ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsFromFloorSubsystem, requestsToFloorSubsystem);
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsFromFloorSubsystem);
         Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
                                                             requestsFromFloorSubsystem, requestsToFloorSubsystem,
                                                             elevatorSubsystem, floorSubsystem);
