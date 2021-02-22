@@ -2,6 +2,7 @@ package project.models;
 
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
+import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 
 import java.util.concurrent.BlockingQueue;
@@ -15,17 +16,17 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Scheduler implements Runnable {
 
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem;
+    private BlockingQueue<Request> requestsFromElevatorSubsystem;
+    private BlockingQueue<Request> requestsToElevatorSubsystem;
+    private BlockingQueue<Request> requestsFromFloorSubsystem;
+    private BlockingQueue<Request> requestsToFloorSubsystem;
     public FloorSubsystem floorSubsystem;
     public ElevatorSubsystem elevatorSubSystem;
 
-    public Scheduler(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem,
+    public Scheduler(BlockingQueue<Request> requestsFromElevatorSubsystem,
+                     BlockingQueue<Request> requestsToElevatorSubsystem,
+                     BlockingQueue<Request> requestsFromFloorSubsystem,
+                     BlockingQueue<Request> requestsToFloorSubsystem,
                      ElevatorSubsystem elevatorSubsystem, FloorSubsystem floorSubsystem) {
 
         this.requestsFromElevatorSubsystem = requestsFromElevatorSubsystem;
@@ -43,7 +44,7 @@ public class Scheduler implements Runnable {
      *
      * @param request The request to be inserted into the outgoing floor request queue.
      */
-    public synchronized void sendRequestToFloorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+    public synchronized void sendRequestToFloorSubsystem(Request request) {
         try {
             requestsToFloorSubsystem.put(request);
             System.out.println("Scheduler sent a request to FloorSubsystem\n");
@@ -58,7 +59,7 @@ public class Scheduler implements Runnable {
      *
      * @param request The request to be inserted into the outgoing elevator request queue.
      */
-    public synchronized void sendRequestToElevatorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+    public synchronized void sendRequestToElevatorSubsystem(Request request) {
         try {
             requestsToElevatorSubsystem.put(request);
             System.out.println("Scheduler sent a request to ElevatorSubsystem\n");
@@ -71,13 +72,18 @@ public class Scheduler implements Runnable {
      * Retrieves and removes the head of the incoming elevator requests queue,
      * waiting if necessary until a request becomes available.
      */
-    public synchronized ConcurrentMap<Request.Key, Object> fetchFromElevatorSubsystemRequest() {
+    public synchronized Request fetchFromElevatorSubsystemRequest() {
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromElevatorSubsystem.take();
-            System.out.println("Request received by Scheduler from Elevator Subsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+        	Request fetchedRequest = requestsFromElevatorSubsystem.take();
+        	System.out.println("Request received by Scheduler from Elevator Subsystem:");
+        	
+        	if (fetchedRequest instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) fetchedRequest;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+        	}
+        	
             return fetchedRequest;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -89,13 +95,19 @@ public class Scheduler implements Runnable {
      * Retrieves and removes the head of the incoming floor requests queue,
      * waiting if necessary until a request becomes available.
      */
-    public synchronized ConcurrentMap<Request.Key, Object> fetchFromFloorSubsystemRequest() {
+    public synchronized Request fetchFromFloorSubsystemRequest() {
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromFloorSubsystem.take();
-            System.out.println("Request received by Scheduler from Floor Subsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+        	Request fetchedRequest = requestsFromFloorSubsystem.take();
+        	
+            System.out.println("\nRequest received by Scheduler from Floor Subsystem:");
+            
+            if (fetchedRequest instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) fetchedRequest;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+        	}
+ 
             return fetchedRequest;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -108,12 +120,14 @@ public class Scheduler implements Runnable {
         System.out.println("Scheduler operational...\n");
         while (true) {
             if (requestsFromElevatorSubsystem.size() > 0) {
-                ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromElevatorSubsystemRequest();
-                //sendRequestToFloorSubsystem(fetchedRequest);
+            	System.out.println("Schedular - Elvator request...\n");
+            	Request fetchedRequest = fetchFromElevatorSubsystemRequest();
+                sendRequestToFloorSubsystem(fetchedRequest);
             }
             if (requestsFromFloorSubsystem.size() > 0) {
-                ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromFloorSubsystemRequest();
-                //sendRequestToElevatorSubsystem(fetchedRequest);
+            	System.out.println("Schedular - Floor Request...\n");
+            	Request fetchedRequest = fetchFromFloorSubsystemRequest();
+                sendRequestToElevatorSubsystem(fetchedRequest);
             }
         }
     }

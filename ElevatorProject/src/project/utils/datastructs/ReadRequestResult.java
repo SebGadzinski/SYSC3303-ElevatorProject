@@ -5,14 +5,14 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Multi-return auxiliary to FloorSubsystem::readRequest().
  *
- * @author Paul Roode
+ * @author Paul Roode, Sebastian Gadzinski
  */
 public final class ReadRequestResult {
 
-    private final ConcurrentMap<Request.Key, Object> request;
+    private final FileRequest request;
     private final boolean isThereAnotherRequest;
 
-    public ReadRequestResult(ConcurrentMap<Request.Key, Object> request, boolean isThereAnotherRequest) {
+    public ReadRequestResult(FileRequest request, boolean isThereAnotherRequest) {
         this.request = request;
         this.isThereAnotherRequest = isThereAnotherRequest;
     }
@@ -22,7 +22,7 @@ public final class ReadRequestResult {
      *
      * @return The read-in request.
      */
-    public ConcurrentMap<Request.Key, Object> getRequest() {
+    public FileRequest getRequest() {
         return request;
     }
 
