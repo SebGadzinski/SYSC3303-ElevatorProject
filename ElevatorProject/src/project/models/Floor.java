@@ -118,9 +118,23 @@ public class Floor implements Runnable {
 		
 		try {
 			int timeToWait = arrTime - currentTime;
+<<<<<<< Updated upstream
 			Thread.sleep(timeToWait);
 			if(timeToWait < 0) {
 				throw new IllegalArgumentException("");
+=======
+						
+			if(timeToWait < 0) {
+				timeToWait += 8.64*Math.pow(10, 7); //wait 24 more hours for the next time
+			}
+
+			System.out.println(timeToWait);
+
+			try {
+				Thread.sleep(timeToWait);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+>>>>>>> Stashed changes
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -157,6 +171,7 @@ public class Floor implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+<<<<<<< Updated upstream
 	}
 
 	/**
@@ -170,12 +185,38 @@ public class Floor implements Runnable {
 			System.out.println("Floor " + packet.get(Request.Key.ORIGIN_FLOOR) + " received a request");
 			return packet;
 
+=======
+    }
+    
+    public Request getRequest() {
+    	try {
+    		Request packet = this.floorQueue.take();
+    		
+    		if (packet instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) packet;
+                System.out.println("Floor " + fileRequest.getOrginFloor() + " received request from FloorSubsystem");
+       			return fileRequest;
+    		}
+    		return packet;
+>>>>>>> Stashed changes
 		} catch (InterruptedException e) {
 			System.out.println("Could not receive packet from FloorSubsystem");
 			e.printStackTrace();
 		}
 		return null;
+<<<<<<< Updated upstream
 	}
+=======
+    }
+    
+    public void sendServer(Request packet) {
+    	try {
+    		if (packet instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) packet; 
+                System.out.println("\nFloor " + fileRequest.getOrginFloor() + " sending packet to scheduler at time " + fileRequest.getTime());
+    			this.serverQueue.put(fileRequest);
+    		}
+>>>>>>> Stashed changes
 
 	/**
 	 * send the packet to the scheduler

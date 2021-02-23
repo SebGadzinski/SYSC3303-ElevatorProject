@@ -29,8 +29,16 @@ import static project.Config.REQUEST_BATCH_FILENAME;
  */
 public class FloorSubsystem implements Runnable {
 
+<<<<<<< Updated upstream
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // fulfilled requests
     private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // requests to be fulfilled
+=======
+    private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
+    private BlockingQueue<Request> requestsFromScheduler; // requests to be fulfilled
+
+    private Floor[] floors;
+    private Thread[] floorThreads;
+>>>>>>> Stashed changes
     Scanner scanner; // for reading request batch files
     private ArrayList<ConcurrentMap<Request.Key, Object>> tempList;
 
@@ -44,12 +52,16 @@ public class FloorSubsystem implements Runnable {
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
                           BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
 
+<<<<<<< Updated upstream
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
 =======
     public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler) {
 
     	this.tempList = new ArrayList<ConcurrentMap<Request.Key, Object>>();
+=======
+    	this.requestsFromScheduler = incomingRequests;
+>>>>>>> Stashed changes
         this.requestsToScheduler = requestsToScheduler;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
     	this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
@@ -118,11 +130,22 @@ public class FloorSubsystem implements Runnable {
      */
     public synchronized void fetchRequest() {
         try {
+<<<<<<< Updated upstream
             ConcurrentMap<Request.Key, Object> fetchedRequest = incomingRequests.take();
             System.out.println("Request received by FloorSubsystem:");
             System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
             System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
             System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+=======
+            Request fetchedRequest = this.requestsFromScheduler.take();
+            System.out.println("Request received by FloorSubsystem:");
+            
+            if (fetchedRequest instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) fetchedRequest;
+    			System.out.println("Received Request from " + fileRequest.getSource());
+    		}
+            
+>>>>>>> Stashed changes
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -143,6 +166,7 @@ public class FloorSubsystem implements Runnable {
             hasInput = readRequestResult.isThereAnotherRequest();
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         System.exit(0);
 =======
 
@@ -153,6 +177,18 @@ public class FloorSubsystem implements Runnable {
 				System.out.println("Could not wait for all floor threads to finish");
 				e.printStackTrace();
 			}
+=======
+        while (true) {
+        	this.fetchRequest();
+//	        for(int i = 0; i < this.floors.length; i++) {
+//	        	try {
+//					this.floorThreads[i].join();
+//				} catch (InterruptedException e) {
+//					System.out.println("Could not wait for all floor threads to finish");
+//					e.printStackTrace();
+//				}
+//	        }
+>>>>>>> Stashed changes
         }
         //System.exit(0);
 >>>>>>> Stashed changes
