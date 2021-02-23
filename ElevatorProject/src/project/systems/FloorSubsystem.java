@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 import java.util.regex.MatchResult;
 
 import static project.Config.REQUEST_BATCH_FILENAME;
@@ -98,15 +97,15 @@ public class FloorSubsystem implements Runnable {
     	try {
     		if (request instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) request;
-    			this.floors[fileRequest.getOrginFloor()].putRequest(fileRequest);
-                System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOrginFloor());
+    			this.floors[fileRequest.getOriginFloor()].putRequest(fileRequest);
+                System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOriginFloor());
     		}
     		
     	}
     	catch(IndexOutOfBoundsException e) {
     		if (request instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) request;
-    			System.out.println("The requested floor " + fileRequest.getOrginFloor() + " does not exist!");
+    			System.out.println("The requested floor " + fileRequest.getOriginFloor() + " does not exist!");
     		}    		
     		System.out.println("Ignoring this floor ...");
     	}
@@ -124,8 +123,8 @@ public class FloorSubsystem implements Runnable {
             if (fetchedRequest instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) fetchedRequest;
                 System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
     		}
             
         } catch (InterruptedException e) {

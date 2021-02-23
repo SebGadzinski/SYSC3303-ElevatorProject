@@ -25,7 +25,7 @@ public class FileRequest extends Request{
 		return time;
 	}
 
-	public int getOrginFloor() {
+	public int getOriginFloor() {
 		return originFloor;
 	}
 
@@ -33,7 +33,7 @@ public class FileRequest extends Request{
 		return direction;
 	}
 
-	public int getDestinatinoFloor() {
+	public int getDestinationFloor() {
 		return destinationFloor;
 	}
 
