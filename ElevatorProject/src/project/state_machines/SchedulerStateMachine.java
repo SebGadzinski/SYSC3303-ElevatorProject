@@ -19,13 +19,13 @@ public class SchedulerStateMachine {
          */
         AWAIT_REQUEST {
             @Override
-            public SchedulerState next(Request request) {
+            public SchedulerState advance(Request request) {
 
                 // dispatch a request read in from a file
                 if (request instanceof FileRequest) {
 
                     FileRequest fileRequest = (FileRequest) request;
-                    Source requestSource = fileRequest.getSource();
+                    Source fileRequestSource = fileRequest.getSource();
                     Integer originFloor = fileRequest.getOriginFloor();
                     ElevatorDirection direction = fileRequest.getDirection();
                     Integer destinationFloor = fileRequest.getDestinationFloor();
@@ -38,9 +38,9 @@ public class SchedulerStateMachine {
                     }
 
                     // dispatch the validated request
-                    if (requestSource == Source.FLOOR_SUBSYSTEM) {
+                    if (fileRequestSource == Source.FLOOR_SUBSYSTEM) {
                         return DISPATCH_FILE_REQUEST_TO_ELEVATOR;
-                    } else if (requestSource == Source.ELEVATOR_SUBSYSTEM) {
+                    } else if (fileRequestSource == Source.ELEVATOR_SUBSYSTEM) {
                         return DISPATCH_FILE_REQUEST_TO_FLOOR;
                     }
 
@@ -57,7 +57,7 @@ public class SchedulerStateMachine {
          */
         DISPATCH_FILE_REQUEST_TO_ELEVATOR {
             @Override
-            public SchedulerState next(Request request) {
+            public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;
             }
         },
@@ -67,7 +67,7 @@ public class SchedulerStateMachine {
          */
         DISPATCH_FILE_REQUEST_TO_FLOOR {
             @Override
-            public SchedulerState next(Request request) {
+            public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;
             }
         },
@@ -77,12 +77,12 @@ public class SchedulerStateMachine {
          */
         INVALID_REQUEST {
             @Override
-            public SchedulerState next(Request request) {
+            public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;
             }
         };
 
-        public abstract SchedulerState next(Request request);
+        public abstract SchedulerState advance(Request request);
 
     }
 
