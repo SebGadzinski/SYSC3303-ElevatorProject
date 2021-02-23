@@ -29,6 +29,7 @@ import static project.Config.REQUEST_BATCH_FILENAME;
 public class FloorSubsystem implements Runnable {
 
     private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
+    private BlockingQueue<Request> requestsFromScheduler;
     private Floor[] floors;
     private Thread[] floorThreads;
     Scanner scanner; // for reading request batch files
@@ -42,9 +43,10 @@ public class FloorSubsystem implements Runnable {
      * @param incomingRequests Incoming fulfilled requests.
      * @param requestsToScheduler Requests sent
      */
-    public FloorSubsystem(BlockingQueue<Request> incomingRequests,
+    public FloorSubsystem(BlockingQueue<Request> requestsFromScheduler,
                           BlockingQueue<Request> requestsToScheduler) {
 
+    	this.requestsFromScheduler = requestsFromScheduler;
         this.requestsToScheduler = requestsToScheduler;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
     	this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
@@ -119,13 +121,11 @@ public class FloorSubsystem implements Runnable {
     public synchronized void fetchRequest() {
         try {
             Request fetchedRequest = requestsToScheduler.take();
-            System.out.println("Request received by FloorSubsystem:");
             
             if (fetchedRequest instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) fetchedRequest;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+                System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource());
+
     		}
             
         } catch (InterruptedException e) {
@@ -154,14 +154,18 @@ public class FloorSubsystem implements Runnable {
             //fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
-        for(int i = 0; i < this.floors.length; i++) {
-        	try {
-				this.floorThreads[i].join();
-			} catch (InterruptedException e) {
-				System.out.println("Could not wait for all floor threads to finish");
-				e.printStackTrace();
-			}
+        
+        while(true) {
+        	this.fetchRequest();
         }
+//        for(int i = 0; i < this.floors.length; i++) {
+//        	try {
+//				this.floorThreads[i].join();
+//			} catch (InterruptedException e) {
+//				System.out.println("Could not wait for all floor threads to finish");
+//				e.printStackTrace();
+//			}
+//        }
         //System.exit(0);
     }
 
