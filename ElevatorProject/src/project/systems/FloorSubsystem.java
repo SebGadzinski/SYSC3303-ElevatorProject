@@ -2,8 +2,11 @@ package project.systems;
 
 import project.Config;
 import project.models.Floor;
+import project.state_machines.ElevatorState.ElevatorDirection;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
+import project.utils.datastructs.FileRequest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,18 +28,22 @@ import static project.Config.REQUEST_BATCH_FILENAME;
  */
 public class FloorSubsystem implements Runnable {
 
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler; // fulfilled requests
+    private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
     private Floor[] floors;
     private Thread[] floorThreads;
     Scanner scanner; // for reading request batch files
 
+    public FloorSubsystem() {
+        //Testing purposes
+    }
+
     /**
      * A parameterized constructor.
-     *
-     * @param requestsToScheduler Incoming fulfilled requests.
-     * @param outgoingRequests Outgoing requests to be fulfilled.
+     * @param incomingRequests Incoming fulfilled requests.
+     * @param requestsToScheduler Requests sent
      */
-    public FloorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToScheduler) {
+    public FloorSubsystem(BlockingQueue<Request> incomingRequests,
+                          BlockingQueue<Request> requestsToScheduler) {
 
         this.requestsToScheduler = requestsToScheduler;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
@@ -68,11 +75,7 @@ public class FloorSubsystem implements Runnable {
         MatchResult matchResult = scanner.match();
 
         // store the matched data in a new request instance
-        ConcurrentMap<Request.Key, Object> request = Request.newInstance();
-        request.put(Request.Key.TIME, matchResult.group(1));
-        request.put(Request.Key.ORIGIN_FLOOR, Integer.parseInt(matchResult.group(2)));
-        request.put(Request.Key.DIRECTION, matchResult.group(3));
-        request.put(Request.Key.DESTINATION_FLOOR, Integer.parseInt(matchResult.group(4)));
+        FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)), getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), Source.FLOOR_SUBSYSTEM);
 
         // check for another request
         boolean isThereAnotherRequest;
@@ -91,13 +94,20 @@ public class FloorSubsystem implements Runnable {
      *
      * @param request The request to be inserted into the outgoing request queue.
      */
-    public synchronized void sendRequest(ConcurrentMap<Request.Key, Object> request) {
+    public synchronized void sendRequest(Request request) {
     	try {
-        	this.floors[(int)request.get(Request.Key.ORIGIN_FLOOR)].putRequest(request);
-            System.out.println("FloorSubsystem sent a request to floor " + (int)request.get(Request.Key.ORIGIN_FLOOR));
+    		if (request instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) request;
+    			this.floors[fileRequest.getOrginFloor()].putRequest(fileRequest);
+                System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOrginFloor());
+    		}
+    		
     	}
     	catch(IndexOutOfBoundsException e) {
-    		System.out.println("The requested floor " + (int)request.get(Request.Key.ORIGIN_FLOOR) + " does not exist!");
+    		if (request instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) request;
+    			System.out.println("The requested floor " + fileRequest.getOrginFloor() + " does not exist!");
+    		}    		
     		System.out.println("Ignoring this floor ...");
     	}
     }
@@ -108,14 +118,27 @@ public class FloorSubsystem implements Runnable {
      */
     public synchronized void fetchRequest() {
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsToScheduler.take();
+            Request fetchedRequest = requestsToScheduler.take();
             System.out.println("Request received by FloorSubsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
+            
+            if (fetchedRequest instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) fetchedRequest;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+    		}
+            
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    public ElevatorDirection getDirectionFromString(String direction) {
+    	if (direction.toLowerCase().trim().equals("up")) {
+    		return ElevatorDirection.UP;
+    	}
+    	else if (direction.toLowerCase().equals("down")) return ElevatorDirection.DOWN;
+    	else return ElevatorDirection.IDLE;
     }
 
     /**

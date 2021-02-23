@@ -6,9 +6,11 @@ import java.io.FileNotFoundException;
 
 import org.junit.jupiter.api.Test;
 
+import project.state_machines.ElevatorState.ElevatorDirection;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.FileRequest;
 
 /**
  * Tests FloorSubsytem.java
@@ -21,13 +23,19 @@ class testFloorSubsystem {
 	@Test
 	void testReadRequests() throws FileNotFoundException {
 		
-		FloorSubsystem floorSubsystem = new FloorSubsystem(null);
+		FloorSubsystem floorSubsystem = new FloorSubsystem();
 	
-        ReadRequestResult readRequestResult = floorSubsystem.readRequest();
-        assertEquals(readRequestResult.getRequest().get(Request.Key.TIME), "23:13:17.020");
-        assertEquals(readRequestResult.getRequest().get(Request.Key.ORIGIN_FLOOR), 1);
-        assertEquals(readRequestResult.getRequest().get(Request.Key.DIRECTION), "up");
-        assertEquals(readRequestResult.getRequest().get(Request.Key.DESTINATION_FLOOR), 6);
+        Request readRequestResult = floorSubsystem.readRequest().getRequest();
+        
+        if(readRequestResult instanceof FileRequest) {
+    		FileRequest fileRequest = (FileRequest) readRequestResult;
+    		
+    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+            assertEquals(fileRequest.getOrginFloor(), 1);
+            assertEquals(fileRequest.getDirection(), ElevatorDirection.UP);
+            assertEquals(fileRequest.getDestinatinoFloor(), 6);
+    		
+        }
 	}
 
 }

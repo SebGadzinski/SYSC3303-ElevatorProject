@@ -7,10 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
+import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
-import project.utils.datastructs.Request.Key;
 import project.utils.objects.floor_objects.FloorButton;
 import project.utils.objects.floor_objects.FloorLamp;
 import project.utils.objects.general.DirectionLamp;
@@ -34,53 +33,58 @@ import project.utils.objects.general.DirectionLamp;
  */
 public class Floor implements Runnable {
 
-	public FloorButton upButton;
-	public FloorButton downButton;
+    public FloorButton upButton;
+    public FloorButton downButton;
 
-	public FloorLamp upLamp;
-	public FloorLamp downLamp;
+    public FloorLamp upLamp;
+    public FloorLamp downLamp;
 
-	public DirectionLamp upDirectionLamp;
-	public DirectionLamp downDirectionLamp;
+    public DirectionLamp upDirectionLamp;
+    public DirectionLamp downDirectionLamp;
+    
+    private BlockingQueue<Request> floorQueue; //input to the floor
+    private BlockingQueue<Request> serverQueue; //output to the server
 
-	private BlockingQueue<ConcurrentMap<Request.Key, Object>> floorQueue; // input to the floor
-	private BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue; // output to the server
+    public Floor(BlockingQueue<Request> serverQueue) {
+    	this.serverQueue = serverQueue;
+    	this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+    }
 
-	public Floor(BlockingQueue<ConcurrentMap<Request.Key, Object>> serverQueue) {
-		this.serverQueue = serverQueue;
-		this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	}
-
-	/**
+    	/**
 	 * Each thread waits for a given amount of time in real time before it sends a
 	 * packet off the the scheduler
 	 * 
 	 * @param packet the received packet from the floor subsystem
 	 * @throws ParseException
 	 */
-	public void realTimeWait(ConcurrentMap<Request.Key, Object> packet) throws ParseException {
-		String milTime = (String) packet.get(Request.Key.TIME);
-		String[] arrMilTime = milTime.split(":");
-		// System.out.println("when elevator should arrive : " + arrMilTime[0] +
-		// arrMilTime[1]);
+	public void realTimeWait(Request packet) throws ParseException {
 
-		Date dt = new Date();
-		SimpleDateFormat dateFormat;
-		dateFormat = new SimpleDateFormat("kk:mm");
-		String currDate = dateFormat.format(dt);
-		String[] currTime = currDate.split(":");
-		// System.out.println("current time : " + currTime[0] + currTime[1] + "\n");
+		if (packet instanceof FileRequest) {
+			FileRequest fileRequest = (FileRequest) packet; 
 
-		int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1]);
-		int currentTime = toMilliSeconds(currTime[0], currTime[1]);
+			String milTime = fileRequest.getTime();
+			String[] arrMilTime = milTime.split(":");
+			// System.out.println("when elevator should arrive : " + arrMilTime[0] +
+			// arrMilTime[1]);
 
-		int timeToWait = arrTime - currentTime;
-		System.out.println(timeToWait);
+			Date dt = new Date();
+			SimpleDateFormat dateFormat;
+			dateFormat = new SimpleDateFormat("kk:mm");
+			String currDate = dateFormat.format(dt);
+			String[] currTime = currDate.split(":");
+			// System.out.println("current time : " + currTime[0] + currTime[1] + "\n");
 
-		try {
-			Thread.sleep(timeToWait);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1]);
+			int currentTime = toMilliSeconds(currTime[0], currTime[1]);
+
+			int timeToWait = arrTime - currentTime;
+			System.out.println(timeToWait);
+
+			try {
+				Thread.sleep(timeToWait);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -103,43 +107,43 @@ public class Floor implements Runnable {
 	 * 
 	 * @param item the packet to place in the Floor's queue
 	 */
-	public void putRequest(ConcurrentMap<Request.Key, Object> item) {
-		try {
-
+    
+    public void putRequest(Request item) {
+    	try {
 			this.floorQueue.put(item);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * check in the queue to see if there is a packet in it
-	 * 
-	 * @return the received packet
-	 */
-	public ConcurrentMap<Key, Object> getRequest() {
-		try {
-			ConcurrentMap<Request.Key, Object> packet = this.floorQueue.take();
-			System.out.println("Floor " + packet.get(Request.Key.ORIGIN_FLOOR) + " received a request");
-			return packet;
-
+    }
+    
+    public Request getRequest() {
+    	try {
+    		Request packet = this.floorQueue.take();
+    		
+    		if (packet instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) packet;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+       			return fileRequest;
+    		}
+    		return packet;
 		} catch (InterruptedException e) {
 			System.out.println("Could not receive packet from FloorSubsystem");
 			e.printStackTrace();
 		}
 		return null;
-	}
+    }
+    
+    public void sendServer(Request packet) {
+    	try {
+    		Thread.sleep((int)(Math.random() * (5000 - 500 + 1) + 500));
+    		if (packet instanceof FileRequest) {
+    			FileRequest fileRequest = (FileRequest) packet; 
+                System.out.println("\nFloor " + fileRequest.getOrginFloor() + " sending packet to scheduler");
+    			this.serverQueue.put(fileRequest);
+    		}
 
-	/**
-	 * send the packet to the scheduler
-	 * 
-	 * @param packet the packet to send
-	 */
-	public void sendServer(ConcurrentMap<Request.Key, Object> packet) {
-		try {
-			Thread.sleep((int) (Math.random() * (5000 - 500 + 1) + 500));
-			System.out.println("\nFloor " + packet.get(Request.Key.ORIGIN_FLOOR) + " sending packet to scheduler");
-			this.serverQueue.put(packet);
 		} catch (InterruptedException e) {
 			System.out.println("Could not send packet to server");
 			e.printStackTrace();
@@ -149,7 +153,7 @@ public class Floor implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			ConcurrentMap<Key, Object> packet = this.getRequest();
+			Request packet = this.getRequest();
 			try {
 				this.realTimeWait(packet);
 			} catch (ParseException e) {
