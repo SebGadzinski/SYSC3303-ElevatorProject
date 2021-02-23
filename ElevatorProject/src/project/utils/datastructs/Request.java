@@ -2,10 +2,25 @@ package project.utils.datastructs;
 
 public class Request {
 	
-    private String source;
+    private Source source;
+    
+    
 	
-    public synchronized String getSource() {
+    public Request(Source source) {
+		super();
+		this.source = source;
+	}
+
+	public synchronized Source getSource() {
         return source;
+    }
+	
+	public synchronized void setSource(Source source) {
+		this.source = source;
+    }
+    
+    public enum Source{
+    	ELEVATOR_SUBSYSTEM, FLOOR_SUBSYSTEM, SCHEDULAR 
     }
 	
 }

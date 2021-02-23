@@ -37,21 +37,18 @@ class testElevatorSubsystem  {
 	@Test
 	void testFetch() throws FileNotFoundException {
 		
-	    BlockingQueue<Request> requestsFromElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsFromFloorSubsystem    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	
-	    // initialize active components
-	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
-	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
-	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
-	                                                        elevatorSubsystem, floorSubsystem);
+        BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToSchedular    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        
+        // initialize active components
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
+        Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
 	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    
-        Request fetchedRequest = scheduler.fetchFromFloorSubsystemRequest();
+        Request fetchedRequest = scheduler.fetchSubsystemRequest();
         
         scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
         fetchedRequest = elevatorSubsystem.fetchRequest();
@@ -71,26 +68,30 @@ class testElevatorSubsystem  {
 	@Test
 	void testSend() throws FileNotFoundException {
 		
-	    BlockingQueue<Request> requestsFromElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsFromFloorSubsystem    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	
-	    // initialize active components
-	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
-	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
-	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
-	                                                        elevatorSubsystem, floorSubsystem);
-	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
+        BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToSchedular    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        
+        // initialize active components
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
+        Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
+	    
+        System.out.println("Start");
+        System.out.println("HERE 0");
+        ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    
-        Request fetchedRequest = scheduler.fetchFromFloorSubsystemRequest();
+        Request fetchedRequest = scheduler.fetchSubsystemRequest();
         
         scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
+
         fetchedRequest = elevatorSubsystem.fetchRequest();
+
         elevatorSubsystem.sendResponse(fetchedRequest);
-        scheduler.fetchFromElevatorSubsystemRequest();
+
+        scheduler.fetchSubsystemRequest();
+
         
         if(fetchedRequest instanceof FileRequest) {
     		FileRequest fileRequest = (FileRequest) fetchedRequest;

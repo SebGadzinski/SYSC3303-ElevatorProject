@@ -5,6 +5,7 @@ import project.models.Floor;
 import project.state_machines.ElevatorState.ElevatorDirection;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
 import project.utils.datastructs.FileRequest;
 
 import java.io.File;
@@ -47,7 +48,7 @@ public class FloorSubsystem implements Runnable {
         
     	Thread[] floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
         for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
-        	this.floors[i] = new Floor(this.incomingRequests);
+        	this.floors[i] = new Floor(this.outgoingRequests);
         	floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
         	floorThreads[i].start();
         }
@@ -72,7 +73,7 @@ public class FloorSubsystem implements Runnable {
         MatchResult matchResult = scanner.match();
 
         // store the matched data in a new request instance
-        FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)), getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)));
+        FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)), getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), Source.FLOOR_SUBSYSTEM);
 
         // check for another request
         boolean isThereAnotherRequest;

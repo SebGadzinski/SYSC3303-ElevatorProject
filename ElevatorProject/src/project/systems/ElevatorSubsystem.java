@@ -3,6 +3,7 @@ package project.systems;
 import project.state_machines.ElevatorState;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -62,7 +63,6 @@ public class ElevatorSubsystem implements Runnable {
                 System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
         	}
             
-            
             return fetchedRequest;
 
         } catch (InterruptedException e) {
@@ -78,8 +78,9 @@ public class ElevatorSubsystem implements Runnable {
     		
     		FileRequest fileRequest = (FileRequest) request;
     		
-    		//Handle it 
-
+    		//Change source as i am now sending from Elevator Subsystem
+    		fileRequest.setSource(Source.ELEVATOR_SUBSYSTEM);
+    		
             sendResponse(fileRequest);
     	}
     }
@@ -92,7 +93,7 @@ public class ElevatorSubsystem implements Runnable {
     public void run() {
         System.out.println("ElevatorSubsystem operational...\n");
         while (true) {
-            Request fetchedRequest = fetchRequest();
+        	Request fetchedRequest = fetchRequest();
             handleRequest(fetchedRequest);
         }
     }

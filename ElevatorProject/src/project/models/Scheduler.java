@@ -4,6 +4,7 @@ import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -16,26 +17,17 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Scheduler implements Runnable {
 
-    private BlockingQueue<Request> requestsFromElevatorSubsystem;
+    private BlockingQueue<Request> requestsFromSubsystems;
     private BlockingQueue<Request> requestsToElevatorSubsystem;
-    private BlockingQueue<Request> requestsFromFloorSubsystem;
     private BlockingQueue<Request> requestsToFloorSubsystem;
-    public FloorSubsystem floorSubsystem;
-    public ElevatorSubsystem elevatorSubSystem;
 
-    public Scheduler(BlockingQueue<Request> requestsFromElevatorSubsystem,
+    public Scheduler(BlockingQueue<Request> requestsFromSubsystems,
                      BlockingQueue<Request> requestsToElevatorSubsystem,
-                     BlockingQueue<Request> requestsFromFloorSubsystem,
-                     BlockingQueue<Request> requestsToFloorSubsystem,
-                     ElevatorSubsystem elevatorSubsystem, FloorSubsystem floorSubsystem) {
+                     BlockingQueue<Request> requestsToFloorSubsystem) {
 
-        this.requestsFromElevatorSubsystem = requestsFromElevatorSubsystem;
+        this.requestsFromSubsystems = requestsFromSubsystems;
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
-        this.requestsFromFloorSubsystem = requestsFromFloorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
-        this.elevatorSubSystem = elevatorSubsystem;
-        this.floorSubsystem = floorSubsystem;
-
     }
 
     /**
@@ -69,13 +61,14 @@ public class Scheduler implements Runnable {
     }
 
     /**
-     * Retrieves and removes the head of the incoming elevator requests queue,
+     * Retrieves and removes the head of the incoming subsystems requests queue,
      * waiting if necessary until a request becomes available.
      */
-    public synchronized Request fetchFromElevatorSubsystemRequest() {
+    public synchronized Request fetchSubsystemRequest() {
         try {
-        	Request fetchedRequest = requestsFromElevatorSubsystem.take();
-        	System.out.println("Request received by Scheduler from Elevator Subsystem:");
+        	Request fetchedRequest = requestsFromSubsystems.take();
+     
+    		System.out.println("Request received by Scheduler from: " + fetchedRequest.getSource());
         	
         	if (fetchedRequest instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) fetchedRequest;
@@ -91,43 +84,15 @@ public class Scheduler implements Runnable {
         return null;
     }
 
-    /**
-     * Retrieves and removes the head of the incoming floor requests queue,
-     * waiting if necessary until a request becomes available.
-     */
-    public synchronized Request fetchFromFloorSubsystemRequest() {
-        try {
-        	Request fetchedRequest = requestsFromFloorSubsystem.take();
-        	
-            System.out.println("\nRequest received by Scheduler from Floor Subsystem:");
-            
-            if (fetchedRequest instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) fetchedRequest;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
-        	}
- 
-            return fetchedRequest;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @Override
     public void run() {
         System.out.println("Scheduler operational...\n");
         while (true) {
-            if (requestsFromElevatorSubsystem.size() > 0) {
-            	System.out.println("Schedular - Elvator request...\n");
-            	Request fetchedRequest = fetchFromElevatorSubsystemRequest();
+        	Request fetchedRequest = fetchSubsystemRequest();
+        	if (fetchedRequest.getSource() == Source.ELEVATOR_SUBSYSTEM) {
                 sendRequestToFloorSubsystem(fetchedRequest);
-            }
-            if (requestsFromFloorSubsystem.size() > 0) {
-            	System.out.println("Schedular - Floor Request...\n");
-            	Request fetchedRequest = fetchFromFloorSubsystemRequest();
-                sendRequestToElevatorSubsystem(fetchedRequest);
+            }else {
+            	sendRequestToElevatorSubsystem(fetchedRequest);
             }
         }
     }
