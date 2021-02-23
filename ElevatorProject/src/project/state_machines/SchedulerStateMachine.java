@@ -9,6 +9,7 @@ import project.utils.datastructs.Request.Source;
  * The Scheduler state machine.
  *
  * @author Paul Roode
+ * @version Iteration 2
  */
 public class SchedulerStateMachine {
 
