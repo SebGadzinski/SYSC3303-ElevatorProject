@@ -1,13 +1,10 @@
 package project.models;
 
-import project.systems.ElevatorSubsystem;
-import project.systems.FloorSubsystem;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Reads input from either elevator and floor subsystems and output to corresponding systems
