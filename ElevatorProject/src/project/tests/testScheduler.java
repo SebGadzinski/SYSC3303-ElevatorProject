@@ -45,7 +45,8 @@ class testScheduler  {
         ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
         FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
         Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
-	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
+        
+        ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    System.out.println("Read Request");
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    System.out.println("Sent Request");

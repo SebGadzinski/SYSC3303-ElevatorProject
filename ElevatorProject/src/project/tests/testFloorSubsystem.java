@@ -23,7 +23,7 @@ class testFloorSubsystem {
 	@Test
 	void testReadRequests() throws FileNotFoundException {
 		
-		FloorSubsystem floorSubsystem = new FloorSubsystem(null, null);
+		FloorSubsystem floorSubsystem = new FloorSubsystem(null);
 	
         Request readRequestResult = floorSubsystem.readRequest().getRequest();
         
