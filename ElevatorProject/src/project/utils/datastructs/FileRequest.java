@@ -13,12 +13,12 @@ public class FileRequest extends Request{
     private ElevatorDirection direction;
     private int destinationFloor, originFloor;
     
-	public FileRequest(String time, int orginFloor, ElevatorDirection direction, int destinatinoFloor, Source source) {
+	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, Source source) {
 		super(source);
 		this.time = time;
-		this.originFloor = orginFloor;
+		this.originFloor = originFloor;
 		this.direction = direction;
-		this.destinationFloor = destinatinoFloor;
+		this.destinationFloor = destinationFloor;
 	}
 
 	public String getTime() {
