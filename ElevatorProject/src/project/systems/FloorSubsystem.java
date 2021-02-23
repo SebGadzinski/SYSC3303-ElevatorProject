@@ -141,7 +141,7 @@ public class FloorSubsystem implements Runnable {
     	else return ElevatorDirection.IDLE;
     }
 
-    /**
+    /*
      * Reads and transmits requests to be fulfilled, and fetches fulfilled requests.
      */
     @Override
