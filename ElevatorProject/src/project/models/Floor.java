@@ -76,7 +76,7 @@ public class Floor implements Runnable {
 
 			int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1]);
 			int currentTime = toMilliSeconds(currTime[0], currTime[1]);
-
+			
 			int timeToWait = arrTime - currentTime;
 			System.out.println(timeToWait);
 
