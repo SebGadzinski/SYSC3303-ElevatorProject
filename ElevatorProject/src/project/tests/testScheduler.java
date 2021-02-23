@@ -58,7 +58,6 @@ class testScheduler  {
     		assertEquals(fileRequest.getTime(), "23:13:17.020");
             assertEquals(fileRequest.getOrginFloor(), 1);
             assertEquals(fileRequest.getDestinatinoFloor(), 6);
-    		
         }
 	}
 

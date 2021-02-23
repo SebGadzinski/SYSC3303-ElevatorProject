@@ -11,14 +11,14 @@ public class FileRequest extends Request{
 
     private String time;
     private ElevatorDirection direction;
-    private int destinatinoFloor, orginFloor;
+    private int destinationFloor, originFloor;
     
 	public FileRequest(String time, int orginFloor, ElevatorDirection direction, int destinatinoFloor, Source source) {
 		super(source);
 		this.time = time;
-		this.orginFloor = orginFloor;
+		this.originFloor = orginFloor;
 		this.direction = direction;
-		this.destinatinoFloor = destinatinoFloor;
+		this.destinationFloor = destinatinoFloor;
 	}
 
 	public String getTime() {
@@ -26,7 +26,7 @@ public class FileRequest extends Request{
 	}
 
 	public int getOrginFloor() {
-		return orginFloor;
+		return originFloor;
 	}
 
 	public ElevatorDirection getDirection() {
@@ -34,7 +34,7 @@ public class FileRequest extends Request{
 	}
 
 	public int getDestinatinoFloor() {
-		return destinatinoFloor;
+		return destinationFloor;
 	}
 
 }
