@@ -83,6 +83,19 @@ public class Scheduler implements Runnable {
     }
 
     /**
+     * Dispatches the given request.
+     *
+     * @param request The request to be dispatched.
+     */
+    private synchronized void dispatchRequest(Request request) {
+        switch (state) {
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(request);
+            case DISPATCH_FILE_REQUEST_TO_FLOOR -> sendRequestToFloorSubsystem(request);
+            case INVALID_REQUEST -> System.out.println(toString() + " received and discarded an invalid request");
+        }
+    }
+
+    /**
      * Gets this Scheduler's current state.
      *
      * @return this Scheduler's current state.
@@ -92,7 +105,16 @@ public class Scheduler implements Runnable {
     }
 
     /**
-     * A String representation of this Scheduler.
+     * Advances this Scheduler's state.
+     *
+     * @param request The request whose properties will be used to determine this Scheduler's next state.
+     */
+    private void advanceState(Request request) {
+        state = state.advance(request);
+    }
+
+    /**
+     * Returns a String representation of this Scheduler.
      *
      * @return a String representation of this Scheduler.
      */
@@ -116,15 +138,11 @@ public class Scheduler implements Runnable {
 
                 // fetch a request
                 request = fetchRequest();
-                state = state.next(request);
+                advanceState(request);
 
                 // dispatch the fetched request
-                switch (state) {
-                    case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(request);
-                    case DISPATCH_FILE_REQUEST_TO_FLOOR -> sendRequestToFloorSubsystem(request);
-                    case INVALID_REQUEST -> System.out.println(toString() + " received and discarded an invalid request");
-                }
-                state = state.next(request);
+                dispatchRequest(request);
+                advanceState(request);
 
             }
 
