@@ -23,14 +23,14 @@ class testFloorSubsystem {
 	@Test
 	void testReadRequests() throws FileNotFoundException {
 		
-		FloorSubsystem floorSubsystem = new FloorSubsystem();
+		FloorSubsystem floorSubsystem = new FloorSubsystem(null, null);
 	
         Request readRequestResult = floorSubsystem.readRequest().getRequest();
         
         if(readRequestResult instanceof FileRequest) {
     		FileRequest fileRequest = (FileRequest) readRequestResult;
     		
-    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+    		assertEquals(fileRequest.getTime(), "10:59:17.020");
             assertEquals(fileRequest.getOrginFloor(), 1);
             assertEquals(fileRequest.getDirection(), ElevatorDirection.UP);
             assertEquals(fileRequest.getDestinatinoFloor(), 6);
