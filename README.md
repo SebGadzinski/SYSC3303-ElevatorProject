@@ -15,7 +15,7 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and their contributions***
 
 Paul Roode
-> Fully implemented the following classes: FloorSubsystem, Runner, Request, and ReadRequestResult. Partially fleshed out others as needed (e.g., to facilitate thread-safe cooperation between components), and formatted this README.
+> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Formatted this README.
 
 <br>
 
