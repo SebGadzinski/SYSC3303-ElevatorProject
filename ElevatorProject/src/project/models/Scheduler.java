@@ -140,9 +140,7 @@ public class Scheduler implements Runnable {
     public void run() {
         System.out.println("Scheduler operational...\n");
         while (true) {
-            if (!requestsFromSubsystems.isEmpty()) {
-                dispatchRequest(fetchRequest());
-            }
+            dispatchRequest(fetchRequest());
         }
     }
 
