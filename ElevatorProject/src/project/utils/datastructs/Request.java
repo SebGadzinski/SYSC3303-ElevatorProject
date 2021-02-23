@@ -17,8 +17,8 @@ public class Request {
 		this.source = source;
     }
     
-    public enum Source{
-    	ELEVATOR_SUBSYSTEM, FLOOR_SUBSYSTEM, SCHEDULAR 
+    public enum Source {
+    	ELEVATOR_SUBSYSTEM, FLOOR_SUBSYSTEM, SCHEDULER
     }
 	
 }

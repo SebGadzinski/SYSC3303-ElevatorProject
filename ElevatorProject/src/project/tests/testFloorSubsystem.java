@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import project.state_machines.ElevatorState.ElevatorDirection;
 import project.systems.FloorSubsystem;
-import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.FileRequest;
 
@@ -31,9 +30,9 @@ class testFloorSubsystem {
     		FileRequest fileRequest = (FileRequest) readRequestResult;
     		
     		assertEquals(fileRequest.getTime(), "23:13:17.020");
-            assertEquals(fileRequest.getOrginFloor(), 1);
+            assertEquals(fileRequest.getOriginFloor(), 1);
             assertEquals(fileRequest.getDirection(), ElevatorDirection.UP);
-            assertEquals(fileRequest.getDestinatinoFloor(), 6);
+            assertEquals(fileRequest.getDestinationFloor(), 6);
     		
         }
 	}

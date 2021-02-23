@@ -123,8 +123,8 @@ public class Floor implements Runnable {
     		if (packet instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) packet;
                 System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
        			return fileRequest;
     		}
     		return packet;
@@ -140,7 +140,7 @@ public class Floor implements Runnable {
     		Thread.sleep((int)(Math.random() * (5000 - 500 + 1) + 500));
     		if (packet instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) packet; 
-                System.out.println("\nFloor " + fileRequest.getOrginFloor() + " sending packet to scheduler");
+                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " sending packet to scheduler");
     			this.serverQueue.put(fileRequest);
     		}
 

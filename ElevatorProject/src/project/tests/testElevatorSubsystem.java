@@ -6,7 +6,6 @@ import static project.Config.REQUEST_QUEUE_CAPACITY;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +47,7 @@ class testElevatorSubsystem  {
 	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    
-        Request fetchedRequest = scheduler.fetchSubsystemRequest();
+        Request fetchedRequest = scheduler.fetchRequest();
         
         scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
         fetchedRequest = elevatorSubsystem.fetchRequest();
@@ -57,8 +56,8 @@ class testElevatorSubsystem  {
     		FileRequest fileRequest = (FileRequest) fetchedRequest;
     		
     		assertEquals(fileRequest.getTime(), "23:13:17.020");
-            assertEquals(fileRequest.getOrginFloor(), 1);
-            assertEquals(fileRequest.getDestinatinoFloor(), 6);
+            assertEquals(fileRequest.getOriginFloor(), 1);
+            assertEquals(fileRequest.getDestinationFloor(), 6);
         }
         
 	}
@@ -80,7 +79,7 @@ class testElevatorSubsystem  {
         ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    
-        Request fetchedRequest = scheduler.fetchSubsystemRequest();
+        Request fetchedRequest = scheduler.fetchRequest();
         
         scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
 
@@ -88,15 +87,15 @@ class testElevatorSubsystem  {
 
         elevatorSubsystem.sendResponse(fetchedRequest);
 
-        scheduler.fetchSubsystemRequest();
+        scheduler.fetchRequest();
 
         
         if(fetchedRequest instanceof FileRequest) {
     		FileRequest fileRequest = (FileRequest) fetchedRequest;
     		
     		assertEquals(fileRequest.getTime(), "23:13:17.020");
-            assertEquals(fileRequest.getOrginFloor(), 1);
-            assertEquals(fileRequest.getDestinatinoFloor(), 6);
+            assertEquals(fileRequest.getOriginFloor(), 1);
+            assertEquals(fileRequest.getDestinationFloor(), 6);
     		
         }
         
