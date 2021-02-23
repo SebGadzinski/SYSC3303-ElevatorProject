@@ -25,7 +25,7 @@ public class SchedulerStateMachine {
                 if (request instanceof FileRequest) {
 
                     FileRequest fileRequest = (FileRequest) request;
-                    Source fileRequestSource = fileRequest.getSource();
+                    Source source = fileRequest.getSource();
                     Integer originFloor = fileRequest.getOriginFloor();
                     ElevatorDirection direction = fileRequest.getDirection();
                     Integer destinationFloor = fileRequest.getDestinationFloor();
@@ -38,9 +38,9 @@ public class SchedulerStateMachine {
                     }
 
                     // dispatch the validated request
-                    if (fileRequestSource == Source.FLOOR_SUBSYSTEM) {
+                    if (source == Source.FLOOR_SUBSYSTEM) {
                         return DISPATCH_FILE_REQUEST_TO_ELEVATOR;
-                    } else if (fileRequestSource == Source.ELEVATOR_SUBSYSTEM) {
+                    } else if (source == Source.ELEVATOR_SUBSYSTEM) {
                         return DISPATCH_FILE_REQUEST_TO_FLOOR;
                     }
 

@@ -7,9 +7,9 @@ import project.utils.datastructs.Request;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Reads input from either elevator and floor subsystems and output to corresponding systems
+ * A request/response transmission intermediary between floor and elevator subsystems.
  *
- * @author Paul Roode, Sebastian Gadzinski
+ * @author Paul Roode (iter 2), Sebastian Gadzinski (iter 1)
  */
 
 public class Scheduler implements Runnable {
@@ -17,9 +17,15 @@ public class Scheduler implements Runnable {
     private BlockingQueue<Request> requestsFromSubsystems;
     private BlockingQueue<Request> requestsToElevatorSubsystem;
     private BlockingQueue<Request> requestsToFloorSubsystem;
-
     private SchedulerState state;
 
+    /**
+     * A parameterized Scheduler constructor.
+     *
+     * @param requestsFromSubsystems      The inlet requests queue.
+     * @param requestsToElevatorSubsystem An outlet requests queue to the ElevatorSubsystem.
+     * @param requestsToFloorSubsystem    An outlet requests queue to the FloorSubsystem.
+     */
     public Scheduler(BlockingQueue<Request> requestsFromSubsystems,
                      BlockingQueue<Request> requestsToElevatorSubsystem,
                      BlockingQueue<Request> requestsToFloorSubsystem) {
@@ -28,62 +34,63 @@ public class Scheduler implements Runnable {
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
         this.state = SchedulerState.AWAIT_REQUEST;
-
     }
 
     /**
-     * Inserts the given request into the outgoing floor request queue,
+     * Inserts the given request into the outlet requests queue to the FloorSubsystem,
      * waiting if necessary for space to become available.
      *
-     * @param request The request to be inserted into the outgoing floor request queue.
+     * @param request The request to be inserted into the outlet requests queue to the FloorSubsystem.
      */
     public synchronized void sendRequestToFloorSubsystem(Request request) {
         try {
             requestsToFloorSubsystem.put(request);
-            System.out.println("Scheduler sent a request to FloorSubsystem\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(toString() + " sent a request to FloorSubsystem\n");
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
     }
 
     /**
-     * Inserts the given request into the outgoing elevator request queue,
+     * Inserts the given request into the outlet requests queue to the ElevatorSubsystem,
      * waiting if necessary for space to become available.
      *
-     * @param request The request to be inserted into the outgoing elevator request queue.
+     * @param request The request to be inserted into the outlet requests queue to the ElevatorSubsystem.
      */
     public synchronized void sendRequestToElevatorSubsystem(Request request) {
         try {
             requestsToElevatorSubsystem.put(request);
-            System.out.println("Scheduler sent a request to ElevatorSubsystem\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(toString() + " sent a request to ElevatorSubsystem\n");
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
     }
 
     /**
-     * Retrieves and removes the head of the incoming subsystems requests queue,
-     * waiting if necessary until a request becomes available.
+     * Retrieves and removes the head of the inlet requests queue, waiting if necessary
+     * until a request becomes available; then advances this Scheduler's state.
      */
     public synchronized Request fetchRequest() {
         try {
             Request fetchedRequest = requestsFromSubsystems.take();
-            System.out.println("Request received by Scheduler from " + fetchedRequest.getSource() + ":");
+            System.out.println("Request received by " + toString() + " from " + fetchedRequest.getSource() + ":");
             if (fetchedRequest instanceof FileRequest) {
                 FileRequest fileRequest = (FileRequest) fetchedRequest;
                 System.out.println("The request was fulfilled at " + fileRequest.getTime());
                 System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
                 System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
             }
+            advanceState(fetchedRequest);
             return fetchedRequest;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            advanceState(null);
+            return null;
         }
-        return null;
     }
 
     /**
-     * Dispatches the given request.
+     * Dispatches the given request then advances this Scheduler's state.
      *
      * @param request The request to be dispatched.
      */
@@ -93,6 +100,7 @@ public class Scheduler implements Runnable {
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> sendRequestToFloorSubsystem(request);
             case INVALID_REQUEST -> System.out.println(toString() + " received and discarded an invalid request");
         }
+        advanceState(request);
     }
 
     /**
@@ -109,7 +117,7 @@ public class Scheduler implements Runnable {
      *
      * @param request The request whose properties will be used to determine this Scheduler's next state.
      */
-    private void advanceState(Request request) {
+    private synchronized void advanceState(Request request) {
         state = state.advance(request);
     }
 
@@ -124,30 +132,16 @@ public class Scheduler implements Runnable {
     }
 
     /**
-     * Drives this Scheduler.
+     * Drives this Scheduler to fetch and dispatch requests.
      */
     @Override
     public void run() {
-
         System.out.println("Scheduler operational...\n");
-        Request request;
-
         while (true) {
-
             if (!requestsFromSubsystems.isEmpty()) {
-
-                // fetch a request
-                request = fetchRequest();
-                advanceState(request);
-
-                // dispatch the fetched request
-                dispatchRequest(request);
-                advanceState(request);
-
+                dispatchRequest(fetchRequest());
             }
-
         }
-
     }
 
 }
