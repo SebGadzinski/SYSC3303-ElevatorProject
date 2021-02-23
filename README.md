@@ -12,7 +12,7 @@ This project aims to design a real-time elevator control system that will quickl
 
 ---
 
-***Authors and their contributions***
+***Authors and Their Contributions***
 
 Paul Roode
 > Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Formatted this README.
@@ -39,13 +39,13 @@ Chase Fridgen
 
 ---
 
-***Running the application***
+***Running the Application***
 
 Runner.java is the driver.
 
 ---
 
-***Main components***
+***Main Components***
 
 - FloorSubsystem: acts as the client; sends floor requests to the scheduler for relaying to an elevator, and manages the sending and receiving of requests for all the floors
 - ElevatorSubsystem: receives relayed floor requests from the scheduler and sends them to the routed elevator node

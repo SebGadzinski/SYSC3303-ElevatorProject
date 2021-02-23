@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
  * A request/response transmission intermediary between floor and elevator subsystems.
  *
  * @author Paul Roode (iter 2), Sebastian Gadzinski (iter 1)
+ * @version Iteration 2
  */
 
 public class Scheduler implements Runnable {
@@ -69,28 +70,29 @@ public class Scheduler implements Runnable {
     /**
      * Retrieves and removes the head of the inlet requests queue, waiting if necessary
      * until a request becomes available; then advances this Scheduler's state.
+     *
+     * @return the fetched request.
      */
     public synchronized Request fetchRequest() {
+        Request request = null;
         try {
-            Request fetchedRequest = requestsFromSubsystems.take();
-            System.out.println("Request received by " + toString() + " from " + fetchedRequest.getSource() + ":");
-            if (fetchedRequest instanceof FileRequest) {
-                FileRequest fileRequest = (FileRequest) fetchedRequest;
+            request = requestsFromSubsystems.take();
+            System.out.println("Request received by " + toString() + " from " + request.getSource() + ":");
+            if (request instanceof FileRequest) {
+                FileRequest fileRequest = (FileRequest) request;
                 System.out.println("The request was fulfilled at " + fileRequest.getTime());
                 System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
                 System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
             }
-            advanceState(fetchedRequest);
-            return fetchedRequest;
         } catch (InterruptedException ie) {
             ie.printStackTrace();
-            advanceState(null);
-            return null;
         }
+        advanceState(request);
+        return request;
     }
 
     /**
-     * Dispatches the given request then advances this Scheduler's state.
+     * Dispatches the given request, then advances this Scheduler's state.
      *
      * @param request The request to be dispatched.
      */
