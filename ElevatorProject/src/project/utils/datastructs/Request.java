@@ -4,14 +4,12 @@ public class Request {
 	
     private Source source;
     
-    
-	
     public Request(Source source) {
 		super();
 		this.source = source;
 	}
 
-	public synchronized Source getSource() {
+	public Source getSource() {
         return source;
     }
 	
