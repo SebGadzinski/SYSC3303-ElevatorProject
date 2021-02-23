@@ -1,9 +1,11 @@
 package project.systems;
 
+import project.state_machines.ElevatorState;
+import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Receives data from the scheduler and
@@ -13,14 +15,17 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ElevatorSubsystem implements Runnable {
 
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests; // data from scheduler
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests; // data to scheduler
-
-    public ElevatorSubsystem(BlockingQueue<ConcurrentMap<Request.Key, Object>> incomingRequests,
-                             BlockingQueue<ConcurrentMap<Request.Key, Object>> outgoingRequests) {
+    private BlockingQueue<Request> incomingRequests; // data from scheduler
+    private BlockingQueue<Request> outgoingRequests; // data to scheduler
+    private ElevatorState state;
+    
+    
+    public ElevatorSubsystem(BlockingQueue<Request> incomingRequests,
+                             BlockingQueue<Request> outgoingRequests, ElevatorState state) {
 
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
+        this.state = state;
 
     }
 
@@ -29,7 +34,7 @@ public class ElevatorSubsystem implements Runnable {
      *
      * @param response the data to send to the scheduler
      */
-    public synchronized void sendResponse(ConcurrentMap<Request.Key, Object> response) {
+    public synchronized void sendResponse(Request response) {
         try {
             outgoingRequests.put(response);
             System.out.println("ElevatorSubsystem responded to Scheduler\n");
@@ -45,14 +50,18 @@ public class ElevatorSubsystem implements Runnable {
      *
      * @return the received packet
      */
-    public synchronized ConcurrentMap<Request.Key, Object> fetchRequest() {
+    public synchronized Request fetchRequest() {
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = incomingRequests.take();
+        	Request fetchedRequest = incomingRequests.take();
             System.out.println("Request received by ElevatorSubsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
 
+            if(fetchedRequest instanceof FileRequest) {
+        		FileRequest fileRequest = (FileRequest) fetchedRequest;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOrginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinatinoFloor() + "\n");
+        	}
+            
             return fetchedRequest;
 
         } catch (InterruptedException e) {
@@ -61,6 +70,18 @@ public class ElevatorSubsystem implements Runnable {
 
         return null;
 
+    }
+    
+    public synchronized void handleRequest(Request request) {
+    	if(request instanceof FileRequest) {
+    		
+    		FileRequest fileRequest = (FileRequest) request;
+    		
+    		//Change source as i am now sending from Elevator Subsystem
+    		fileRequest.setSource(Source.ELEVATOR_SUBSYSTEM);
+    		
+            sendResponse(fileRequest);
+    	}
     }
 
     /**
@@ -71,9 +92,8 @@ public class ElevatorSubsystem implements Runnable {
     public void run() {
         System.out.println("ElevatorSubsystem operational...\n");
         while (true) {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = fetchRequest();
-            sendResponse(fetchedRequest);
+        	Request fetchedRequest = fetchRequest();
+            handleRequest(fetchedRequest);
         }
     }
-
 }
