@@ -1,6 +1,5 @@
 package project;
 
-import project.models.Floor;
 import project.models.Scheduler;
 import project.state_machines.ElevatorState;
 import project.state_machines.ElevatorState.ElevatorDirection;
@@ -8,12 +7,10 @@ import project.state_machines.ElevatorState.ElevatorDoorStatus;
 import project.state_machines.ElevatorState.ElevatorStateStatus;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
-import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 import static project.Config.REQUEST_QUEUE_CAPACITY;
 
