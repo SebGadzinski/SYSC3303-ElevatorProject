@@ -6,13 +6,15 @@ public class ElevatorState{
 	private ElevatorStateStatus state;
 	private ElevatorDoorStatus doorState;
 	private ElevatorDirection directionState;
+	private int currentFloor;
 	
 	public ElevatorState(ElevatorStateStatus state, ElevatorDoorStatus doorState,
-			ElevatorDirection directionState) {
+			ElevatorDirection directionState, int currentFloor) {
 		super();
 		this.state = state;
 		this.doorState = doorState;
 		this.directionState = directionState;
+		this.currentFloor = currentFloor;
 	}
 
 	public ElevatorStateStatus getState() {
@@ -38,6 +40,14 @@ public class ElevatorState{
 	public void setDirectionState(ElevatorDirection directionState) {
 		this.directionState = directionState;
 	}	
+
+	public int getCurrentFloor() {
+		return currentFloor;
+	}
+
+	public void setCurrentFloor(int currentFloor) {
+		this.currentFloor = currentFloor;
+	}
 	
 	public enum ElevatorStateStatus{
 		IDLE, ELEVATOR_ARRIVAL, ELEVATOR_MOVING, ELEVATOR_OPENING_DOORS, ELEVATOR_CLOSING_DOORS, PASSENGER_HANDLING
@@ -50,7 +60,6 @@ public class ElevatorState{
 	public enum ElevatorDirection{
 		UP, DOWN, IDLE
 	}
-
 	
 }
 

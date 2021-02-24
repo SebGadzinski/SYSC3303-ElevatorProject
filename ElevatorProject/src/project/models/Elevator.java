@@ -1,82 +1,75 @@
 package project.models;
 
-import project.Config;
+import project.state_machines.ElevatorState.ElevatorDoorStatus;
 import project.utils.objects.elevator_objects.*;
-import project.utils.objects.general.DirectionLamp;
-import project.utils.objects.sensors.*;
+import project.utils.objects.elevator_objects.ElevatorMotor.ElevatorMotorStatus;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * Info:
- * 	This is a client to the Scheduler
- * Sending:
- * 	Send calls to Scheduler
- * 	Send data to Scheduler to be sent to the floor
- * Receiving:
- * 	Replies from Scheduler
+ * Currently Unfinished
  *
  */
 
 /**
- * @author Chase Fridgen
+ * @author Iter1 (Chase Fridgen), Iter2 (Sebastian Gadzinski)
  */
-public class Elevator implements Runnable {
+public class Elevator {
+    //Buttons are represented by the lamps 
+    private HashMap<Integer, Boolean> buttonLamps;
+    private Boolean upDirectionLamp;
+    private Boolean downDirectionLamp;
+    private ElevatorMotor motor;
+    private ElevatorDoor door;
 
-    public ArrayList<ElevatorButton> buttons;
-    public ArrayList<ElevatorLamp> lamps;
-    public ArrayList<ArrivalSensor> arrivalSensors;
-    public ElevatorMotor motor = new ElevatorMotor();
-    public ElevatorDoor door = new ElevatorDoor();
-    // Shared
-    public DirectionLamp upDirectionLamp;
-    public DirectionLamp downDirectionLamp;
-    public Scheduler scheduler;
-    /*
-     * Constructors
-     */
-
-    public Elevator(Scheduler scheduler, DirectionLamp upDirectionLamp, DirectionLamp downDirectionLamp) {
-        setUpButtons();
-        setUpLamps();
-        setUpArrivalSensors();
-        this.scheduler = scheduler;
+     public Elevator(HashMap<Integer, Boolean> buttonLamps, Boolean upDirectionLamp, Boolean downDirectionLamp,
+            ElevatorMotor motor, ElevatorDoor door) {
+        this.buttonLamps = buttonLamps;
         this.upDirectionLamp = upDirectionLamp;
         this.downDirectionLamp = downDirectionLamp;
+        this.motor = motor;
+        this.door = door;
     }
 
-    /*
-     * Functions
-     */
-
-    private void setUpButtons() {
-        this.buttons = new ArrayList<>();
-        for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-            this.buttons.add(new ElevatorButton());
-        }
+    public void turnOnLamp(int floor){
+        buttonLamps.put(floor, true);
     }
 
-    private void setUpLamps() {
-        this.lamps = new ArrayList<>();
-        for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-            this.lamps.add(new ElevatorLamp());
-        }
+    public void turnOffLamp(int floor){
+        buttonLamps.put(floor, false);
     }
 
-    private void setUpArrivalSensors() {
-        this.arrivalSensors = new ArrayList<>();
-        for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-            this.arrivalSensors.add(new ArrivalSensor());
-        }
+    public void turnOnMotor(){
+        motor.setState(ElevatorMotorStatus.ON);
     }
 
-    private void selectDestination() {
-
+    public void turnOffMotor(){
+        motor.setState(ElevatorMotorStatus.OFF);
     }
 
-    @Override
-    public void run() {
+    public void openDoor(){
+        door.setDoorState(ElevatorDoorStatus.OPENED);
+    }
 
+    public void closeDoor(){
+        door.setDoorState(ElevatorDoorStatus.CLOSED);
+    }
+
+    public void turnOnUpDirectionLamp(){
+        upDirectionLamp = true;
+    }
+
+    public void turnOffUpDirectionLamp(){
+        upDirectionLamp = false;
+    }
+
+    public void turnODownDirectionLamp(){
+        downDirectionLamp = true;
+    }
+
+    public void turnOffDownDirectionLamp(){
+        downDirectionLamp = false;
     }
 
 }

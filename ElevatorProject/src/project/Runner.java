@@ -29,7 +29,7 @@ public class Runner {
         BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         
         // initialize active components
-        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE));
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0));
         FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
         Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
                 

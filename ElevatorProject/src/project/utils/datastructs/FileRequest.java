@@ -37,4 +37,14 @@ public class FileRequest extends Request{
 		return destinationFloor;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Source: " + this.getSource() + "\n"
+		+ "Time:  " + this.getTime() + "\n"
+		+ "Direction: " + this.getDirection() + "\n"
+		+ "Pick Up: " + this.getOriginFloor() + "\n"
+		+ "Destination Floor: " + this.getDestinationFloor() + "\n";
+	}
+
 }
