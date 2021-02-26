@@ -62,16 +62,16 @@ public class ElevatorStateMachine {
 					System.out.println("Invalid Request For IDLE State");
 				}
 			}
-			case ELEVATOR_ARRIVAL ->{
+			case ARRIVAL ->{
 				if (request instanceof ElevatorDoorRequest) {
 					ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
 					requestToSendToScheduler = handleDoorRequest(doorRequest);
 				}
 				else {
-					System.out.println("Invalid Request For ELEVATOR_ARRIVAL State");
+					System.out.println("Invalid Request For ARRIVAL State");
 				}
 			}
-			case ELEVATOR_MOVING ->{
+			case MOVING ->{
 					if (request instanceof ElevatorMotorRequest) {
 						ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
 						requestToSendToScheduler = handleMotorRequest(motorRequest);
@@ -80,22 +80,13 @@ public class ElevatorStateMachine {
 						System.out.println("Invalid Request For MOVING State");
 					}
 			}
-			case ELEVATOR_OPENING_DOORS ->{
+			case OPENING_DOORS ->{
 				if (request instanceof ElevatorPassengerWaitRequest) {
 					ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
 					requestToSendToScheduler = handlePassengerWaitRequest(waitRequest);
 				} 
 				else {
-					System.out.println("Invalid Request For ELEVATOR_OPENING_DOORS State");
-				}
-			}
-			case ELEVATOR_CLOSING_DOORS ->{
-				if (request instanceof ElevatorMotorRequest) {
-					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-					requestToSendToScheduler = handleMotorRequest(motorRequest);
-				}
-				else {
-					System.out.println("Invalid Request For ELEVATOR_CLOSING_DOORS State");
+					System.out.println("Invalid Request For OPENING_DOORS State");
 				}
 			}
 			case PASSENGER_HANDLING ->{
@@ -106,6 +97,21 @@ public class ElevatorStateMachine {
 				else {
 					System.out.println("Invalid Request For PASSENGER_HANDLING State");
 				}
+			}
+			case CLOSING_DOORS ->{
+				if (request instanceof ElevatorMotorRequest) {
+					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+					requestToSendToScheduler = handleMotorRequest(motorRequest);
+				}
+				else {
+					System.out.println("Invalid Request For CLOSING_DOORS State");
+				}
+			}
+			//Fault cases are told to scheduler and taken care of using ElevatorEmergencyRequest
+			//It should not reach here. If so the fault has not been resolved
+			case FAULT_HANDLING ->{
+				System.out.println("CRITICAL FAULT");
+				//System should shut down?
 			}
 		}
 		System.out.print("State: " + state);
@@ -132,7 +138,7 @@ public class ElevatorStateMachine {
 		if(!motorFault){
 			if (request.getRequestedDirection() == ElevatorDirection.IDLE) {
 				System.out.println("Stopping Elevator");
-				setUpState(ElevatorDirection.IDLE, ElevatorState.ELEVATOR_ARRIVAL);
+				setUpState(ElevatorDirection.IDLE, ElevatorState.ARRIVAL);
 				setLampStatus(currentFloor, false);
 			}else if (request.getRequestedDirection() == ElevatorDirection.UP) {
 				System.out.println("Moving Elevator Up");
@@ -142,7 +148,7 @@ public class ElevatorStateMachine {
 					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState); 
 				}
 				if(motorFault){
-					setUpState(ElevatorDirection.UP, ElevatorState.ELEVATOR_MOVING);
+					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
 					waitForTime(Config.ELEVATOR_DOOR_TIME);
 					currentFloor += 1;
 				}
@@ -158,7 +164,7 @@ public class ElevatorStateMachine {
 							currentFloor, directionState);
 				}
 				if(!motorFault){
-					setUpState(ElevatorDirection.DOWN, ElevatorState.ELEVATOR_MOVING);
+					setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
 					waitForTime(Config.ELEVATOR_DOOR_TIME);
 					currentFloor = currentFloor + 1;
 				}else{
@@ -183,12 +189,12 @@ public class ElevatorStateMachine {
 		if(!doorFault){
 			if (request.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
 				System.out.println("Closing Doors");
-				state = ElevatorState.ELEVATOR_CLOSING_DOORS;
+				state = ElevatorState.CLOSING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
 			} else {
 				System.out.println("Opening Doors");
-				state = ElevatorState.ELEVATOR_OPENING_DOORS;
+				state = ElevatorState.OPENING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.OPENED;
 			}
@@ -231,6 +237,48 @@ public class ElevatorStateMachine {
         directionState = direction;
         state = newState;
     }
+	
+	/**
+     * Handler for a motor fault
+     */
+	public Request motorFault(){
+		state = ElevatorState.FAULT_HANDLING;
+		motorFault = false;
+		return new ElevatorFaultRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorFault.MOTOR_FAULT);
+	}
+
+	/**
+     * Handler for a door fault
+     */
+	public Request doorFault(){
+		state = ElevatorState.FAULT_HANDLING;
+		doorFault = false;
+		return new ElevatorFaultRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorFault.DOOR_FAULT);
+	}
+
+	/**
+     * Helper function That allows system to wait for the duration given
+     * 
+     * @param request The request to be dealt with.
+     */
+    public void waitForTime(int duration){
+        try{
+            Thread.sleep(duration);
+        }catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+	}
+
+	/**
+     * Sets a lamps state, notifies other threads about the change
+     * 
+     * @param floor floor button lamp
+	 * @param status status to be set
+     */
+	public void setLampStatus(int floor, boolean status){
+		lamps.put(floor, status);
+		notifyAll();
+	}
 
 	public void setDoorState(ElevatorDoorStatus doorState) {
 		this.doorState = doorState;
@@ -264,41 +312,14 @@ public class ElevatorStateMachine {
 		return doorState;
 	}
 
-    public void setLampStatus(int floor, boolean status){
-		lamps.put(floor, status);
-		notifyAll();
-	}
-	
-	public Request motorFault(){
-		motorFault = false;
-		return new ElevatorFaultRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorFault.MOTOR_FAULT);
-	}
-
-	public Request doorFault(){
-		doorFault = false;
-		return new ElevatorFaultRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorFault.DOOR_FAULT);
-	}
-
-	/**
-     * Helper function That allows system to wait for the duration given
-     * 
-     * @param request The request to be dealt with.
-     */
-    public void waitForTime(int duration){
-        try{
-            Thread.sleep(duration);
-        }catch (java.lang.InterruptedException e) {
-            e.printStackTrace();
-        }
-	}
-
 	public enum ElevatorState{
 		IDLE,
-		ELEVATOR_ARRIVAL,
-		ELEVATOR_MOVING,
-		ELEVATOR_OPENING_DOORS,
-		ELEVATOR_CLOSING_DOORS,
+		ARRIVAL,
+		MOVING,
+		OPENING_DOORS,
 		PASSENGER_HANDLING,
+		CLOSING_DOORS,
+		FAULT_HANDLING,
 	}
 
 	public enum ElevatorDoorStatus{

@@ -81,7 +81,7 @@ public class ElevatorSubsystem implements Runnable {
             response = stateMachine.handleRequest(doorRequest);
 
             //As long as its not a fault request, check for any more file requests, if none set state to IDLE
-            if(request instanceof ElevatorFaultRequest){
+            if(request instanceof ElevatorFaultRequest && stateMachine.getState() == ElevatorState.CLOSING_DOORS){
                 boolean noFileRequests = reOrderQueue();
 
                 if(noFileRequests){
@@ -139,6 +139,12 @@ public class ElevatorSubsystem implements Runnable {
         return noFileRequests;
     }
 
+    /**
+     * Sets a lamps state, notifies other threads about the change
+     * 
+     * @param floor floor button lamp
+	 * @param status status to be set
+     */
     public void setLampStatus(int floor, boolean status){
         stateMachine.setLampStatus(floor, status);
         notifyAll();
