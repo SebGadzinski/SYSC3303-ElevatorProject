@@ -12,12 +12,10 @@ public class ElevatorArrivalRequest extends Request {
 		super(source);
 		this.floorArrivedAt = floorArrivedAt;
 		this.currentDirection = currentDirection;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Source: " + this.getSource()
 		+ "Floor Arrived At: " + this.floorArrivedAt + "\n"
 		+ "Current Direction: " + this.floorArrivedAt + "\n";

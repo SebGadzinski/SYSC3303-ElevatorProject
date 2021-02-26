@@ -1,10 +1,7 @@
 package project.models;
 
 import project.state_machines.SchedulerStateMachine.SchedulerState;
-import project.utils.datastructs.ElevatorDestinationRequest;
-import project.utils.datastructs.ElevatorMotorRequest;
-import project.utils.datastructs.FileRequest;
-import project.utils.datastructs.Request;
+import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
@@ -46,10 +43,10 @@ public class Scheduler implements Runnable {
      *
      * @param request The request to be inserted into the outlet requests queue to the FloorSubsystem.
      */
-    public synchronized void sendRequestToFloorSubsystem(Request request) {
+    public synchronized void dispatchRequestToFloorSubsystem(Request request) {
         try {
             requestsToFloorSubsystem.put(request);
-            System.out.println(toString() + " sent a request to FloorSubsystem\n");
+            System.out.println(this + " sent a request to FloorSubsystem\n");
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -61,10 +58,10 @@ public class Scheduler implements Runnable {
      *
      * @param request The request to be inserted into the outlet requests queue to the ElevatorSubsystem.
      */
-    public synchronized void sendRequestToElevatorSubsystem(Request request) {
+    public synchronized void dispatchRequestToElevatorSubsystem(Request request) {
         try {
             requestsToElevatorSubsystem.put(request);
-            System.out.println(toString() + " sent a request to ElevatorSubsystem\n");
+            System.out.println(this + " sent a request to ElevatorSubsystem\n");
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -80,7 +77,7 @@ public class Scheduler implements Runnable {
         Request request = null;
         try {
             request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + toString() + " from " + request.getSource() + ":");
+            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
             if (request instanceof FileRequest) {
                 FileRequest fileRequest = (FileRequest) request;
                 System.out.println("The request was fulfilled at " + fileRequest.getTime());
@@ -99,23 +96,22 @@ public class Scheduler implements Runnable {
      *
      * @param request The request to be dispatched.
      */
-    private synchronized void dispatchRequest(Request request) {
+    private synchronized void consumeRequest(Request request) {
 
         switch (state) {
 
             // dispatch to an elevator
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(request);
-            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(
-                    new ElevatorMotorRequest(
-                            Source.SCHEDULER,
-                            ((ElevatorDestinationRequest) request).getDirection()
-                    )
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(
+                    new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection())
             );
 
             // dispatch to a floor
-            case DISPATCH_FILE_REQUEST_TO_FLOOR -> sendRequestToFloorSubsystem(request);
+            case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
 
-            case INVALID_REQUEST -> System.out.println(toString() + " received and discarded an invalid request");
+            // consume a request
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> System.out.println(this + " received confirmation of elevator arrival:");
+            case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
         }
 
@@ -158,7 +154,7 @@ public class Scheduler implements Runnable {
     public void run() {
         System.out.println("Scheduler operational...\n");
         while (true) {
-            dispatchRequest(fetchRequest());
+            consumeRequest(fetchRequest());
         }
     }
 

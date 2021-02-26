@@ -1,6 +1,7 @@
 package project.state_machines;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.utils.datastructs.ElevatorArrivalRequest;
 import project.utils.datastructs.ElevatorDestinationRequest;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
@@ -46,9 +47,16 @@ public class SchedulerStateMachine {
                         return DISPATCH_FILE_REQUEST_TO_FLOOR;
                     }
 
-                // dispatch a MotorRequest to an Elevator
-                } else if (request instanceof ElevatorDestinationRequest) {
+                }
+
+                // dispatch a MotorRequest to an ElevatorSubsystem
+                else if (request instanceof ElevatorDestinationRequest) {
                     return DISPATCH_MOTOR_REQUEST_TO_ELEVATOR;
+                }
+
+                // consume an ElevatorArrivalRequest
+                else if (request instanceof ElevatorArrivalRequest) {
+                    return CONSUME_ELEVATOR_ARRIVAL_REQUEST;
                 }
 
                 // the request type is not recognized
@@ -58,7 +66,7 @@ public class SchedulerStateMachine {
         },
 
         /**
-         * Scheduler dispatches a given FileRequest to the ElevatorSubsystem.
+         * Scheduler dispatches a given FileRequest to an ElevatorSubsystem.
          */
         DISPATCH_FILE_REQUEST_TO_ELEVATOR {
             @Override
@@ -68,7 +76,7 @@ public class SchedulerStateMachine {
         },
 
         /**
-         * Scheduler dispatches a given FileRequest to the FloorSubsystem.
+         * Scheduler dispatches a given FileRequest to a FloorSubsystem.
          */
         DISPATCH_FILE_REQUEST_TO_FLOOR {
             @Override
@@ -78,9 +86,19 @@ public class SchedulerStateMachine {
         },
 
         /**
-         * Scheduler dispatches a new MotorRequest to an Elevator.
+         * Scheduler dispatches a new MotorRequest to an ElevatorSubsystem.
          */
         DISPATCH_MOTOR_REQUEST_TO_ELEVATOR {
+            @Override
+            public SchedulerState advance(Request request) {
+                return AWAIT_REQUEST;
+            }
+        },
+
+        /**
+         * Scheduler consumes an ElevatorArrivalRequest.
+         */
+        CONSUME_ELEVATOR_ARRIVAL_REQUEST {
             @Override
             public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;

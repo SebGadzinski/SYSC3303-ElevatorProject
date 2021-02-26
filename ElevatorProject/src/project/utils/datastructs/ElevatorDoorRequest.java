@@ -9,12 +9,10 @@ public class ElevatorDoorRequest extends Request {
 	public ElevatorDoorRequest(Source source, ElevatorDoorStatus requestedDoorStatus) {
 		super(source);
 		this.requestedDoorStatus = requestedDoorStatus;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Source: " + this.getSource()
 		+ "Request for Doors to be: " + this.requestedDoorStatus + "\n";
 	}
