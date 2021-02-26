@@ -78,7 +78,7 @@ class testScheduler  {
 	    
         Request fetchedRequest = scheduler.fetchRequest();
         
-        scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
+        scheduler.dispatchRequestToElevatorSubsystem(fetchedRequest);
         fetchedRequest = elevatorSubsystem.fetchRequest();
         elevatorSubsystem.sendResponse(fetchedRequest);
         scheduler.fetchRequest();

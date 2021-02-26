@@ -51,7 +51,7 @@ class testElevatorSubsystem  {
 	    
         Request fetchedRequest = scheduler.fetchRequest();
         
-        scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
+        scheduler.dispatchRequestToElevatorSubsystem(fetchedRequest);
         fetchedRequest = elevatorSubsystem.fetchRequest();
         
         if(fetchedRequest instanceof FileRequest) {
@@ -84,7 +84,7 @@ class testElevatorSubsystem  {
 	    
         Request fetchedRequest = scheduler.fetchRequest();
         
-        scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
+        scheduler.dispatchRequestToElevatorSubsystem(fetchedRequest);
 
         fetchedRequest = elevatorSubsystem.fetchRequest();
 
