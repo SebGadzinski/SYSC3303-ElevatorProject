@@ -25,25 +25,28 @@ public class Runner {
     public static void main(String[] args) {
 
         // initialize thread-safe request queues
-        BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-        BlockingQueue<Request> requestsToSchedular    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-        BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-        
+        BlockingQueue<Request> requestsToFloorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToScheduler = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+
         // initialize active components
-        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0,
-                new HashMap<Integer, Boolean>()));
-        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
-        Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
-                
+        FloorSubsystem floorSubsystem = new FloorSubsystem(requestsToFloorSubsystem, requestsToScheduler);
+        Scheduler scheduler = new Scheduler(requestsToScheduler, requestsToElevatorSubsystem, requestsToFloorSubsystem);
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
+                requestsToElevatorSubsystem,
+                requestsToScheduler,
+                new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0, new HashMap<>())
+        );
+
         // initialize threads
+        Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem");
+        Thread schedulerThread = new Thread(scheduler, "Scheduler");
         Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "ElevatorSubsystem");
-        Thread floorSubsystemThread    = new Thread(floorSubsystem, "FloorSubsystem");
-        Thread schedulerThread         = new Thread(scheduler, "Scheduler");
 
         // start threads
-        elevatorSubsystemThread.start();
         floorSubsystemThread.start();
         schedulerThread.start();
+        elevatorSubsystemThread.start();
 
     }
 
