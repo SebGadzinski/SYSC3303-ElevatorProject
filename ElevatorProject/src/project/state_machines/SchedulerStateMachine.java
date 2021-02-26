@@ -1,6 +1,7 @@
 package project.state_machines;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.utils.datastructs.ElevatorDestinationRequest;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.Request.Source;
@@ -45,6 +46,9 @@ public class SchedulerStateMachine {
                         return DISPATCH_FILE_REQUEST_TO_FLOOR;
                     }
 
+                // dispatch a MotorRequest to an Elevator
+                } else if (request instanceof ElevatorDestinationRequest) {
+                    return DISPATCH_MOTOR_REQUEST_TO_ELEVATOR;
                 }
 
                 // the request type is not recognized
@@ -67,6 +71,16 @@ public class SchedulerStateMachine {
          * Scheduler dispatches a given FileRequest to the FloorSubsystem.
          */
         DISPATCH_FILE_REQUEST_TO_FLOOR {
+            @Override
+            public SchedulerState advance(Request request) {
+                return AWAIT_REQUEST;
+            }
+        },
+
+        /**
+         * Scheduler dispatches a new MotorRequest to an Elevator.
+         */
+        DISPATCH_MOTOR_REQUEST_TO_ELEVATOR {
             @Override
             public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;

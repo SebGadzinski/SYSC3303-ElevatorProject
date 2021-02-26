@@ -70,7 +70,7 @@ public class ElevatorSubsystem implements Runnable {
         Request response = null;
         if (request instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) request;
-            System.out.println(fileRequest.toString());
+            System.out.println(fileRequest);
 
             response = handleFileRequest(fileRequest);
         }
@@ -115,14 +115,15 @@ public class ElevatorSubsystem implements Runnable {
         notifyAll();
 
         return new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
-                request.getDestinationFloor());
+                                              request.getDestinationFloor(),
+                                              request.getDirection());
     }
 
     /**
      * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
      */
     public boolean reOrderQueue(){
-        BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
+        BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<>(incomingRequests.size());
         int incomingListSize = incomingRequests.size();
         boolean noFileRequests = true;
         

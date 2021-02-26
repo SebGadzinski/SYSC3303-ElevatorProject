@@ -1,28 +1,33 @@
 package project.utils.datastructs;
 
-public class ElevatorDestinationRequest extends Request{
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 
-	private int requestedDestinationFloor;
+public class ElevatorDestinationRequest extends Request {
 
-	public ElevatorDestinationRequest(Source source, int requestedDestinationFloor) {
-		super(source);
-		this.requestedDestinationFloor = requestedDestinationFloor;
-		// TODO Auto-generated constructor stub
-	}
+    private int requestedDestinationFloor;
+    private ElevatorDirection direction;
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "Source: " + this.getSource()
-		+ "Set Destination to floor: " + this.requestedDestinationFloor + "\n";
-	}
+    public ElevatorDestinationRequest(Source source, int requestedDestinationFloor, ElevatorDirection direction) {
+        super(source);
+        this.requestedDestinationFloor = requestedDestinationFloor;
+        this.direction = direction;
+    }
 
-	public int getRequestedDestinationFloor() {
-		return requestedDestinationFloor;
-	}
+    @Override
+    public String toString() {
+        return "Source: " + getSource() + "Set Destination to floor: " + this.requestedDestinationFloor + "\n";
+    }
 
-	public void setRequestedDestinationFloor(int requestedDestinationFloor) {
-		this.requestedDestinationFloor = requestedDestinationFloor;
-	}
-	
+    public int getRequestedDestinationFloor() {
+        return requestedDestinationFloor;
+    }
+
+    public synchronized void setRequestedDestinationFloor(int requestedDestinationFloor) {
+        this.requestedDestinationFloor = requestedDestinationFloor;
+    }
+
+    public ElevatorDirection getDirection() {
+        return direction;
+    }
+
 }

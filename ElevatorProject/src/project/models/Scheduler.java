@@ -1,8 +1,11 @@
 package project.models;
 
 import project.state_machines.SchedulerStateMachine.SchedulerState;
+import project.utils.datastructs.ElevatorDestinationRequest;
+import project.utils.datastructs.ElevatorMotorRequest;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -97,12 +100,27 @@ public class Scheduler implements Runnable {
      * @param request The request to be dispatched.
      */
     private synchronized void dispatchRequest(Request request) {
+
         switch (state) {
+
+            // dispatch to an elevator
             case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(request);
+            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> sendRequestToElevatorSubsystem(
+                    new ElevatorMotorRequest(
+                            Source.SCHEDULER,
+                            ((ElevatorDestinationRequest) request).getDirection()
+                    )
+            );
+
+            // dispatch to a floor
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> sendRequestToFloorSubsystem(request);
+
             case INVALID_REQUEST -> System.out.println(toString() + " received and discarded an invalid request");
+
         }
+
         advanceState(request);
+
     }
 
     /**
