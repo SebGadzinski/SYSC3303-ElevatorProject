@@ -1,6 +1,6 @@
 package project.models;
 
-import project.state_machines.ElevatorState.ElevatorDoorStatus;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.utils.objects.elevator_objects.*;
 import project.utils.objects.elevator_objects.ElevatorMotor.ElevatorMotorStatus;
 

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.jupiter.api.Test;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.FileRequest;

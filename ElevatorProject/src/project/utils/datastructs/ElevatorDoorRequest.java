@@ -1,8 +1,8 @@
 package project.utils.datastructs;
 
-import project.state_machines.ElevatorState.ElevatorDoorStatus;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
-public class ElevatorDoorRequest extends Request{
+public class ElevatorDoorRequest extends Request {
 
 	private ElevatorDoorStatus requestedDoorStatus;
 

@@ -1,6 +1,6 @@
 package project.state_machines;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.Request.Source;

@@ -1,8 +1,8 @@
 package project.utils.datastructs;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 
-public class ElevatorArrivalRequest extends Request{
+public class ElevatorArrivalRequest extends Request {
 
 	private int floorArrivedAt;
 	private ElevatorDirection currentDirection;

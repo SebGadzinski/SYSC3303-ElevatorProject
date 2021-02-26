@@ -1,12 +1,8 @@
 package project.systems;
 
-import project.Config;
-import project.state_machines.ElevatorState;
-import project.state_machines.ElevatorState.ElevatorDirection;
-import project.state_machines.ElevatorState.ElevatorDoorStatus;
-import project.state_machines.ElevatorState.ElevatorStateStatus;
+import project.state_machines.ElevatorStateMachine;
+import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.utils.datastructs.*;
-import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 import project.utils.datastructs.Request.Source;
 
 import java.util.HashMap;
@@ -22,14 +18,14 @@ public class ElevatorSubsystem implements Runnable {
 
     private BlockingQueue<Request> incomingRequests; // data from scheduler
     private BlockingQueue<Request> outgoingRequests; // data to scheduler
-    private ElevatorState state;
+    private ElevatorStateMachine stateMachine;
     public HashMap<Integer, Boolean> lamps;
 
     public ElevatorSubsystem(BlockingQueue<Request> incomingRequests, BlockingQueue<Request> outgoingRequests,
-            ElevatorState state) {
+            ElevatorStateMachine stateMachine) {
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
-        this.state = state;
+        this.stateMachine = stateMachine;
     }
 
     /**
@@ -62,7 +58,6 @@ public class ElevatorSubsystem implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -72,33 +67,41 @@ public class ElevatorSubsystem implements Runnable {
      * @param request received packet
      */
     public synchronized void handleRequest(Request request) {
+        Request response = null;
         if (request instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) request;
             System.out.println(fileRequest.toString());
 
-            handleFileRequest(fileRequest);
+            response = handleFileRequest(fileRequest);
         }
         else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
             System.out.println("Receiving: " + doorRequest.toString());
+            
+            response = stateMachine.handleRequest(doorRequest);
 
-            handleDoorRequest(doorRequest);
+            //As long as its not a fault request, check for any more file requests, if none set state to IDLE
+            if(request instanceof ElevatorFaultRequest){
+                boolean noFileRequests = reOrderQueue();
+
+                if(noFileRequests){
+                    stateMachine.setState(ElevatorState.IDLE);
+                }
+            }
         }
         else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
             System.out.println("Receiving: " + motorRequest.toString());
 
-            handleMotorRequest(motorRequest);
+            response = stateMachine.handleRequest(motorRequest);
         }
         else if (request instanceof ElevatorPassengerWaitRequest) {
             ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
             System.out.println("Receiving: " + waitRequest.toString());
 
-            handlePassengerWaitRequest(waitRequest);
+            response = stateMachine.handleRequest(waitRequest); 
         } 
-        else {
-            System.out.println("Invalid Request");
-        }
+        if(response != null) sendResponse(response);
     }
 
     /**
@@ -106,136 +109,39 @@ public class ElevatorSubsystem implements Runnable {
      *
      * @param request The request to be dealt with.
      */
-    public void handleFileRequest(FileRequest request) {        
+    public Request handleFileRequest(FileRequest request) {        
         // Turn on the lamp for the elevator button
-        lamps.put(request.getDestinationFloor(), true);
+        setLampStatus(request.getDestinationFloor(), true);
+        notifyAll();
 
-        ElevatorDestinationRequest destinationRequest = new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
+        return new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
                 request.getDestinationFloor());
-        sendResponse(destinationRequest);
     }
 
     /**
-     * Handles a request to open or close doors. 
-     * Sends changed door request back to schedular
-     *
-     * @param request The request to be dealt with.
+     * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
      */
-    public void handleDoorRequest(ElevatorDoorRequest request) {
-        if (request.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
-            System.out.println("Closing Doors");
-            waitForTime(Config.ELEVATOR_DOOR_TIME);
-            state.setDoorState(ElevatorDoorStatus.CLOSED);
-        } else {
-            System.out.println("Opening Doors");
-            waitForTime(Config.ELEVATOR_DOOR_TIME);
-            state.setDoorState(ElevatorDoorStatus.OPENED);
-        }
-        ElevatorDoorRequest doorRequest = new ElevatorDoorRequest(Source.ELEVATOR_SUBSYSTEM, state.getDoorState());
-        sendResponse(doorRequest);
-    }
-
-    /**
-     * Handles a request to start motor and move up or down. 
-     * Sends arrival request back once moved up/donw a floor, or stopped at floor.
-     * 
-     * @param request The request to be dealt with.
-     */
-    public void handleMotorRequest(ElevatorMotorRequest request) {
-        //Stop sends a motorRequest letting the 
-        if (request.getRequestedDirection() == ElevatorDirection.IDLE) {
-            System.out.println("Stopping Elevator");
-            setUpState(ElevatorDirection.IDLE, ElevatorStateStatus.ELEVATOR_ARRIVAL);
-            lamps.put(state.getCurrentFloor(), false);
-        }else if (request.getRequestedDirection() == ElevatorDirection.UP) {
-            System.out.println("Moving Elevator Up");
-            if (state.getCurrentFloor() == Config.NUMBER_OF_FLOORS) {
-                System.out.println(
-                        "Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
-                ElevatorArrivalRequest arrivalRequest = new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM,
-                        state.getCurrentFloor(), state.getDirectionState());
-                sendResponse(arrivalRequest);
-                return;
-            }
-            setUpState(ElevatorDirection.UP, ElevatorStateStatus.ELEVATOR_MOVING);
-            waitForTime(Config.ELEVATOR_DOOR_TIME);
-            state.setCurrentFloor(state.getCurrentFloor() + 1);
-        } else {
-            System.out.println("Moving Elevator Down");
-            if (state.getCurrentFloor() == 0) {
-                System.out.println(
-                        "Currently at basement floor. Motor request denied. \n Sending a arrival request on basement floor");
-                ElevatorArrivalRequest arrivalRequest = new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM,
-                        state.getCurrentFloor(), state.getDirectionState());
-                sendResponse(arrivalRequest);
-                return;
-            }
-            setUpState(ElevatorDirection.DOWN, ElevatorStateStatus.ELEVATOR_MOVING);
-            waitForTime(Config.ELEVATOR_DOOR_TIME);
-            state.setCurrentFloor(state.getCurrentFloor() + 1);
-        }
-
-        ElevatorArrivalRequest arrivalRequest = new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM,
-        state.getCurrentFloor(), state.getDirectionState());
-        System.out.println("Sending : " + arrivalRequest.toString());
-        sendResponse(arrivalRequest);
-    }
-
-    /**
-     * Handles a request to start motor and move up or down. 
-     * Sends arrival request back once moved up/donw a floor, or stopped at floor.
-     * 
-     * @param request The request to be dealt with.
-     */
-    public void handlePassengerWaitRequest(ElevatorPassengerWaitRequest request) {
-        state.setState(ElevatorStateStatus.PASSENGER_HANDLING);
-        //Imitate wait time
-        waitForTime(request.getWaitTime());
-
-        //Put File Requests (Requests from input file) and Destination Requests to the front of queue
+    public boolean reOrderQueue(){
         BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
-        Boolean isThereFileRequest = false;
         int incomingListSize = incomingRequests.size();
+        boolean noFileRequests = true;
         
         for(int i = 0; i < incomingListSize; i++){
             Request tempRequest = incomingRequests.poll();
             if(tempRequest instanceof FileRequest){
                 incomingRequests.offer(tempRequest);
-                isThereFileRequest = true;
+                noFileRequests = false;
             }else{
                 tempQueue.offer(tempRequest);
             }
         }
         incomingRequests.addAll(tempQueue);
-
-        if(!isThereFileRequest){
-            ElevatorPassengerWaitRequest finishedWaitingRequest = new ElevatorPassengerWaitRequest(Source.ELEVATOR_SUBSYSTEM, 0, WaitState.FINISHED);
-            sendResponse(finishedWaitingRequest);
-        }
+        return noFileRequests;
     }
 
-    /**
-     * Helper function that sets the state and direciton state
-     * 
-     * @param direction New direction status
-     * @param newState New state status
-     */
-    private void setUpState(ElevatorDirection direction, ElevatorStateStatus newState){
-        state.setDirectionState(direction);
-        state.setState(newState);
-    }
-
-    /**
-     * Helper function That allows system to wait for the duration given
-     * 
-     * @param request The request to be dealt with.
-     */
-    public void waitForTime(int duration){
-        try{
-            Thread.sleep(duration);
-        }catch (java.lang.InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void setLampStatus(int floor, boolean status){
+        stateMachine.setLampStatus(floor, status);
+        notifyAll();
     }
 
     /**

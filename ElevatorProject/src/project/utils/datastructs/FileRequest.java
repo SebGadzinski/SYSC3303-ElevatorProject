@@ -1,9 +1,10 @@
 package project.utils.datastructs;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 
 /**
- * Thread Safe request for requests from input file. No setters because a request should not be changed from its original purpose
+ * Thread Safe request for requests from input file. No setters because a
+ * request should not be changed from its original purpose
  *
  * @author Sebastian Gadzinski
  */

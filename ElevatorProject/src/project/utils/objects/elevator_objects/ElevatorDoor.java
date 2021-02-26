@@ -1,6 +1,6 @@
 package project.utils.objects.elevator_objects;
 
-import project.state_machines.ElevatorState.ElevatorDoorStatus;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
 public class ElevatorDoor {
 

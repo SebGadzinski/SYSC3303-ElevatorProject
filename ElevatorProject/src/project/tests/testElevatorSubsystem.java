@@ -4,16 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static project.Config.REQUEST_QUEUE_CAPACITY;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.junit.jupiter.api.Test;
 
 import project.models.Scheduler;
-import project.state_machines.ElevatorState;
-import project.state_machines.ElevatorState.ElevatorDirection;
-import project.state_machines.ElevatorState.ElevatorDoorStatus;
-import project.state_machines.ElevatorState.ElevatorStateStatus;
+import project.state_machines.ElevatorStateMachine;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.ReadRequestResult;
@@ -41,7 +42,8 @@ class testElevatorSubsystem  {
         BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         
         // initialize active components
-        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0));
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0,
+                new HashMap<Integer, Boolean>()));
         FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
         Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
 	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
@@ -70,7 +72,8 @@ class testElevatorSubsystem  {
         BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         
         // initialize active components
-        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorState(ElevatorStateStatus.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0));
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0,
+                new HashMap<Integer, Boolean>()));
         FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
         Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
 	    

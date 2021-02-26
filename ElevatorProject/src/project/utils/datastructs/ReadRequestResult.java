@@ -1,7 +1,5 @@
 package project.utils.datastructs;
 
-import java.util.concurrent.ConcurrentMap;
-
 /**
  * Multi-return auxiliary to FloorSubsystem::readRequest().
  *

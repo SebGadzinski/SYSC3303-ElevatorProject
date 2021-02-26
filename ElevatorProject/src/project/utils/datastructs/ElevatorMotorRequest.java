@@ -1,8 +1,8 @@
 package project.utils.datastructs;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 
-public class ElevatorMotorRequest extends Request{
+public class ElevatorMotorRequest extends Request {
 
 	private ElevatorDirection requestedDirection;
 
