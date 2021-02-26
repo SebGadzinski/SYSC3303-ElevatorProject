@@ -1,9 +1,10 @@
 package project.utils.datastructs;
 
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 
 /**
- * Thread Safe request for requests from input file. No setters because a request should not be changed from its original purpose
+ * Thread Safe request for requests from input file. No setters because a
+ * request should not be changed from its original purpose
  *
  * @author Sebastian Gadzinski
  */
@@ -35,6 +36,16 @@ public class FileRequest extends Request{
 
 	public int getDestinationFloor() {
 		return destinationFloor;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Source: " + this.getSource() + "\n"
+		+ "Time:  " + this.getTime() + "\n"
+		+ "Direction: " + this.getDirection() + "\n"
+		+ "Pick Up: " + this.getOriginFloor() + "\n"
+		+ "Destination Floor: " + this.getDestinationFloor() + "\n";
 	}
 
 }

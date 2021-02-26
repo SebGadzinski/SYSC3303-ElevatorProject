@@ -2,7 +2,7 @@ package project.systems;
 
 import project.Config;
 import project.models.Floor;
-import project.state_machines.ElevatorState.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.Request.Source;
