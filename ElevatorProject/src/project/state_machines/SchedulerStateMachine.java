@@ -1,10 +1,7 @@
 package project.state_machines;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.utils.datastructs.ElevatorArrivalRequest;
-import project.utils.datastructs.ElevatorDestinationRequest;
-import project.utils.datastructs.FileRequest;
-import project.utils.datastructs.Request;
+import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
 /**
@@ -54,6 +51,11 @@ public class SchedulerStateMachine {
                     return DISPATCH_MOTOR_REQUEST_TO_ELEVATOR;
                 }
 
+                // dispatch an ElevatorDoorRequest to an ElevatorSubsystem
+                else if (request instanceof ElevatorDoorRequest) {
+                    return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
+                }
+
                 // consume an ElevatorArrivalRequest
                 else if (request instanceof ElevatorArrivalRequest) {
                     return CONSUME_ELEVATOR_ARRIVAL_REQUEST;
@@ -89,6 +91,16 @@ public class SchedulerStateMachine {
          * Scheduler dispatches a new MotorRequest to an ElevatorSubsystem.
          */
         DISPATCH_MOTOR_REQUEST_TO_ELEVATOR {
+            @Override
+            public SchedulerState advance(Request request) {
+                return AWAIT_REQUEST;
+            }
+        },
+
+        /**
+         * Scheduler dispatches an ElevatorDoorRequest to an ElevatorSubsystem.
+         */
+        DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR {
             @Override
             public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;

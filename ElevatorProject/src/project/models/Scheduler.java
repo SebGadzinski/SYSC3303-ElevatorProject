@@ -101,7 +101,7 @@ public class Scheduler implements Runnable {
         switch (state) {
 
             // dispatch to an elevator
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
             case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(
                     new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection())
             );
@@ -110,7 +110,7 @@ public class Scheduler implements Runnable {
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
 
             // consume a request
-            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> System.out.println(this + " received confirmation of elevator arrival:");
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> System.out.println(this + " received confirmation of elevator arrival:\n" + request);
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
         }
