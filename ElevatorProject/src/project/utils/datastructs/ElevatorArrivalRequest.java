@@ -6,12 +6,14 @@ public class ElevatorArrivalRequest extends Request {
 
 	private int floorArrivedAt;
 	private ElevatorDirection currentDirection;
+	private int destinationFloor;
 
 
-	public ElevatorArrivalRequest(Source source, int floorArrivedAt, ElevatorDirection currentDirection) {
+	public ElevatorArrivalRequest(Source source, int floorArrivedAt, ElevatorDirection currentDirection, int destinationFloor) {
 		super(source);
 		this.floorArrivedAt = floorArrivedAt;
 		this.currentDirection = currentDirection;
+		this.destinationFloor = destinationFloor;
 	}
 
 	@Override
@@ -37,6 +39,8 @@ public class ElevatorArrivalRequest extends Request {
 		this.currentDirection = currentDirection;
 	}
 
-	
+	public int getDestinationFloor() {
+		return destinationFloor;
+	}
 	
 }

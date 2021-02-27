@@ -1,6 +1,8 @@
 package project.state_machines;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import project.Config;
 import project.utils.datastructs.ElevatorArrivalRequest;
@@ -21,6 +23,7 @@ public class ElevatorStateMachine {
 	private ElevatorDirection directionState;
 	private int currentFloor;
 	private HashMap<Integer, Boolean> lamps;
+	private Queue<Integer> destinationFloors;
 	private Boolean motorFault, doorFault;
 
 	
@@ -32,6 +35,7 @@ public class ElevatorStateMachine {
 		this.directionState = directionState;
 		this.currentFloor = currentFloor;
 		this.lamps = lamps;
+		this.destinationFloors = new LinkedList<Integer>();
 		motorFault = false;
 		doorFault = false;
 	}
@@ -140,12 +144,14 @@ public class ElevatorStateMachine {
 				System.out.println("Stopping Elevator");
 				setUpState(ElevatorDirection.IDLE, ElevatorState.ARRIVAL);
 				setLampStatus(currentFloor, false);
+				popDestinationQueue();
+				return new ElevatorDoorRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorDoorStatus.OPENED);
 			}else if (request.getRequestedDirection() == ElevatorDirection.UP) {
 				System.out.println("Moving Elevator Up");
 				if (currentFloor == Config.NUMBER_OF_FLOORS) {
 					System.out.println(
 							"Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
-					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState); 
+					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek()); 
 				}
 				if(motorFault){
 					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
@@ -161,7 +167,7 @@ public class ElevatorStateMachine {
 					System.out.println(
 							"Currently at basement floor. Motor request denied. \n Sending a arrival request on basement floor");
 							return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM,
-							currentFloor, directionState);
+							currentFloor, directionState, destinationFloors.peek());
 				}
 				if(!motorFault){
 					setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
@@ -171,7 +177,7 @@ public class ElevatorStateMachine {
 					return motorFault();
 				}
 		}
-		return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState);
+		return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek());
 		}
 		else{
 			motorFault = false;
@@ -192,13 +198,14 @@ public class ElevatorStateMachine {
 				state = ElevatorState.CLOSING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
+				return null;
 			} else {
 				System.out.println("Opening Doors");
 				state = ElevatorState.OPENING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.OPENED;
+				return new ElevatorPassengerWaitRequest(Source.ELEVATOR_SUBSYSTEM, Config.ELEVATOR_PASSENGER_WAIT_TIME, WaitState.WAITING);
 			}
-			return new ElevatorDoorRequest(Source.ELEVATOR_SUBSYSTEM, doorState);
 		}
 		else{
 			return doorFault();
@@ -254,6 +261,22 @@ public class ElevatorStateMachine {
 		state = ElevatorState.FAULT_HANDLING;
 		doorFault = false;
 		return new ElevatorFaultRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorFault.DOOR_FAULT);
+	}
+
+	/**
+     * Add floor to destinations of queue
+     */
+	public void putDestinationQueue(int floor){
+		if (floor <= Config.NUMBER_OF_FLOORS && floor >= 0){
+			destinationFloors.add(floor);
+		}
+	}
+
+	/**
+     * Pop top of queue and return it
+     */
+	public int popDestinationQueue(){
+		return destinationFloors.remove();
 	}
 
 	/**

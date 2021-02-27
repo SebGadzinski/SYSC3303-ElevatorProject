@@ -24,7 +24,5 @@ public class ElevatorDoorRequest extends Request {
 	public void setRequestedDoorStatus(ElevatorDoorStatus requestedDoorStatus) {
 		this.requestedDoorStatus = requestedDoorStatus;
 	}
-
-	
 	
 }
