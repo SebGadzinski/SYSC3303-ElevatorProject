@@ -111,7 +111,7 @@ public class ElevatorSubsystem implements Runnable {
      */
     public Request handleFileRequest(FileRequest request) {        
         // Turn on the lamp for the elevator button
-        setLampStatus(request.getDestinationFloor(), true);
+        //setLampStatus(request.getDestinationFloor(), true);
         stateMachine.putDestinationQueue(request.getDestinationFloor());
         
         notifyAll();
