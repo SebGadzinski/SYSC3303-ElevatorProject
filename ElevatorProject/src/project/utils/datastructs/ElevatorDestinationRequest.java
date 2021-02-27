@@ -15,7 +15,7 @@ public class ElevatorDestinationRequest extends Request {
 
     @Override
     public String toString() {
-        return "Source: " + getSource() + "Set Destination to floor: " + this.requestedDestinationFloor + "\n";
+        return "Source: " + getSource() + " Set Destination to floor: " + this.requestedDestinationFloor + "\n";
     }
 
     public int getRequestedDestinationFloor() {
