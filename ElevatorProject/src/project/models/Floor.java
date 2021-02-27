@@ -162,11 +162,12 @@ public class Floor implements Runnable {
 	public void run() {
 		while (true) {
 			Request packet = this.getRequest();
-			try {
-				this.realTimeWait(packet);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			//Thread.sleep(REQUEST_QUEUE_CAPACITY);
+//			try {
+//				this.realTimeWait(packet);
+//			} catch (ParseException e) {
+//				e.printStackTrace();
+//			}
 			this.sendServer(packet);
 		}
 	}
