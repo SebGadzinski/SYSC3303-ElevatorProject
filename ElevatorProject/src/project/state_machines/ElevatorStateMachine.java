@@ -153,9 +153,9 @@ public class ElevatorStateMachine {
 							"Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
 					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek()); 
 				}
-				if(motorFault){
+				if(!motorFault){
 					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
-					waitForTime(Config.ELEVATOR_DOOR_TIME);
+					//waitForTime(Config.ELEVATOR_DOOR_TIME);
 					currentFloor += 1;
 				}
 				else{
@@ -300,7 +300,7 @@ public class ElevatorStateMachine {
      */
 	public void setLampStatus(int floor, boolean status){
 		lamps.put(floor, status);
-		lamps.notifyAll();
+		//lamps.notifyAll();
 	}
 
 	public void setDoorState(ElevatorDoorStatus doorState) {
