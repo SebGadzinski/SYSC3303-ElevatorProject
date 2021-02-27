@@ -12,9 +12,13 @@ import project.utils.datastructs.ElevatorFaultRequest;
 import project.utils.datastructs.ElevatorFaultRequest.ElevatorFault;
 import project.utils.datastructs.ElevatorMotorRequest;
 import project.utils.datastructs.ElevatorPassengerWaitRequest;
+import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 import project.utils.datastructs.Request.Source;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ElevatorStateMachine {
 	
@@ -23,7 +27,7 @@ public class ElevatorStateMachine {
 	private ElevatorDirection directionState;
 	private int currentFloor;
 	private HashMap<Integer, Boolean> lamps;
-	private Queue<Integer> destinationFloors;
+	private Queue<FileRequest> destinationFloors;
 	private Boolean motorFault, doorFault;
 
 	
@@ -35,7 +39,7 @@ public class ElevatorStateMachine {
 		this.directionState = directionState;
 		this.currentFloor = currentFloor;
 		this.lamps = lamps;
-		this.destinationFloors = new LinkedList<Integer>();
+		this.destinationFloors = new LinkedList<FileRequest>();
 		motorFault = false;
 		doorFault = false;
 	}
@@ -118,7 +122,7 @@ public class ElevatorStateMachine {
 				//System should shut down?
 			}
 		}
-		System.out.print("State: " + state);
+		System.out.print("State: " + state + "\n");
 		return requestToSendToScheduler;
 	}
 
@@ -144,14 +148,13 @@ public class ElevatorStateMachine {
 				System.out.println("Stopping Elevator");
 				setUpState(ElevatorDirection.IDLE, ElevatorState.ARRIVAL);
 				setLampStatus(currentFloor, false);
-				popDestinationQueue();
 				return new ElevatorDoorRequest(Source.ELEVATOR_SUBSYSTEM, ElevatorDoorStatus.OPENED);
 			}else if (request.getRequestedDirection() == ElevatorDirection.UP) {
 				System.out.println("Moving Elevator Up");
 				if (currentFloor == Config.NUMBER_OF_FLOORS) {
 					System.out.println(
 							"Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
-					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek()); 
+					return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek().getDestinationFloor()); 
 				}
 				if(!motorFault){
 					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
@@ -167,7 +170,7 @@ public class ElevatorStateMachine {
 					System.out.println(
 							"Currently at basement floor. Motor request denied. \n Sending a arrival request on basement floor");
 							return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM,
-							currentFloor, directionState, destinationFloors.peek());
+							currentFloor, directionState, destinationFloors.peek().getDestinationFloor());
 				}
 				if(!motorFault){
 					setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
@@ -177,7 +180,7 @@ public class ElevatorStateMachine {
 					return motorFault();
 				}
 		}
-		return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek());
+		return new ElevatorArrivalRequest(Source.ELEVATOR_SUBSYSTEM, currentFloor, directionState, destinationFloors.peek().getDestinationFloor());
 		}
 		else{
 			motorFault = false;
@@ -198,7 +201,8 @@ public class ElevatorStateMachine {
 				state = ElevatorState.CLOSING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
-				return null;
+				FileRequest arrivedFileRequest = popDestinationQueue();
+				return new FileRequest(getTimeStamp(), arrivedFileRequest.getOriginFloor(), directionState, arrivedFileRequest.getDestinationFloor(), Source.ELEVATOR_SUBSYSTEM);
 			} else {
 				System.out.println("Opening Doors");
 				state = ElevatorState.OPENING_DOORS;
@@ -266,16 +270,19 @@ public class ElevatorStateMachine {
 	/**
      * Add floor to destinations of queue
      */
-	public void putDestinationQueue(int floor){
-		if (floor <= Config.NUMBER_OF_FLOORS && floor >= 0){
-			destinationFloors.add(floor);
+	public void putDestinationQueue(FileRequest request){
+		if (request.getDestinationFloor() <= Config.NUMBER_OF_FLOORS && request.getDestinationFloor() >= 0){
+			destinationFloors.add(request);
 		}
 	}
-
+	
+	public boolean noMoreDestinations(){
+		return destinationFloors.isEmpty();
+	}
 	/**
      * Pop top of queue and return it
      */
-	public int popDestinationQueue(){
+	public FileRequest popDestinationQueue(){
 		return destinationFloors.remove();
 	}
 
@@ -291,6 +298,16 @@ public class ElevatorStateMachine {
             e.printStackTrace();
         }
 	}
+
+	/**
+     * Get current time stamp
+     * 
+     */
+	public String getTimeStamp(){
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+        Date date = new Date();  
+        return formatter.format(date);  
+    }
 
 	/**
      * Sets a lamps state, notifies other threads about the change

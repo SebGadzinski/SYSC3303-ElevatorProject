@@ -84,7 +84,7 @@ public class ElevatorSubsystem implements Runnable {
             if(!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS){
                 boolean noFileRequests = reOrderQueue();
 
-                if(noFileRequests){
+                if(noFileRequests && stateMachine.noMoreDestinations()){
                     stateMachine.setState(ElevatorState.IDLE);
                 }
             }
@@ -115,7 +115,7 @@ public class ElevatorSubsystem implements Runnable {
     public Request handleFileRequest(FileRequest request) {        
         // Turn on the lamp for the elevator button
         setLampStatus(request.getDestinationFloor(), true);
-        stateMachine.putDestinationQueue(request.getDestinationFloor());
+        stateMachine.putDestinationQueue(request);
         
         notifyAll();
 
