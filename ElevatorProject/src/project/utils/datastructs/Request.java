@@ -1,30 +1,32 @@
 package project.utils.datastructs;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
- * Provides a thread-safe representation of a request.
+ * Concrete specializations of this thread-safe class provide means of communication between subsystems.
  *
- * @author Paul Roode
+ * @author Paul Roode, Sebastian Gadzinski
+ * @version Iteration 2
  */
-public class Request {
+public abstract class Request {
+
+    private Source source;
 
     /**
-     * Keys to access the data constituting a request.
+     * Subsystems from which a concrete Request specialization can be transmitted.
      */
-    public enum Key {
-        TIME, ORIGIN_FLOOR, DIRECTION, DESTINATION_FLOOR
+    public enum Source {
+        ELEVATOR_SUBSYSTEM, FLOOR_SUBSYSTEM, SCHEDULER
     }
 
-    /**
-     * Returns a thread-safe hashmap representation of a request.
-     *
-     * @param <K> The key.
-     * @param <V> The value.
-     * @return A thread-safe hashmap representation of a request.
-     */
-    public static <K, V> ConcurrentHashMap<K, V> newInstance() {
-        return new ConcurrentHashMap<>();
+    public Request(Source source) {
+        this.source = source;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public synchronized void setSource(Source source) {
+        this.source = source;
     }
 
 }

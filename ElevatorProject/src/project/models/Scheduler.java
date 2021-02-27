@@ -1,120 +1,176 @@
 package project.models;
 
-import project.systems.ElevatorSubsystem;
-import project.systems.FloorSubsystem;
-import project.utils.datastructs.Request;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.state_machines.SchedulerStateMachine.SchedulerState;
+import project.utils.datastructs.*;
+import project.utils.datastructs.Request.Source;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 /**
- * Reads input from either elevator and floor subsystems and output to corresponding systems
+ * A request/response transmission intermediary between floor and elevator subsystems.
  *
- * @author Sebastian Gadzinski
+ * @author Paul Roode (iter 2), Sebastian Gadzinski (iter 1)
+ * @version Iteration 2
  */
 
 public class Scheduler implements Runnable {
 
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem;
-    private BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem;
-    public FloorSubsystem floorSubsystem;
-    public ElevatorSubsystem elevatorSubSystem;
+    private BlockingQueue<Request> requestsFromSubsystems;
+    private BlockingQueue<Request> requestsToElevatorSubsystem;
+    private BlockingQueue<Request> requestsToFloorSubsystem;
+    private SchedulerState state;
 
-    public Scheduler(BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem,
-                     BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem,
-                     ElevatorSubsystem elevatorSubsystem, FloorSubsystem floorSubsystem) {
+    /**
+     * A parameterized Scheduler constructor.
+     *
+     * @param requestsFromSubsystems      The inlet requests queue.
+     * @param requestsToElevatorSubsystem An outlet requests queue to the ElevatorSubsystem.
+     * @param requestsToFloorSubsystem    An outlet requests queue to the FloorSubsystem.
+     */
+    public Scheduler(BlockingQueue<Request> requestsFromSubsystems,
+                     BlockingQueue<Request> requestsToElevatorSubsystem,
+                     BlockingQueue<Request> requestsToFloorSubsystem) {
 
-        this.requestsFromElevatorSubsystem = requestsFromElevatorSubsystem;
+        this.requestsFromSubsystems = requestsFromSubsystems;
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
-        this.requestsFromFloorSubsystem = requestsFromFloorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
-        this.elevatorSubSystem = elevatorSubsystem;
-        this.floorSubsystem = floorSubsystem;
-
+        this.state = SchedulerState.AWAIT_REQUEST;
     }
 
     /**
-     * Inserts the given request into the outgoing floor request queue,
+     * Inserts the given request into the outlet requests queue to the FloorSubsystem,
      * waiting if necessary for space to become available.
      *
-     * @param request The request to be inserted into the outgoing floor request queue.
+     * @param request The request to be inserted into the outlet requests queue to the FloorSubsystem.
      */
-    public synchronized void sendRequestToFloorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+    public synchronized void dispatchRequestToFloorSubsystem(Request request) {
+        request.setSource(Source.SCHEDULER);
         try {
             requestsToFloorSubsystem.put(request);
-            System.out.println("Scheduler sent a request to FloorSubsystem\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(this + " sent a request to FloorSubsystem\n");
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
     }
 
     /**
-     * Inserts the given request into the outgoing elevator request queue,
+     * Inserts the given request into the outlet requests queue to the ElevatorSubsystem,
      * waiting if necessary for space to become available.
      *
-     * @param request The request to be inserted into the outgoing elevator request queue.
+     * @param request The request to be inserted into the outlet requests queue to the ElevatorSubsystem.
      */
-    public synchronized void sendRequestToElevatorSubsystem(ConcurrentMap<Request.Key, Object> request) {
+    public synchronized void dispatchRequestToElevatorSubsystem(Request request) {
+        request.setSource(Source.SCHEDULER);
         try {
             requestsToElevatorSubsystem.put(request);
-            System.out.println("Scheduler sent a request to ElevatorSubsystem\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(this + " sent a request to ElevatorSubsystem\n");
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
     }
 
     /**
-     * Retrieves and removes the head of the incoming elevator requests queue,
-     * waiting if necessary until a request becomes available.
+     * Retrieves and removes the head of the inlet requests queue, waiting if necessary
+     * until a request becomes available; then advances this Scheduler's state.
+     *
+     * @return the fetched request.
      */
-    public synchronized ConcurrentMap<Request.Key, Object> fetchFromElevatorSubsystemRequest() {
+    public synchronized Request fetchRequest() {
+        Request request = null;
         try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromElevatorSubsystem.take();
-            System.out.println("Request received by Scheduler from Elevator Subsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
-            return fetchedRequest;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            request = requestsFromSubsystems.take();
+            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
+            if (request instanceof FileRequest) {
+                FileRequest fileRequest = (FileRequest) request;
+                System.out.println("The request was fulfilled at " + fileRequest.getTime());
+                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
+                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
+            }
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
-        return null;
+        advanceState(request);
+        return request;
     }
 
     /**
-     * Retrieves and removes the head of the incoming floor requests queue,
-     * waiting if necessary until a request becomes available.
+     * Consumes/dispatches the given request, then advances this Scheduler's state.
+     *
+     * @param request The request to be dispatched.
      */
-    public synchronized ConcurrentMap<Request.Key, Object> fetchFromFloorSubsystemRequest() {
-        try {
-            ConcurrentMap<Request.Key, Object> fetchedRequest = requestsFromFloorSubsystem.take();
-            System.out.println("Request received by Scheduler from Floor Subsystem:");
-            System.out.println("The request was fulfilled at " + fetchedRequest.get(Request.Key.TIME));
-            System.out.println("The elevator picked up passengers on floor " + fetchedRequest.get(Request.Key.ORIGIN_FLOOR));
-            System.out.println("The elevator arrived at floor " + fetchedRequest.get(Request.Key.DESTINATION_FLOOR) + "\n");
-            return fetchedRequest;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private synchronized void consumeRequest(Request request) {
+
+        switch (state) {
+
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+
+            case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
+                if (request instanceof ElevatorPassengerWaitRequest) {
+                    dispatchRequestToElevatorSubsystem(new ElevatorDoorRequest(Source.SCHEDULER, ElevatorDoorStatus.CLOSED));
+                } else if (request instanceof ElevatorDoorRequest) {
+                    dispatchRequestToElevatorSubsystem(request);
+                }
+            }
+
+            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> {
+                if (request instanceof ElevatorDestinationRequest) {
+                    dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection()));
+                } else if (request instanceof ElevatorArrivalRequest) {
+                    System.out.println(this + " received confirmation of elevator arrival:\n" + request);
+                    dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
+                }
+            }
+
+            case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
+
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
+
+            case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
+
         }
-        return null;
+
+        advanceState(request);
+
     }
 
+    /**
+     * Gets this Scheduler's current state.
+     *
+     * @return this Scheduler's current state.
+     */
+    public SchedulerState getState() {
+        return state;
+    }
+
+    /**
+     * Advances this Scheduler's state.
+     *
+     * @param request The request whose properties will be used to determine this Scheduler's next state.
+     */
+    private synchronized void advanceState(Request request) {
+        state = state.advance(request);
+    }
+
+    /**
+     * Returns a String representation of this Scheduler.
+     *
+     * @return a String representation of this Scheduler.
+     */
+    @Override
+    public String toString() {
+        return "Scheduler";
+    }
+
+    /**
+     * Drives this Scheduler to fetch and dispatch requests.
+     */
     @Override
     public void run() {
         System.out.println("Scheduler operational...\n");
         while (true) {
-            if (requestsFromElevatorSubsystem.size() > 0) {
-                ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromElevatorSubsystemRequest();
-                sendRequestToFloorSubsystem(fetchedRequest);
-            }
-            if (requestsFromFloorSubsystem.size() > 0) {
-                ConcurrentMap<Request.Key, Object> fetchedRequest = fetchFromFloorSubsystemRequest();
-                sendRequestToElevatorSubsystem(fetchedRequest);
-            }
+            consumeRequest(fetchRequest());
         }
     }
 

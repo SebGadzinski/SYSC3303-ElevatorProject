@@ -5,9 +5,11 @@ package project;
  */
 public final class Config {
 
-    public static final int NUMBER_OF_ELEVATORS       = 10;
-    public static final int NUMBER_OF_FLOORS          = 15;
+    public static final int NUMBER_OF_ELEVATORS       = 1;
+    public static final int NUMBER_OF_FLOORS          = 4;
     public static final int REQUEST_QUEUE_CAPACITY    = 10;
+    public static final int ELEVATOR_DOOR_TIME    = 5;
+    public static final int ELEVATOR_PASSENGER_WAIT_TIME    = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
 
     private Config() {

@@ -4,24 +4,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import static project.Config.REQUEST_QUEUE_CAPACITY;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentMap;
 
 import org.junit.jupiter.api.Test;
 
 import project.models.Scheduler;
+import project.state_machines.ElevatorStateMachine;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
+import project.utils.datastructs.FileRequest;
 
 class testScheduler  {
 
-    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem;
-    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem;
-    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem;
-    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem;
+    BlockingQueue<Request> requestsFromElevatorSubsystem;
+    BlockingQueue<Request> requestsToElevatorSubsystem;
+    BlockingQueue<Request> requestsFromFloorSubsystem;
+    BlockingQueue<Request> requestsToFloorSubsystem;
 
     // initialize active components
     ElevatorSubsystem elevatorSubsystem;
@@ -32,52 +37,59 @@ class testScheduler  {
 	@Test
 	void testFetchFloor() throws FileNotFoundException {
 		
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	
-	    // initialize active components
-	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
-	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
-	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
-	                                                        elevatorSubsystem, floorSubsystem);
-	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
-	    floorSubsystem.sendRequest(readRequestResult.getRequest());
-        ConcurrentMap<Request.Key, Object> fetchedRequest = scheduler.fetchFromFloorSubsystemRequest();
+        BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToSchedular    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
         
-        assertEquals(fetchedRequest.get(Request.Key.TIME), "23:13:17.020");
-        assertEquals(fetchedRequest.get(Request.Key.ORIGIN_FLOOR), 1);
-        assertEquals(fetchedRequest.get(Request.Key.DESTINATION_FLOOR), 6);
+        // initialize active components      
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
+        Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
+        
+        ReadRequestResult readRequestResult = floorSubsystem.readRequest();
+	    System.out.println("Read Request");
+	    floorSubsystem.sendRequest(readRequestResult.getRequest());
+	    System.out.println("Sent Request");
+        Request fetchedRequest = scheduler.fetchRequest();
+        System.out.println("Picked From Schedular");
+                
+        if(fetchedRequest instanceof FileRequest) {
+    		FileRequest fileRequest = (FileRequest) fetchedRequest;
+    		
+    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+            assertEquals(fileRequest.getOriginFloor(), 1);
+            assertEquals(fileRequest.getDestinationFloor(), 6);
+        }
 	}
 
 	@Test
 	void testFetchElevator() throws FileNotFoundException {
 		
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsFromFloorSubsystem    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	    BlockingQueue<ConcurrentMap<Request.Key, Object>> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-	
-	    // initialize active components
-	    ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsFromElevatorSubsystem);
-	    FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsFromFloorSubsystem);
-	    Scheduler scheduler                 = new Scheduler(requestsFromElevatorSubsystem, requestsToElevatorSubsystem,
-	                                                        requestsFromFloorSubsystem, requestsToFloorSubsystem,
-	                                                        elevatorSubsystem, floorSubsystem);
+        BlockingQueue<Request> requestsToElevatorSubsystem   = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToSchedular    = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        BlockingQueue<Request> requestsToFloorSubsystem      = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        
+        // initialize active components
+        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(requestsToElevatorSubsystem, requestsToSchedular, new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0,
+        new HashMap<Integer, Boolean>()));        
+        FloorSubsystem floorSubsystem       = new FloorSubsystem(requestsToFloorSubsystem, requestsToSchedular);
+        Scheduler scheduler                 = new Scheduler(requestsToSchedular, requestsToElevatorSubsystem, requestsToFloorSubsystem);
 	    ReadRequestResult readRequestResult = floorSubsystem.readRequest();
 	    floorSubsystem.sendRequest(readRequestResult.getRequest());
 	    
-        ConcurrentMap<Request.Key, Object> fetchedRequest = scheduler.fetchFromFloorSubsystemRequest();
+        Request fetchedRequest = scheduler.fetchRequest();
         
-        scheduler.sendRequestToElevatorSubsystem(fetchedRequest);
+        scheduler.dispatchRequestToElevatorSubsystem(fetchedRequest);
         fetchedRequest = elevatorSubsystem.fetchRequest();
         elevatorSubsystem.sendResponse(fetchedRequest);
-        scheduler.fetchFromElevatorSubsystemRequest();
+        scheduler.fetchRequest();
         
-        assertEquals(fetchedRequest.get(Request.Key.TIME), "23:13:17.020");
-        assertEquals(fetchedRequest.get(Request.Key.ORIGIN_FLOOR), 1);
-        assertEquals(fetchedRequest.get(Request.Key.DESTINATION_FLOOR), 6);
+        if(fetchedRequest instanceof FileRequest) {
+    		FileRequest fileRequest = (FileRequest) fetchedRequest;
+    		
+    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+            assertEquals(fileRequest.getOriginFloor(), 1);
+            assertEquals(fileRequest.getDestinationFloor(), 6);
+    		
+        }
 	}
 }
