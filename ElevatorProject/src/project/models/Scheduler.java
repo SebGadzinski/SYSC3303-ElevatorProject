@@ -6,6 +6,7 @@ import project.state_machines.SchedulerStateMachine.SchedulerState;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -20,6 +21,7 @@ public class Scheduler implements Runnable {
     private BlockingQueue<Request> requestsFromSubsystems;
     private BlockingQueue<Request> requestsToElevatorSubsystem;
     private BlockingQueue<Request> requestsToFloorSubsystem;
+    private ArrayList<Request> requestsQueue; // for FIFO (just for iter 2)
     private SchedulerState state;
 
     /**
@@ -36,7 +38,8 @@ public class Scheduler implements Runnable {
         this.requestsFromSubsystems = requestsFromSubsystems;
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
-        this.state = SchedulerState.AWAIT_REQUEST;
+        requestsQueue = new ArrayList<>();
+        state = SchedulerState.AWAIT_REQUEST;
     }
 
     /**
@@ -104,7 +107,9 @@ public class Scheduler implements Runnable {
 
         switch (state) {
 
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+            case DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> requestsQueue.add(request);
 
             case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
                 if (request instanceof ElevatorPassengerWaitRequest) {
@@ -123,7 +128,12 @@ public class Scheduler implements Runnable {
                 }
             }
 
-            case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
+            case DISPATCH_FILE_REQUEST_TO_FLOOR -> {
+                dispatchRequestToFloorSubsystem(request);
+                if (!requestsQueue.isEmpty()) {
+                    dispatchRequestToElevatorSubsystem(requestsQueue.remove(0));
+                }
+            }
 
             case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
 
