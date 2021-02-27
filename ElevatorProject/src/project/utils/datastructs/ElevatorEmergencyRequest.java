@@ -21,4 +21,14 @@ public class ElevatorEmergencyRequest extends Request {
 		return emergencyRequest;
 	}
 
+	@Override
+	public String toString() {
+		return "ElevatorEmergencyRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n" 
+		+ "EmergencyRequest: " + emergencyRequest + "\n"
+		+ "EmergencyState: " + emergencyState + "\n";
+	}
+
+	
+
 }

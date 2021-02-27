@@ -17,4 +17,11 @@ public class ElevatorFaultRequest extends Request {
 		return fault;
 	}
 
+	@Override
+	public String toString() {
+		return "ElevatorFaultRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n" 
+		+ "Fault: " + fault;
+	}
+
 }

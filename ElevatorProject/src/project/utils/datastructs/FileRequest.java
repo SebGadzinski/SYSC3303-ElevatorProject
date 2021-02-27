@@ -41,7 +41,8 @@ public class FileRequest extends Request{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Source: " + this.getSource() + "\n"
+		return "FileRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n"
 		+ "Time:  " + this.getTime() + "\n"
 		+ "Direction: " + this.getDirection() + "\n"
 		+ "Pick Up: " + this.getOriginFloor() + "\n"

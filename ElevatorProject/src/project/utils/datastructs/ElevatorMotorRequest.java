@@ -15,7 +15,8 @@ public class ElevatorMotorRequest extends Request {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Source: " + this.getSource()
+		return "ElevatorMotorRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n" 
 		+ "Motor to Move:  " + this.requestedDirection + "\n";
 	}
 

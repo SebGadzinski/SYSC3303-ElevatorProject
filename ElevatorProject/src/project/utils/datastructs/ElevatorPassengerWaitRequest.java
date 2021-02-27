@@ -4,7 +4,7 @@ package project.utils.datastructs;
 public class ElevatorPassengerWaitRequest extends Request{
 
 	private int waitTime;
-	private WaitState state ;
+	private WaitState state;
 
 	public ElevatorPassengerWaitRequest(Source source, int waitTime, WaitState state) {
 		super(source);
@@ -31,5 +31,15 @@ public class ElevatorPassengerWaitRequest extends Request{
 	public void setState(WaitState state) {
 		this.state = state;
 	}
+
+	@Override
+	public String toString() {
+		return "ElevatorMotorRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n" 
+		+ "WaitState: " + state + "\n" 
+		+ "Wait time" + waitTime;
+	}
+
+	
 	
 }

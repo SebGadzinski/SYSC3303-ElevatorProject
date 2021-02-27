@@ -88,7 +88,7 @@ public class Scheduler implements Runnable {
         Request request = null;
         try {
             request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + this + " from " + request.getSource());
+            System.out.println("Request received by " + this + " from " + request.getSource() + "\n" + request.toString());
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -130,6 +130,7 @@ public class Scheduler implements Runnable {
                 } else if (request instanceof ElevatorArrivalRequest) {
                     System.out.println(this + " received confirmation of elevator arrival:\n" + request);
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
+                    System.out.println("Inside here");
                 }
             }
 
@@ -142,7 +143,9 @@ public class Scheduler implements Runnable {
                 }
             }
 
-            // case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {
+                System.out.print("INSIDE CONSUMING REQUEST");
+            }
 
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 

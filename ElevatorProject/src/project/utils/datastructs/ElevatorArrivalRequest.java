@@ -18,9 +18,11 @@ public class ElevatorArrivalRequest extends Request {
 
 	@Override
 	public String toString() {
-		return "Source: " + this.getSource()
+		return "ElevatorArrivalRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n"
 		+ "Floor Arrived At: " + this.floorArrivedAt + "\n"
-		+ "Current Direction: " + this.floorArrivedAt + "\n";
+		+ "Current Direction: " + this.currentDirection + "\n"
+		+ "Destination Floor: " + this.destinationFloor + "\n";
 	}
 
 	public int getFloorArrivedAt() {
