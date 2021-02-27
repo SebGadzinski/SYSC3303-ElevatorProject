@@ -101,7 +101,10 @@ public class ElevatorSubsystem implements Runnable {
 
             response = stateMachine.handleRequest(waitRequest); 
         } 
-        if(response != null) sendResponse(response);
+        if(response != null) {
+        	sendResponse(response);
+        	System.out.println("Response: "  + response.toString());
+        }
     }
 
     /**
@@ -111,7 +114,7 @@ public class ElevatorSubsystem implements Runnable {
      */
     public Request handleFileRequest(FileRequest request) {        
         // Turn on the lamp for the elevator button
-        //setLampStatus(request.getDestinationFloor(), true);
+        setLampStatus(request.getDestinationFloor(), true);
         stateMachine.putDestinationQueue(request.getDestinationFloor());
         
         notifyAll();
@@ -125,21 +128,25 @@ public class ElevatorSubsystem implements Runnable {
      * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
      */
     public boolean reOrderQueue(){
-        BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<>(incomingRequests.size());
-        int incomingListSize = incomingRequests.size();
-        boolean noFileRequests = true;
-        
-        for(int i = 0; i < incomingListSize; i++){
-            Request tempRequest = incomingRequests.poll();
-            if(tempRequest instanceof FileRequest){
-                incomingRequests.offer(tempRequest);
-                noFileRequests = false;
-            }else{
-                tempQueue.offer(tempRequest);
-            }
-        }
-        incomingRequests.addAll(tempQueue);
-        return noFileRequests;
+    	int incomingListSize = incomingRequests.size();
+    	boolean noFileRequests = true;
+
+    	if(incomingListSize > 0) {
+    		BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
+    		System.out.println("Hello!");
+
+    		for(int i = 0; i < incomingListSize; i++){
+    			Request tempRequest = incomingRequests.poll();
+    			if(tempRequest instanceof FileRequest){
+    				incomingRequests.offer(tempRequest);
+    				noFileRequests = false;
+    			}else{
+    				tempQueue.offer(tempRequest);
+    			}
+    		}
+    		incomingRequests.addAll(tempQueue);        	
+    	}
+    	return noFileRequests;
     }
 
     /**
