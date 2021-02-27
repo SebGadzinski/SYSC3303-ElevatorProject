@@ -1,5 +1,7 @@
 package project.models;
 
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.SchedulerStateMachine.SchedulerState;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
@@ -44,6 +46,7 @@ public class Scheduler implements Runnable {
      * @param request The request to be inserted into the outlet requests queue to the FloorSubsystem.
      */
     public synchronized void dispatchRequestToFloorSubsystem(Request request) {
+        request.setSource(Source.SCHEDULER);
         try {
             requestsToFloorSubsystem.put(request);
             System.out.println(this + " sent a request to FloorSubsystem\n");
@@ -59,6 +62,7 @@ public class Scheduler implements Runnable {
      * @param request The request to be inserted into the outlet requests queue to the ElevatorSubsystem.
      */
     public synchronized void dispatchRequestToElevatorSubsystem(Request request) {
+        request.setSource(Source.SCHEDULER);
         try {
             requestsToElevatorSubsystem.put(request);
             System.out.println(this + " sent a request to ElevatorSubsystem\n");
@@ -92,7 +96,7 @@ public class Scheduler implements Runnable {
     }
 
     /**
-     * Dispatches the given request, then advances this Scheduler's state.
+     * Consumes/dispatches the given request, then advances this Scheduler's state.
      *
      * @param request The request to be dispatched.
      */
@@ -100,17 +104,29 @@ public class Scheduler implements Runnable {
 
         switch (state) {
 
-            // dispatch to an elevator
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
-            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(
-                    new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection())
-            );
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
 
-            // dispatch to a floor
+            case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
+                if (request instanceof ElevatorPassengerWaitRequest) {
+                    dispatchRequestToElevatorSubsystem(new ElevatorDoorRequest(Source.SCHEDULER, ElevatorDoorStatus.CLOSED));
+                } else if (request instanceof ElevatorDoorRequest) {
+                    dispatchRequestToElevatorSubsystem(request);
+                }
+            }
+
+            case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> {
+                if (request instanceof ElevatorDestinationRequest) {
+                    dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection()));
+                } else if (request instanceof ElevatorArrivalRequest) {
+                    System.out.println(this + " received confirmation of elevator arrival:\n" + request);
+                    dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
+                }
+            }
+
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
 
-            // consume a request
-            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> System.out.println(this + " received confirmation of elevator arrival:\n" + request);
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
+
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
         }
