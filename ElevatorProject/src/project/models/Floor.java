@@ -28,81 +28,82 @@ import project.utils.objects.general.DirectionLamp;
  */
 
 /**
- * @author Chase Fridgen (Iteration One)
+ * @author Chase Fridgen (Iteration One and Two)
  * @author Chase Badalato (Iteration Two)
  * @version Iteration 2
  * 
  */
 public class Floor implements Runnable {
 
-    public FloorButton upButton;
-    public FloorButton downButton;
+	public FloorButton upButton;
+	public FloorButton downButton;
 
-    public FloorLamp upLamp;
-    public FloorLamp downLamp;
+	public FloorLamp upLamp;
+	public FloorLamp downLamp;
 
-    public DirectionLamp upDirectionLamp;
-    public DirectionLamp downDirectionLamp;
-    
-    private BlockingQueue<Request> floorQueue; //input to the floor
-    private BlockingQueue<Request> serverQueue; //output to the server
+	public DirectionLamp upDirectionLamp;
+	public DirectionLamp downDirectionLamp;
 
-    public Floor(BlockingQueue<Request> serverQueue) {
-    	this.serverQueue = serverQueue;
-    	this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-    }
+	private BlockingQueue<Request> floorQueue; // input to the floor
+	private BlockingQueue<Request> serverQueue; // output to the server
 
-    	/**
+	public Floor(BlockingQueue<Request> serverQueue) {
+		this.serverQueue = serverQueue;
+		this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+	}
+
+	/**
 	 * Each thread waits for a given amount of time in real time before it sends a
 	 * packet off the the scheduler
 	 * 
 	 * @param packet the received packet from the floor subsystem
 	 * @throws ParseException
 	 */
-    public void realTimeWait(Request packet) throws ParseException {
+	public void realTimeWait(Request packet) throws ParseException {
 
-    	if (packet instanceof FileRequest) {
-    		FileRequest fileRequest = (FileRequest) packet; 
+		if (packet instanceof FileRequest) {
+			FileRequest fileRequest = (FileRequest) packet;
 
-    		String milTime = fileRequest.getTime();
-    		String[] arrMilTime = milTime.split(":");
-    		// System.out.println("when elevator should arrive : " + arrMilTime[0] +
-    		// arrMilTime[1]);
+			String milTime = fileRequest.getTime();
+			String[] arrMilTime = milTime.split(":");
+			String[] arrSec = arrMilTime[2].split("[.]");
 
-    		Date dt = new Date();
-    		SimpleDateFormat dateFormat;
-    		dateFormat = new SimpleDateFormat("kk:mm");
-    		String currDate = dateFormat.format(dt);
-    		String[] currTime = currDate.split(":");
-    		// System.out.println("current time : " + currTime[0] + currTime[1] + "\n");
+			Date dt = new Date();
+			SimpleDateFormat dateFormat;
+			dateFormat = new SimpleDateFormat("kk:mm:ss");
+			String currDate = dateFormat.format(dt);
+			String[] currTime = currDate.split(":");
 
-    		int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1]);
-    		int currentTime = toMilliSeconds(currTime[0], currTime[1]);
+			int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1], arrSec[0]);
+			int currentTime = toMilliSeconds(currTime[0], currTime[1], currTime[2]);
 
-    		int timeToWait = arrTime - currentTime;
+			int timeToWait = arrTime - currentTime;
 
-    		if(timeToWait < 0) {
-    			timeToWait += 8.64*Math.pow(10, 7); //wait 24 more hours for the next time
-    		}
+			if (timeToWait < 0) {
+				timeToWait += 8.64 * Math.pow(10, 7); // wait 24 more hours for the next time
+			}
 
-    		System.out.println(timeToWait);
+			System.out.println(timeToWait);
 
-    		try {
-    			Thread.sleep(timeToWait);
-    		} catch (InterruptedException e) {
-    			e.printStackTrace();
-    		}
-    	}
-    }
+			try {
+				Thread.sleep(timeToWait);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    public int toMilliSeconds(String hour, String min) {
+	public int toMilliSeconds(String hour, String min, String sec) {
+
 		int intHour = Integer.parseInt(hour);
 		int intMin = Integer.parseInt(min);
+		int intSec = Integer.parseInt(sec);
 
 		int milliH = intHour * 3600000;
 		int milliM = intMin * 60000;
+		int milliS = intSec * 1000;
 
-		int total = milliH + milliM;
+		int total = milliH + milliM + milliS;
 		return total;
 	}
 
@@ -114,40 +115,42 @@ public class Floor implements Runnable {
 	 * 
 	 * @param item the packet to place in the Floor's queue
 	 */
-    
-    public void putRequest(Request item) {
-    	try {
+
+	public void putRequest(Request item) {
+		try {
 			this.floorQueue.put(item);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    public Request getRequest() {
-    	try {
-    		Request packet = this.floorQueue.take();
-    		
-    		if (packet instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) packet;
-                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " received a packet from " + fileRequest.getSource());
-                
-       			return fileRequest;
-    		}
-    		return packet;
+	}
+
+	public Request getRequest() {
+		try {
+			Request packet = this.floorQueue.take();
+
+			if (packet instanceof FileRequest) {
+				FileRequest fileRequest = (FileRequest) packet;
+				System.out.println("\nFloor " + fileRequest.getOriginFloor() + " received a packet from "
+						+ fileRequest.getSource());
+
+				return fileRequest;
+			}
+			return packet;
 		} catch (InterruptedException e) {
 			System.out.println("Interrupted when waiting for packet from FloorSubsystem");
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public void sendServer(Request packet) {
-    	try {
-    		if (packet instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) packet; 
-                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " sending packet to scheduler at time " + fileRequest.getTime());
-    			this.serverQueue.put(fileRequest);
-    		}
+	}
+
+	public void sendServer(Request packet) {
+		try {
+			if (packet instanceof FileRequest) {
+				FileRequest fileRequest = (FileRequest) packet;
+				System.out.println("\nFloor " + fileRequest.getOriginFloor() + " sending packet to scheduler at time "
+						+ fileRequest.getTime());
+				this.serverQueue.put(fileRequest);
+			}
 
 		} catch (InterruptedException e) {
 			System.out.println("Could not send packet to server");
