@@ -3,6 +3,7 @@ package project.state_machines;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
+import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 
 /**
  * The Scheduler state machine.
@@ -56,9 +57,22 @@ public class SchedulerStateMachine {
                     return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
                 }
 
+                // respond to an ElevatorPassengerWaitRequest from an ElevatorSubsystem
+                else if (request instanceof ElevatorPassengerWaitRequest) {
+                    WaitState waitState = ((ElevatorPassengerWaitRequest) request).getState();
+                    if (waitState == WaitState.WAITING) {
+                        return DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR;
+                    } else if (waitState == WaitState.FINISHED) {
+                        return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
+                    }
+                }
+
                 // consume an ElevatorArrivalRequest
                 else if (request instanceof ElevatorArrivalRequest) {
-                    return CONSUME_ELEVATOR_ARRIVAL_REQUEST;
+                    ElevatorArrivalRequest elevatorArrivalRequest = (ElevatorArrivalRequest) request;
+                    int floorArrivedAt = elevatorArrivalRequest.getFloorArrivedAt();
+                    int destinationFloor = elevatorArrivalRequest.getDestinationFloor();
+                    return floorArrivedAt == destinationFloor ? DISPATCH_MOTOR_REQUEST_TO_ELEVATOR : CONSUME_ELEVATOR_ARRIVAL_REQUEST;
                 }
 
                 // the request type is not recognized
@@ -101,6 +115,16 @@ public class SchedulerStateMachine {
          * Scheduler dispatches an ElevatorDoorRequest to an ElevatorSubsystem.
          */
         DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR {
+            @Override
+            public SchedulerState advance(Request request) {
+                return AWAIT_REQUEST;
+            }
+        },
+
+        /**
+         * Scheduler dispatches an ElevatorPassengerWaitRequest to an ElevatorSubsystem.
+         */
+        DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR {
             @Override
             public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;
