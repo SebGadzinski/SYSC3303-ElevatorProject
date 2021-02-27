@@ -21,8 +21,11 @@ public class Scheduler implements Runnable {
     private BlockingQueue<Request> requestsFromSubsystems;
     private BlockingQueue<Request> requestsToElevatorSubsystem;
     private BlockingQueue<Request> requestsToFloorSubsystem;
-    private ArrayList<Request> requestsQueue; // for FIFO (just for iter 2)
     private SchedulerState state;
+
+    // for FIFO (just for iter 2)
+    private ArrayList<FileRequest> fileRequestsQueue;
+    private boolean isLastFileRequestFulfilled;
 
     /**
      * A parameterized Scheduler constructor.
@@ -38,8 +41,9 @@ public class Scheduler implements Runnable {
         this.requestsFromSubsystems = requestsFromSubsystems;
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
-        requestsQueue = new ArrayList<>();
         state = SchedulerState.AWAIT_REQUEST;
+        fileRequestsQueue = new ArrayList<>();
+        isLastFileRequestFulfilled = true;
     }
 
     /**
@@ -109,7 +113,14 @@ public class Scheduler implements Runnable {
 
             case DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
 
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> requestsQueue.add(request);
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> {
+                if (fileRequestsQueue.isEmpty() && isLastFileRequestFulfilled) {
+                    dispatchRequestToElevatorSubsystem(request);
+                    isLastFileRequestFulfilled = false;
+                } else {
+                    fileRequestsQueue.add((FileRequest) request);
+                }
+            }
 
             case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
                 if (request instanceof ElevatorPassengerWaitRequest) {
@@ -129,9 +140,11 @@ public class Scheduler implements Runnable {
             }
 
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> {
+                isLastFileRequestFulfilled = true;
                 dispatchRequestToFloorSubsystem(request);
-                if (!requestsQueue.isEmpty()) {
-                    dispatchRequestToElevatorSubsystem(requestsQueue.remove(0));
+                if (!fileRequestsQueue.isEmpty()) {
+                    dispatchRequestToElevatorSubsystem(fileRequestsQueue.remove(0));
+                    isLastFileRequestFulfilled = false;
                 }
             }
 
