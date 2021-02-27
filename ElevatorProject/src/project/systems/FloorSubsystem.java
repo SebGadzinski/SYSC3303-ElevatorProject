@@ -3,6 +3,7 @@ package project.systems;
 import project.Config;
 import project.models.Floor;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.Request.Source;
@@ -13,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.MatchResult;
 
 import static project.Config.REQUEST_BATCH_FILENAME;
@@ -23,11 +25,12 @@ import static project.Config.REQUEST_BATCH_FILENAME;
  *
  * @author Paul Roode (Iteration One)
  * @author Chase Badalato (Iteration Two)
- * 
+ * @version Iteration 2
  */
 public class FloorSubsystem implements Runnable {
 
     private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
+    private BlockingQueue<Request> requestsFromScheduler;
     private Floor[] floors;
     private Thread[] floorThreads;
     Scanner scanner; // for reading request batch files
@@ -41,17 +44,18 @@ public class FloorSubsystem implements Runnable {
      * @param incomingRequests Incoming fulfilled requests.
      * @param requestsToScheduler Requests sent
      */
-    public FloorSubsystem(BlockingQueue<Request> incomingRequests,
+    public FloorSubsystem(BlockingQueue<Request> requestsFromScheduler,
                           BlockingQueue<Request> requestsToScheduler) {
 
+        this.requestsFromScheduler = requestsFromScheduler;
         this.requestsToScheduler = requestsToScheduler;
         this.floors = new Floor[Config.NUMBER_OF_FLOORS];
-    	this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
-    	
+        this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+        
         for(int i = 0; i < Config.NUMBER_OF_FLOORS; i ++) {
-        	this.floors[i] = new Floor(this.requestsToScheduler);
-        	this.floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
-        	this.floorThreads[i].start();
+            this.floors[i] = new Floor(this.requestsToScheduler);
+            this.floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
+            this.floorThreads[i].start();
         }
 
         try {
@@ -94,21 +98,21 @@ public class FloorSubsystem implements Runnable {
      * @param request The request to be inserted into the outgoing request queue.
      */
     public synchronized void sendRequest(Request request) {
-    	try {
-    		if (request instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) request;
-    			this.floors[fileRequest.getOriginFloor()].putRequest(fileRequest);
+        try {
+            if (request instanceof FileRequest) {
+                FileRequest fileRequest = (FileRequest) request;
+                this.floors[fileRequest.getOriginFloor()].putRequest(fileRequest);
                 System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOriginFloor());
-    		}
-    		
-    	}
-    	catch(IndexOutOfBoundsException e) {
-    		if (request instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) request;
-    			System.out.println("The requested floor " + fileRequest.getOriginFloor() + " does not exist!");
-    		}    		
-    		System.out.println("Ignoring this floor ...");
-    	}
+            }
+            
+        }
+        catch(IndexOutOfBoundsException e) {
+            if (request instanceof FileRequest) {
+                FileRequest fileRequest = (FileRequest) request;
+                System.out.println("The requested floor " + fileRequest.getOriginFloor() + " does not exist!");
+            }           
+            System.out.println("Ignoring this floor ...");
+        }
     }
 
     /**
@@ -117,15 +121,13 @@ public class FloorSubsystem implements Runnable {
      */
     public synchronized void fetchRequest() {
         try {
-            Request fetchedRequest = requestsToScheduler.take();
-            System.out.println("Request received by FloorSubsystem:");
+            Request fetchedRequest = requestsFromScheduler.take();
             
             if (fetchedRequest instanceof FileRequest) {
-    			FileRequest fileRequest = (FileRequest) fetchedRequest;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
-    		}
+                FileRequest fileRequest = (FileRequest) fetchedRequest;
+                System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource());
+
+            }
             
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -133,14 +135,16 @@ public class FloorSubsystem implements Runnable {
     }
     
     public ElevatorDirection getDirectionFromString(String direction) {
-    	if (direction.toLowerCase().trim().equals("up")) {
-    		return ElevatorDirection.UP;
-    	}
-    	else if (direction.toLowerCase().equals("down")) return ElevatorDirection.DOWN;
-    	else return ElevatorDirection.IDLE;
+        if (direction.toLowerCase().trim().equals("up")) {
+            return ElevatorDirection.UP;
+        }
+        else if (direction.toLowerCase().equals("down")) {
+        	return ElevatorDirection.DOWN;
+        }
+        else return ElevatorDirection.IDLE;
     }
 
-    /*
+    /**
      * Reads and transmits requests to be fulfilled, and fetches fulfilled requests.
      */
     @Override
@@ -153,14 +157,18 @@ public class FloorSubsystem implements Runnable {
             //fetchRequest();
             hasInput = readRequestResult.isThereAnotherRequest();
         }
-        for(int i = 0; i < this.floors.length; i++) {
-        	try {
-				this.floorThreads[i].join();
-			} catch (InterruptedException e) {
-				System.out.println("Could not wait for all floor threads to finish");
-				e.printStackTrace();
-			}
+        
+        while(true) {
+            this.fetchRequest();
         }
+//        for(int i = 0; i < this.floors.length; i++) {
+//          try {
+//              this.floorThreads[i].join();
+//          } catch (InterruptedException e) {
+//              System.out.println("Could not wait for all floor threads to finish");
+//              e.printStackTrace();
+//          }
+//        }
         //System.exit(0);
     }
 

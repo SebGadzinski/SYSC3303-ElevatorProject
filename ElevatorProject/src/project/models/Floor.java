@@ -30,6 +30,8 @@ import project.utils.objects.general.DirectionLamp;
 /**
  * @author Chase Fridgen (Iteration One)
  * @author Chase Badalato (Iteration Two)
+ * @version Iteration 2
+ * 
  */
 public class Floor implements Runnable {
 
@@ -76,8 +78,13 @@ public class Floor implements Runnable {
 
 			int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1]);
 			int currentTime = toMilliSeconds(currTime[0], currTime[1]);
-			
+
 			int timeToWait = arrTime - currentTime;
+			
+			if(timeToWait < 0) {
+				timeToWait += 8.64*Math.pow(10, 7); //wait 24 more hours for the next time
+			}
+
 			System.out.println(timeToWait);
 
 			try {
@@ -122,9 +129,7 @@ public class Floor implements Runnable {
     		
     		if (packet instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) packet;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
+                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " received a packet");
        			return fileRequest;
     		}
     		return packet;
@@ -137,10 +142,9 @@ public class Floor implements Runnable {
     
     public void sendServer(Request packet) {
     	try {
-    		Thread.sleep((int)(Math.random() * (5000 - 500 + 1) + 500));
     		if (packet instanceof FileRequest) {
     			FileRequest fileRequest = (FileRequest) packet; 
-                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " sending packet to scheduler");
+                System.out.println("\nFloor " + fileRequest.getOriginFloor() + " sending packet to scheduler at time " + fileRequest.getTime());
     			this.serverQueue.put(fileRequest);
     		}
 
