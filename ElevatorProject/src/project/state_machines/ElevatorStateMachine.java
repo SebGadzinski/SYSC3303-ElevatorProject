@@ -300,7 +300,7 @@ public class ElevatorStateMachine {
      */
 	public void setLampStatus(int floor, boolean status){
 		lamps.put(floor, status);
-		notifyAll();
+		lamps.notifyAll();
 	}
 
 	public void setDoorState(ElevatorDoorStatus doorState) {
