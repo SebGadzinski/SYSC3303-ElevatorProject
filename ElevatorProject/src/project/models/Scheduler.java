@@ -116,7 +116,6 @@ public class Scheduler implements Runnable {
 
             case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> {
                 if (request instanceof ElevatorDestinationRequest) {
-                	System.out.println("Ttest");
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection()));
                 } else if (request instanceof ElevatorArrivalRequest) {
                     System.out.println(this + " received confirmation of elevator arrival:\n" + request);

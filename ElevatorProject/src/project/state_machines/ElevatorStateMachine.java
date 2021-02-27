@@ -267,9 +267,7 @@ public class ElevatorStateMachine {
      * Add floor to destinations of queue
      */
 	public void putDestinationQueue(int floor){
-		System.out.println(floor);
 		if (floor <= Config.NUMBER_OF_FLOORS && floor >= 0){
-			System.out.println(destinationFloors.toString());
 			destinationFloors.add(floor);
 		}
 	}

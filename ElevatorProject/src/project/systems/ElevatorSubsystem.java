@@ -133,7 +133,6 @@ public class ElevatorSubsystem implements Runnable {
 
     	if(incomingListSize > 0) {
     		BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
-    		System.out.println("Hello!");
 
     		for(int i = 0; i < incomingListSize; i++){
     			Request tempRequest = incomingRequests.poll();
