@@ -88,13 +88,7 @@ public class Scheduler implements Runnable {
         Request request = null;
         try {
             request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
-            if (request instanceof FileRequest) {
-                FileRequest fileRequest = (FileRequest) request;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
-            }
+            System.out.println("Request received by " + this + " from " + request.getSource());
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -148,7 +142,8 @@ public class Scheduler implements Runnable {
                 }
             }
 
-            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {
+            }
 
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
