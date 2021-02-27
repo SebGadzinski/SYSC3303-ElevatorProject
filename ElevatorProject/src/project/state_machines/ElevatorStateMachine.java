@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import project.Config;
 import project.utils.datastructs.ElevatorArrivalRequest;
 import project.utils.datastructs.ElevatorDoorRequest;
