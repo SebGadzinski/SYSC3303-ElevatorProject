@@ -15,33 +15,33 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and Their Contributions***
 
 Paul Roode
-> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Formatted this README.
+> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Made the scheduler state machine diagram. Formatted this README.
 
 <br>
 
 Chase Badalato
-> Constructed the UML sequence diagram, and implemented ElevatorSubsystem and helped establish its connection to Scheduler. Implemented JUnit tests for verification. 
+> Reworked floorSubsystem class to send FileRequest packets to the respective floors. Reworked the Floor class to in parse, wait, and then forward the FileRequest packet to the scheduler. Created UML Sequence Diagram. 
 
 <br>
 
 Sebastian Gadzinksi
-> Set up the initial project hierarchy and GitHub repo, and implemented Scheduler and helped establish its connection to ElevatorSubsystem and FloorSubsystem. Helped implement JUnit tests for verification.
+> Updated Request.java, allowing for different requests to be made. Also worked on the elevator subsystem and elevator state machine class and diagram. I also worked on the UML sequence diagram.
 
 <br>
 
 Oluwaseyi Sehinde-Ibini
-> Worked through and understood what the project classes and subsystems were doing. Used this knowledge to write the README file content that explains the aim of the project and what the classes within the project are doing (i.e., Main components below). Worked on tests for this iteration.
+> Worked on tests for the system to ensure it worked properly.
 
 <br>
 
 Chase Fridgen
-> Created the two UML diagrams (one for subsystems and one for elevators and floors), implemented methods for Floor.java and Elevator.java, and implemented the JUnit tests for verifying the FloorSubsystem.
+> Coded methods realTimeWait() and toMilliSeconds() in the Floor class to make it wait for the proper time, as well as helped with floorSubSystem class. Made the UML class diagram.
 
 ---
 
 ***Running the Application***
 
-Runner.java is the driver.
+project/Runner.java is the driver – run it and observe the terminal output.
 
 ---
 
