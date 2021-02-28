@@ -150,7 +150,6 @@ public class Scheduler implements Runnable {
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
         }
-
         advanceState(request);
 
     }

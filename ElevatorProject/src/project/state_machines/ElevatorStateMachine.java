@@ -158,7 +158,6 @@ public class ElevatorStateMachine {
 				}
 				if(!motorFault){
 					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
-					//waitForTime(Config.ELEVATOR_DOOR_TIME);
 					currentFloor += 1;
 				}
 				else{
