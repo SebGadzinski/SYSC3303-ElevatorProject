@@ -47,7 +47,6 @@ public class Runner {
         floorSubsystemThread.start();
         schedulerThread.start();
         elevatorSubsystemThread.start();
-
     }
 
 }
