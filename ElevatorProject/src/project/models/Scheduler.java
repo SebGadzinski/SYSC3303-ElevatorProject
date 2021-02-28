@@ -6,6 +6,7 @@ import project.state_machines.SchedulerStateMachine.SchedulerState;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -22,6 +23,10 @@ public class Scheduler implements Runnable {
     private BlockingQueue<Request> requestsToFloorSubsystem;
     private SchedulerState state;
 
+    // for FIFO (just for iter 2)
+    private ArrayList<FileRequest> fileRequestsQueue;
+    private boolean isLastFileRequestFulfilled;
+
     /**
      * A parameterized Scheduler constructor.
      *
@@ -36,7 +41,9 @@ public class Scheduler implements Runnable {
         this.requestsFromSubsystems = requestsFromSubsystems;
         this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
         this.requestsToFloorSubsystem = requestsToFloorSubsystem;
-        this.state = SchedulerState.AWAIT_REQUEST;
+        state = SchedulerState.AWAIT_REQUEST;
+        fileRequestsQueue = new ArrayList<>();
+        isLastFileRequestFulfilled = true;
     }
 
     /**
@@ -81,13 +88,7 @@ public class Scheduler implements Runnable {
         Request request = null;
         try {
             request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
-            if (request instanceof FileRequest) {
-                FileRequest fileRequest = (FileRequest) request;
-                System.out.println("The request was fulfilled at " + fileRequest.getTime());
-                System.out.println("The elevator picked up passengers on floor " + fileRequest.getOriginFloor());
-                System.out.println("The elevator arrived at floor " + fileRequest.getDestinationFloor() + "\n");
-            }
+            System.out.println("Request received by " + this + " from " + request.getSource() + "\n" + request.toString());
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -104,7 +105,16 @@ public class Scheduler implements Runnable {
 
         switch (state) {
 
-            case DISPATCH_FILE_REQUEST_TO_ELEVATOR, DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+            case DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
+
+            case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> {
+                if (fileRequestsQueue.isEmpty() && isLastFileRequestFulfilled) {
+                    dispatchRequestToElevatorSubsystem(request);
+                    isLastFileRequestFulfilled = false;
+                } else {
+                    fileRequestsQueue.add((FileRequest) request);
+                }
+            }
 
             case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
                 if (request instanceof ElevatorPassengerWaitRequest) {
@@ -120,12 +130,22 @@ public class Scheduler implements Runnable {
                 } else if (request instanceof ElevatorArrivalRequest) {
                     System.out.println(this + " received confirmation of elevator arrival:\n" + request);
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
+                    System.out.println("Inside here");
                 }
             }
 
-            case DISPATCH_FILE_REQUEST_TO_FLOOR -> dispatchRequestToFloorSubsystem(request);
+            case DISPATCH_FILE_REQUEST_TO_FLOOR -> {
+                isLastFileRequestFulfilled = true;
+                dispatchRequestToFloorSubsystem(request);
+                if (!fileRequestsQueue.isEmpty()) {
+                    dispatchRequestToElevatorSubsystem(fileRequestsQueue.remove(0));
+                    isLastFileRequestFulfilled = false;
+                }
+            }
 
-            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {}
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> {
+                System.out.print("INSIDE CONSUMING REQUEST");
+            }
 
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 

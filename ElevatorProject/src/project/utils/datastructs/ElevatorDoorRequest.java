@@ -13,7 +13,8 @@ public class ElevatorDoorRequest extends Request {
 
 	@Override
 	public String toString() {
-		return "Source: " + this.getSource()
+		return "ElevatorDestinationRequest: " + "\n"
+		+ "Source: " + this.getSource() + "\n"
 		+ "Request for Doors to be: " + this.requestedDoorStatus + "\n";
 	}
 

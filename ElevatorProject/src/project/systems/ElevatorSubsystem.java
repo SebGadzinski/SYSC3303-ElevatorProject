@@ -76,7 +76,7 @@ public class ElevatorSubsystem implements Runnable {
         }
         else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-            System.out.println("Receiving: " + doorRequest.toString());
+            System.out.println("Receiving: \n" + doorRequest.toString());
             
             response = stateMachine.handleRequest(doorRequest);
 
@@ -91,19 +91,19 @@ public class ElevatorSubsystem implements Runnable {
         }
         else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-            System.out.println("Receiving: " + motorRequest.toString());
+            System.out.println("Receiving: \n" + motorRequest.toString());
 
             response = stateMachine.handleRequest(motorRequest);
         }
         else if (request instanceof ElevatorPassengerWaitRequest) {
             ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
-            System.out.println("Receiving: " + waitRequest.toString());
+            System.out.println("Receiving: \n" + waitRequest.toString());
 
             response = stateMachine.handleRequest(waitRequest); 
         } 
         if(response != null) {
+            System.out.println("Response: \n"  + response.toString());
         	sendResponse(response);
-        	System.out.println("Response: "  + response.toString());
         }
     }
 

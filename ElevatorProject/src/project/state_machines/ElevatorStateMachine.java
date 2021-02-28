@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import project.Config;
 import project.utils.datastructs.ElevatorArrivalRequest;
 import project.utils.datastructs.ElevatorDoorRequest;
@@ -203,7 +202,9 @@ public class ElevatorStateMachine {
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
 				FileRequest arrivedFileRequest = popDestinationQueue();
-				return new FileRequest(getTimeStamp(), arrivedFileRequest.getOriginFloor(), directionState, arrivedFileRequest.getDestinationFloor(), Source.ELEVATOR_SUBSYSTEM);
+				if (arrivedFileRequest != null)
+					return new FileRequest(getTimeStamp(), arrivedFileRequest.getOriginFloor(), directionState, arrivedFileRequest.getDestinationFloor(), Source.ELEVATOR_SUBSYSTEM);
+				else return null;
 			} else {
 				System.out.println("Opening Doors");
 				state = ElevatorState.OPENING_DOORS;
