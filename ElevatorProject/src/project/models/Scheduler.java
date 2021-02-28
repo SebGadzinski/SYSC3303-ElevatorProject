@@ -170,6 +170,7 @@ public class Scheduler implements Runnable {
                 }
             }
 
+            // command an elevator to continue moving if it hasn't yet reached its destination
             case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> dispatchRequestToElevatorSubsystem(
                     new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorArrivalRequest) request).getCurrentDirection())
             );
