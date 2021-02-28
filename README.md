@@ -30,7 +30,7 @@ Sebastian Gadzinksi
 <br>
 
 Oluwaseyi Sehinde-Ibini
-> Worked through and understood what the project classes and subsystems were doing. Used this knowledge to write the README file content that explains the aim of the project and what the classes within the project are doing (i.e., Main components below).
+> Worked through and understood what the project classes and subsystems were doing. Used this knowledge to write the README file content that explains the aim of the project and what the classes within the project are doing (i.e., Main components below). Worked on tests for this iteration.
 
 <br>
 

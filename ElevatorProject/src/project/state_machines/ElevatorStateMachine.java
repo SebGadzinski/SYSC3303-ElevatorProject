@@ -174,7 +174,7 @@ public class ElevatorStateMachine {
 				if(!motorFault){
 					setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
 					waitForTime(Config.ELEVATOR_DOOR_TIME);
-					currentFloor = currentFloor + 1;
+					currentFloor = currentFloor - 1;
 				}else{
 					return motorFault();
 				}
@@ -201,8 +201,9 @@ public class ElevatorStateMachine {
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
 				FileRequest arrivedFileRequest = popDestinationQueue();
-				if (arrivedFileRequest != null)
+				if (arrivedFileRequest != null){
 					return new FileRequest(getTimeStamp(), arrivedFileRequest.getOriginFloor(), directionState, arrivedFileRequest.getDestinationFloor(), Source.ELEVATOR_SUBSYSTEM);
+				}
 				else return null;
 			} else {
 				System.out.println("Opening Doors");
@@ -277,9 +278,13 @@ public class ElevatorStateMachine {
 		}
 	}
 	
+	/**
+     * Returns if true if there is no requests left
+     */
 	public boolean noMoreDestinations(){
 		return destinationFloors.isEmpty();
 	}
+
 	/**
      * Pop top of queue and return it
      */

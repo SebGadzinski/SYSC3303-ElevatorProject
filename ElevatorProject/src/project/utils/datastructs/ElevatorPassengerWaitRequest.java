@@ -34,10 +34,10 @@ public class ElevatorPassengerWaitRequest extends Request{
 
 	@Override
 	public String toString() {
-		return "ElevatorMotorRequest: " + "\n"
+		return "ElevatorPassengerWaitRequest: " + "\n"
 		+ "Source: " + this.getSource() + "\n" 
 		+ "WaitState: " + state + "\n" 
-		+ "Wait time" + waitTime;
+		+ "Wait time: " + waitTime;
 	}
 
 	

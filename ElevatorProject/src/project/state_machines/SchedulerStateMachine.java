@@ -47,27 +47,37 @@ public class SchedulerStateMachine {
 
                 }
 
-                // dispatch a MotorRequest to an ElevatorSubsystem
+                // dispatch a MotorRequest to an Elevator to move it in the direction of its destination
                 else if (request instanceof ElevatorDestinationRequest) {
                     return DISPATCH_MOTOR_REQUEST_TO_ELEVATOR;
                 }
 
-                // dispatch an ElevatorDoorRequest to an ElevatorSubsystem
+                // dispatch an ElevatorDoorRequest to an Elevator to open its doors once it's reached its destination
                 else if (request instanceof ElevatorDoorRequest) {
                     return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
                 }
 
-                // respond to an ElevatorPassengerWaitRequest from an ElevatorSubsystem
+                // respond to an ElevatorPassengerWaitRequest from an Elevator
                 else if (request instanceof ElevatorPassengerWaitRequest) {
+
                     WaitState waitState = ((ElevatorPassengerWaitRequest) request).getState();
+
+                    // command the elevator to wait with its doors open for passengers to board
                     if (waitState == WaitState.WAITING) {
                         return DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR;
-                    } else if (waitState == WaitState.FINISHED) {
+                    }
+
+                    // command the elevator to close its doors once it's finished waiting for passengers to board
+                    else if (waitState == WaitState.FINISHED) {
                         return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
                     }
+
                 }
 
-                // consume an ElevatorArrivalRequest
+                /*
+                 consume an ElevatorArrivalRequest; if the elevator has reached its destination,
+                 command it to turn its motor off
+                */
                 else if (request instanceof ElevatorArrivalRequest) {
                     ElevatorArrivalRequest elevatorArrivalRequest = (ElevatorArrivalRequest) request;
                     int floorArrivedAt = elevatorArrivalRequest.getFloorArrivedAt();

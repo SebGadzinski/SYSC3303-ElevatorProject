@@ -77,7 +77,7 @@ public class ElevatorSubsystem implements Runnable {
         else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
             System.out.println("Receiving: \n" + doorRequest.toString());
-            
+
             response = stateMachine.handleRequest(doorRequest);
 
             //As long as its not a fault request, check for any more file requests, if none set state to IDLE
@@ -116,7 +116,7 @@ public class ElevatorSubsystem implements Runnable {
         // Turn on the lamp for the elevator button
         setLampStatus(request.getDestinationFloor(), true);
         stateMachine.putDestinationQueue(request);
-        
+
         notifyAll();
 
         return new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
