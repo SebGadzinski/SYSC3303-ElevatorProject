@@ -170,6 +170,10 @@ public class Scheduler implements Runnable {
                 }
             }
 
+            case CONSUME_ELEVATOR_ARRIVAL_REQUEST -> dispatchRequestToElevatorSubsystem(
+                    new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorArrivalRequest) request).getCurrentDirection())
+            );
+
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request:\n" + request + "\n");
 
         }
