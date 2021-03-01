@@ -123,12 +123,12 @@ public class FloorSubsystem implements Runnable {
 	 */
 	public synchronized void fetchRequest() {
 		try {
-			Request fetchedRequest = requestsFromScheduler.take();
+			Request fetchedRequest = this.requestsFromScheduler.take();
 
-			if (fetchedRequest instanceof FileRequest) {
+			if (fetchedRequest instanceof Request) {
 				FileRequest fileRequest = (FileRequest) fetchedRequest;
-				System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource());
-
+				System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource() + "\n" + fileRequest.toString());
+				System.out.println("___________________________________________________________________________________________________");
 			}
 
 		} catch (InterruptedException e) {

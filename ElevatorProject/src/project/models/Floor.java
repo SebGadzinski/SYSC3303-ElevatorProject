@@ -162,7 +162,13 @@ public class Floor implements Runnable {
 	public void run() {
 		while (true) {
 			Request packet = this.getRequest();
-			//Thread.sleep(REQUEST_QUEUE_CAPACITY);
+			int randVal = (int)(10 * Math.random() + 1);
+			try {
+				Thread.sleep(randVal * 1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			try {
 //				this.realTimeWait(packet);
 //			} catch (ParseException e) {
