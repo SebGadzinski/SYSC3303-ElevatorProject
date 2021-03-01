@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A request/response transmission intermediary between floor and elevator subsystems.
+ * A request/response transmission intermediary between floor and elevator subsystems;
+ * schedules and coordinates elevators in servicing passenger requests.
  *
  * @author Paul Roode (iter 2), Sebastian Gadzinski (iter 1)
  * @version Iteration 2
@@ -23,7 +24,7 @@ public class Scheduler implements Runnable {
     private BlockingQueue<Request> requestsToFloorSubsystem;
     private SchedulerState state;
 
-    // for FIFO (just for iter 2)
+    // for FIFO (just for iter 2 - throughput will be maximized in the next iter)
     private ArrayList<FileRequest> fileRequestsQueue;
     private boolean isLastFileRequestFulfilled;
 
@@ -56,7 +57,9 @@ public class Scheduler implements Runnable {
         request.setSource(Source.SCHEDULER);
         try {
             requestsToFloorSubsystem.put(request);
-            System.out.println(this + " sent a request to FloorSubsystem\n");
+            System.out.println(this + " sent a request to FloorSubsystem");
+            System.out.println(request);
+            System.out.println();
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -72,7 +75,9 @@ public class Scheduler implements Runnable {
         request.setSource(Source.SCHEDULER);
         try {
             requestsToElevatorSubsystem.put(request);
-            System.out.println(this + " sent a request to ElevatorSubsystem\n");
+            System.out.println(this + " sent a request to ElevatorSubsystem:");
+            System.out.println(request);
+            System.out.println();
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -88,7 +93,9 @@ public class Scheduler implements Runnable {
         Request request = null;
         try {
             request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + this + " from " + request.getSource() + "\n" + request.toString());
+            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
+            System.out.println(request);
+            System.out.println();
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -99,14 +106,19 @@ public class Scheduler implements Runnable {
     /**
      * Consumes/dispatches the given request, then advances this Scheduler's state.
      *
-     * @param request The request to be dispatched.
+     * @param request The request to be consumed/dispatched.
      */
     private synchronized void consumeRequest(Request request) {
 
         switch (state) {
 
+        	// command an elevator to wait with its doors open for passengers to board
             case DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
 
+            /*
+             dispatch a FileRequest received from a floor to an elevator;
+             FIFO is used only in this iter - throughput will be maximized in the next iter
+            */
             case DISPATCH_FILE_REQUEST_TO_ELEVATOR -> {
                 if (fileRequestsQueue.isEmpty() && isLastFileRequestFulfilled) {
                     dispatchRequestToElevatorSubsystem(request);
@@ -117,23 +129,36 @@ public class Scheduler implements Runnable {
             }
 
             case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
-                if (request instanceof ElevatorPassengerWaitRequest) {
+                
+            	// command an elevator to close its doors once it's finished waiting for passengers to board
+            	if (request instanceof ElevatorPassengerWaitRequest) {
                     dispatchRequestToElevatorSubsystem(new ElevatorDoorRequest(Source.SCHEDULER, ElevatorDoorStatus.CLOSED));
-                } else if (request instanceof ElevatorDoorRequest) {
+                } 
+            	
+            	// command an elevator to open its doors once it's reached its destination and stopped moving
+            	else if (request instanceof ElevatorDoorRequest) {
                     dispatchRequestToElevatorSubsystem(request);
                 }
             }
 
             case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> {
-                if (request instanceof ElevatorDestinationRequest) {
+                
+            	// command an elevator to move to its next destination
+            	if (request instanceof ElevatorDestinationRequest) {
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection()));
-                } else if (request instanceof ElevatorArrivalRequest) {
+                } 
+            	
+            	// command an elevator to stop moving once it's reached its destination
+            	else if (request instanceof ElevatorArrivalRequest) {
                     System.out.println(this + " received confirmation of elevator arrival:\n" + request);
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
-                    System.out.println("Inside here");
                 }
             }
 
+            /*
+             notify the floor that its FileRequest has been fulfilled;
+             dispatch the next FileRequest (if it exists) to an elevator
+            */
             case DISPATCH_FILE_REQUEST_TO_FLOOR -> {
                 isLastFileRequestFulfilled = true;
                 dispatchRequestToFloorSubsystem(request);
