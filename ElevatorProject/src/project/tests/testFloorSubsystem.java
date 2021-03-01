@@ -30,11 +30,10 @@ class testFloorSubsystem {
         if(readRequestResult instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) readRequestResult;
             
-            assertEquals(fileRequest.getTime(), "10:59:17.020");
+            assertEquals(fileRequest.getTime(), "18:17:17.020");
             assertEquals(fileRequest.getOriginFloor(), 1);
             assertEquals(fileRequest.getDirection(), ElevatorDirection.UP);
-            assertEquals(fileRequest.getDestinationFloor(), 6);
-            
+            assertEquals(fileRequest.getDestinationFloor(), 3);
         }
     }
 

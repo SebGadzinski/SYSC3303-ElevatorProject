@@ -57,9 +57,9 @@ class testElevatorSubsystem  {
         if(fetchedRequest instanceof FileRequest) {
     		FileRequest fileRequest = (FileRequest) fetchedRequest;
     		
-    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+    		assertEquals(fileRequest.getTime(), "18:17:17.020");
             assertEquals(fileRequest.getOriginFloor(), 1);
-            assertEquals(fileRequest.getDestinationFloor(), 6);
+            assertEquals(fileRequest.getDestinationFloor(), 3);
         }
         
 	}
@@ -96,9 +96,9 @@ class testElevatorSubsystem  {
         if(fetchedRequest instanceof FileRequest) {
     		FileRequest fileRequest = (FileRequest) fetchedRequest;
     		
-    		assertEquals(fileRequest.getTime(), "23:13:17.020");
+    		assertEquals(fileRequest.getTime(), "18:17:17.020");
             assertEquals(fileRequest.getOriginFloor(), 1);
-            assertEquals(fileRequest.getDestinationFloor(), 6);
+            assertEquals(fileRequest.getDestinationFloor(), 3);
     		
         }
         
