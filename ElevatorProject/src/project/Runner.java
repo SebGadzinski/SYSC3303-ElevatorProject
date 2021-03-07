@@ -1,6 +1,6 @@
 package project;
 
-import project.models.Scheduler;
+import project.systems.Scheduler;
 import project.state_machines.ElevatorStateMachine;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
