@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 
 import org.junit.jupiter.api.Test;
 
-import project.models.Scheduler;
+import project.systems.Scheduler;
 import project.state_machines.ElevatorStateMachine;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;

@@ -1,4 +1,4 @@
-package project.models;
+package project.systems;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
@@ -7,112 +7,99 @@ import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * A request/response transmission intermediary between floor and elevator subsystems;
- * schedules and coordinates elevators in servicing passenger requests.
+ * A request/response transmission intermediary for elevator and floor subsystems;
+ * schedules and coordinates elevators in optimally servicing passenger requests.
  *
- * @author Paul Roode (iter 2), Sebastian Gadzinski (iter 1)
- * @version Iteration 2
+ * @author Paul Roode (iter 3 and 2), Sebastian Gadzinski (iter 1)
+ * @version Iteration 3
  */
 
-public class Scheduler implements Runnable {
+public class Scheduler extends AbstractSubsystem implements Runnable {
 
-    private BlockingQueue<Request> requestsFromSubsystems;
-    private BlockingQueue<Request> requestsToElevatorSubsystem;
-    private BlockingQueue<Request> requestsToFloorSubsystem;
+    private final List<ElevatorSubsystem> elevatorSubsystems;
+    private final List<FloorSubsystem> floorSubsystems;
     private SchedulerState state;
 
     // for FIFO (just for iter 2 - throughput will be maximized in the next iter)
-    private ArrayList<FileRequest> fileRequestsQueue;
+    private final List<FileRequest> fileRequestsQueue;
     private boolean isLastFileRequestFulfilled;
 
     /**
-     * A parameterized Scheduler constructor.
+     * A parameterized Scheduler constructor that initializes all fields.
      *
-     * @param requestsFromSubsystems      The inlet requests queue.
-     * @param requestsToElevatorSubsystem An outlet requests queue to the ElevatorSubsystem.
-     * @param requestsToFloorSubsystem    An outlet requests queue to the FloorSubsystem.
+     * @param elevatorSubsystems The elevator subsystems with which the Scheduler will communicate.
+     * @param floorSubsystems    The floor subsystems with which the Scheduler will communicate.
      */
-    public Scheduler(BlockingQueue<Request> requestsFromSubsystems,
-                     BlockingQueue<Request> requestsToElevatorSubsystem,
-                     BlockingQueue<Request> requestsToFloorSubsystem) {
-
-        this.requestsFromSubsystems = requestsFromSubsystems;
-        this.requestsToElevatorSubsystem = requestsToElevatorSubsystem;
-        this.requestsToFloorSubsystem = requestsToFloorSubsystem;
+    public Scheduler(List<ElevatorSubsystem> elevatorSubsystems, List<FloorSubsystem> floorSubsystems) {
+        this.elevatorSubsystems = Collections.synchronizedList(elevatorSubsystems);
+        this.floorSubsystems = Collections.synchronizedList(floorSubsystems);
         state = SchedulerState.AWAIT_REQUEST;
         fileRequestsQueue = new ArrayList<>();
         isLastFileRequestFulfilled = true;
     }
 
     /**
-     * Inserts the given request into the outlet requests queue to the FloorSubsystem,
-     * waiting if necessary for space to become available.
+     * Dispatches the given request to the appropriate FloorSubsystem.
      *
-     * @param request The request to be inserted into the outlet requests queue to the FloorSubsystem.
+     * @param request The request to be dispatched to the appropriate FloorSubsystem.
      */
     public synchronized void dispatchRequestToFloorSubsystem(Request request) {
         request.setSource(Source.SCHEDULER);
-        try {
-            requestsToFloorSubsystem.put(request);
-            System.out.println(this + " sent a request to FloorSubsystem");
-            System.out.println(request);
-            System.out.println();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+        sendRequest(request, floorSubsystems.get(0 /* replace with most suitable FloorSub */));
+        System.out.println(this + " says:");
+        System.out.println(this + " sent a request to FloorSubsystem:");
+        System.out.println(request);
+        System.out.println();
     }
 
     /**
-     * Inserts the given request into the outlet requests queue to the ElevatorSubsystem,
-     * waiting if necessary for space to become available.
+     * Dispatches the given request to the appropriate ElevatorSubsystem.
      *
-     * @param request The request to be inserted into the outlet requests queue to the ElevatorSubsystem.
+     * @param request The request to be dispatched to the appropriate ElevatorSubsystem.
      */
     public synchronized void dispatchRequestToElevatorSubsystem(Request request) {
         request.setSource(Source.SCHEDULER);
-        try {
-            requestsToElevatorSubsystem.put(request);
-            System.out.println(this + " sent a request to ElevatorSubsystem:");
-            System.out.println(request);
-            System.out.println();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+        sendRequest(request, elevatorSubsystems.get(0 /* replace with most suitable ElevSub */));
+        System.out.println(this + " says:");
+        System.out.println(this + " sent a request to ElevatorSubsystem:");
+        System.out.println(request);
+        System.out.println();
     }
 
     /**
-     * Retrieves and removes the head of the inlet requests queue, waiting if necessary
-     * until a request becomes available; then advances this Scheduler's state.
+     * Fetches a request, waiting if necessary until one becomes available; then advances this Scheduler's state.
      *
      * @return the fetched request.
      */
     public synchronized Request fetchRequest() {
-        Request request = null;
-        try {
-            request = requestsFromSubsystems.take();
-            System.out.println("Request received by " + this + " from " + request.getSource() + ":");
-            System.out.println(request);
-            System.out.println();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+
+        Request request = waitForRequest();
+
+        // printing
+        System.out.println(this + " says:");
+        System.out.println("Request received by " + this + " from " + request.getSource() + ":");
+        System.out.println(request);
+        System.out.println();
+
         advanceState(request);
         return request;
+
     }
 
     /**
-     * Consumes/dispatches the given request, then advances this Scheduler's state.
+     * Processes the given request and issues commands accordingly, then advances this Scheduler's state.
      *
-     * @param request The request to be consumed/dispatched.
+     * @param request The request to be processed.
      */
     private synchronized void consumeRequest(Request request) {
 
         switch (state) {
 
-        	// command an elevator to wait with its doors open for passengers to board
+            // command an elevator to wait with its doors open for passengers to board
             case DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR -> dispatchRequestToElevatorSubsystem(request);
 
             /*
@@ -129,27 +116,27 @@ public class Scheduler implements Runnable {
             }
 
             case DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR -> {
-                
-            	// command an elevator to close its doors once it's finished waiting for passengers to board
-            	if (request instanceof ElevatorPassengerWaitRequest) {
+
+                // command an elevator to close its doors once it's finished waiting for passengers to board
+                if (request instanceof ElevatorPassengerWaitRequest) {
                     dispatchRequestToElevatorSubsystem(new ElevatorDoorRequest(Source.SCHEDULER, ElevatorDoorStatus.CLOSED));
-                } 
-            	
-            	// command an elevator to open its doors once it's reached its destination and stopped moving
-            	else if (request instanceof ElevatorDoorRequest) {
+                }
+
+                // command an elevator to open its doors once it's reached its destination and stopped moving
+                else if (request instanceof ElevatorDoorRequest) {
                     dispatchRequestToElevatorSubsystem(request);
                 }
             }
 
             case DISPATCH_MOTOR_REQUEST_TO_ELEVATOR -> {
-                
-            	// command an elevator to move to its next destination
-            	if (request instanceof ElevatorDestinationRequest) {
+
+                // command an elevator to move to its next destination
+                if (request instanceof ElevatorDestinationRequest) {
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ((ElevatorDestinationRequest) request).getDirection()));
-                } 
-            	
-            	// command an elevator to stop moving once it's reached its destination
-            	else if (request instanceof ElevatorArrivalRequest) {
+                }
+
+                // command an elevator to stop moving once it's reached its destination
+                else if (request instanceof ElevatorArrivalRequest) {
                     System.out.println(this + " received confirmation of elevator arrival:\n" + request);
                     dispatchRequestToElevatorSubsystem(new ElevatorMotorRequest(Source.SCHEDULER, ElevatorDirection.IDLE));
                 }
@@ -176,17 +163,9 @@ public class Scheduler implements Runnable {
             case INVALID_REQUEST -> System.out.println(this + " received and discarded an invalid request");
 
         }
+
         advanceState(request);
 
-    }
-
-    /**
-     * Gets this Scheduler's current state.
-     *
-     * @return this Scheduler's current state.
-     */
-    public SchedulerState getState() {
-        return state;
     }
 
     /**

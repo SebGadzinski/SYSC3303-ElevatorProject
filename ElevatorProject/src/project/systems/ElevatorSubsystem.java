@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Iter1 (Chase Badalato), Iter2 (Sebastian Gadzinski)
  */
-public class ElevatorSubsystem implements Runnable {
+public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
     private BlockingQueue<Request> incomingRequests; // data from scheduler
     private BlockingQueue<Request> outgoingRequests; // data to scheduler
@@ -22,7 +22,7 @@ public class ElevatorSubsystem implements Runnable {
     public HashMap<Integer, Boolean> lamps;
 
     public ElevatorSubsystem(BlockingQueue<Request> incomingRequests, BlockingQueue<Request> outgoingRequests,
-            ElevatorStateMachine stateMachine) {
+                             ElevatorStateMachine stateMachine) {
         this.incomingRequests = incomingRequests;
         this.outgoingRequests = outgoingRequests;
         this.stateMachine = stateMachine;
@@ -73,37 +73,34 @@ public class ElevatorSubsystem implements Runnable {
             System.out.println(fileRequest);
 
             response = handleFileRequest(fileRequest);
-        }
-        else if (request instanceof ElevatorDoorRequest) {
+        } else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
             System.out.println("Receiving: \n" + doorRequest.toString());
 
             response = stateMachine.handleRequest(doorRequest);
 
             //As long as its not a fault request, check for any more file requests, if none set state to IDLE
-            if(!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS){
+            if (!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS) {
                 boolean noFileRequests = reOrderQueue();
 
-                if(noFileRequests && stateMachine.noMoreDestinations()){
+                if (noFileRequests && stateMachine.noMoreDestinations()) {
                     stateMachine.setState(ElevatorState.IDLE);
                 }
             }
-        }
-        else if (request instanceof ElevatorMotorRequest) {
+        } else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
             System.out.println("Receiving: \n" + motorRequest.toString());
 
             response = stateMachine.handleRequest(motorRequest);
-        }
-        else if (request instanceof ElevatorPassengerWaitRequest) {
+        } else if (request instanceof ElevatorPassengerWaitRequest) {
             ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
             System.out.println("Receiving: \n" + waitRequest.toString());
 
-            response = stateMachine.handleRequest(waitRequest); 
-        } 
-        if(response != null) {
-            System.out.println("Response: \n"  + response.toString());
-        	sendResponse(response);
+            response = stateMachine.handleRequest(waitRequest);
+        }
+        if (response != null) {
+            System.out.println("Response: \n" + response.toString());
+            sendResponse(response);
         }
     }
 
@@ -112,7 +109,7 @@ public class ElevatorSubsystem implements Runnable {
      *
      * @param request The request to be dealt with.
      */
-    public Request handleFileRequest(FileRequest request) {        
+    public Request handleFileRequest(FileRequest request) {
         // Turn on the lamp for the elevator button
         setLampStatus(request.getDestinationFloor(), true);
         stateMachine.putDestinationQueue(request);
@@ -120,41 +117,41 @@ public class ElevatorSubsystem implements Runnable {
         notifyAll();
 
         return new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
-                                              request.getDestinationFloor(),
-                                              request.getDirection());
+                request.getDestinationFloor(),
+                request.getDirection());
     }
 
     /**
      * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
      */
-    public boolean reOrderQueue(){
-    	int incomingListSize = incomingRequests.size();
-    	boolean noFileRequests = true;
+    public boolean reOrderQueue() {
+        int incomingListSize = incomingRequests.size();
+        boolean noFileRequests = true;
 
-    	if(incomingListSize > 0) {
-    		BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
+        if (incomingListSize > 0) {
+            BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
 
-    		for(int i = 0; i < incomingListSize; i++){
-    			Request tempRequest = incomingRequests.poll();
-    			if(tempRequest instanceof FileRequest){
-    				incomingRequests.offer(tempRequest);
-    				noFileRequests = false;
-    			}else{
-    				tempQueue.offer(tempRequest);
-    			}
-    		}
-    		incomingRequests.addAll(tempQueue);        	
-    	}
-    	return noFileRequests;
+            for (int i = 0; i < incomingListSize; i++) {
+                Request tempRequest = incomingRequests.poll();
+                if (tempRequest instanceof FileRequest) {
+                    incomingRequests.offer(tempRequest);
+                    noFileRequests = false;
+                } else {
+                    tempQueue.offer(tempRequest);
+                }
+            }
+            incomingRequests.addAll(tempQueue);
+        }
+        return noFileRequests;
     }
 
     /**
      * Sets a lamps state, notifies other threads about the change
-     * 
-     * @param floor floor button lamp
-	 * @param status status to be set
+     *
+     * @param floor  floor button lamp
+     * @param status status to be set
      */
-    public void setLampStatus(int floor, boolean status){
+    public void setLampStatus(int floor, boolean status) {
         stateMachine.setLampStatus(floor, status);
         notifyAll();
     }
@@ -168,7 +165,7 @@ public class ElevatorSubsystem implements Runnable {
         System.out.println("ElevatorSubsystem operational...\n");
 
         while (true) {
-        	Request fetchedRequest = fetchRequest();
+            Request fetchedRequest = fetchRequest();
             handleRequest(fetchedRequest);
         }
     }
