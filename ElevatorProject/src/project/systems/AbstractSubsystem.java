@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.*;
 
 /**
- * Abstracts the UDP mechanism.
+ * Abstracts the UDP mechanism and request serialization.
  *
  * @author Paul Roode
  * @version Iteration 3
