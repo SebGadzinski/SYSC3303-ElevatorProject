@@ -43,27 +43,14 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     }
 
     /**
-     * Dispatches the given request to the appropriate FloorSubsystem.
+     * Dispatches the given Request to the given ElevatorSubsystem.
      *
-     * @param request The request to be dispatched to the appropriate FloorSubsystem.
+     * @param request           The Request to be dispatched.
+     * @param elevatorSubsystem The ElevatorSubsystem to which the Request will be dispatched.
      */
-    public synchronized void dispatchRequestToFloorSubsystem(Request request) {
+    public synchronized void dispatchRequestToElevatorSubsystem(Request request, ElevatorSubsystem elevatorSubsystem) {
         request.setSource(Source.SCHEDULER);
-        sendRequest(request, floorSubsystems.get(0 /* replace with most suitable FloorSub */));
-        System.out.println(this + " says:");
-        System.out.println(this + " sent a request to FloorSubsystem:");
-        System.out.println(request);
-        System.out.println();
-    }
-
-    /**
-     * Dispatches the given request to the appropriate ElevatorSubsystem.
-     *
-     * @param request The request to be dispatched to the appropriate ElevatorSubsystem.
-     */
-    public synchronized void dispatchRequestToElevatorSubsystem(Request request) {
-        request.setSource(Source.SCHEDULER);
-        sendRequest(request, elevatorSubsystems.get(0 /* replace with most suitable ElevSub */));
+        sendRequest(request, elevatorSubsystem);
         System.out.println(this + " says:");
         System.out.println(this + " sent a request to ElevatorSubsystem:");
         System.out.println(request);
@@ -71,9 +58,24 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     }
 
     /**
-     * Fetches a request, waiting if necessary until one becomes available; then advances this Scheduler's state.
+     * Dispatches the given Request to the given FloorSubsystem.
      *
-     * @return the fetched request.
+     * @param request        The Request to be dispatched.
+     * @param floorSubsystem The FloorSubsystem to which the Request will be dispatched.
+     */
+    public synchronized void dispatchRequestToFloorSubsystem(Request request, FloorSubsystem floorSubsystem) {
+        request.setSource(Source.SCHEDULER);
+        sendRequest(request, floorSubsystem);
+        System.out.println(this + " says:");
+        System.out.println(this + " sent a request to FloorSubsystem:");
+        System.out.println(request);
+        System.out.println();
+    }
+
+    /**
+     * Fetches a Request, waiting if necessary until one becomes available; then advances this Scheduler's state.
+     *
+     * @return the fetched Request.
      */
     public synchronized Request fetchRequest() {
 
@@ -91,9 +93,9 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     }
 
     /**
-     * Processes the given request and issues commands accordingly, then advances this Scheduler's state.
+     * Processes the given Request and issues commands accordingly, then advances this Scheduler's state.
      *
-     * @param request The request to be processed.
+     * @param request The Request to be processed.
      */
     private synchronized void consumeRequest(Request request) {
 
@@ -171,7 +173,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     /**
      * Advances this Scheduler's state.
      *
-     * @param request The request whose properties will be used to determine this Scheduler's next state.
+     * @param request The Request whose properties will be used to determine this Scheduler's next state.
      */
     private synchronized void advanceState(Request request) {
         state = state.advance(request);

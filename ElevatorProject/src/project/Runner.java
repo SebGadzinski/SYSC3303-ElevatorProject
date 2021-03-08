@@ -1,52 +1,52 @@
 package project;
 
-import project.systems.Scheduler;
-import project.state_machines.ElevatorStateMachine;
-import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
-import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.systems.ElevatorSubsystem;
 import project.systems.FloorSubsystem;
-import project.utils.datastructs.Request;
+import project.systems.Scheduler;
 
-import java.util.HashMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static project.Config.REQUEST_QUEUE_CAPACITY;
+import static project.Config.NUMBER_OF_ELEVATORS;
+import static project.Config.NUMBER_OF_FLOORS;
 
 /**
  * The driving class.
  *
  * @author Paul Roode
+ * @version Iteration 3
  */
 public class Runner {
 
     public static void main(String[] args) {
 
-        // initialize thread-safe request queues
-        BlockingQueue<Request> requestsToFloorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-        BlockingQueue<Request> requestsToScheduler = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
-        BlockingQueue<Request> requestsToElevatorSubsystem = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
+        // initialize thread-safe subsystem containers
+        List<ElevatorSubsystem> elevatorSubsystems = Collections.synchronizedList(new ArrayList<>());
+        List<FloorSubsystem> floorSubsystems = Collections.synchronizedList(new ArrayList<>());
 
-        // initialize active components
-        FloorSubsystem floorSubsystem = new FloorSubsystem(requestsToFloorSubsystem, requestsToScheduler);
-        Scheduler scheduler = new Scheduler(requestsToScheduler, requestsToElevatorSubsystem, requestsToFloorSubsystem);
-        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
-                requestsToElevatorSubsystem,
-                requestsToScheduler,
-                new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0, new HashMap<>())
+        // populate the subsystem containers
+        Collections.addAll(elevatorSubsystems,
+                new ElevatorSubsystem(),
+                new ElevatorSubsystem(),
+                new ElevatorSubsystem()
         );
+        Collections.addAll(floorSubsystems,
+                new FloorSubsystem(),
+                new FloorSubsystem(),
+                new FloorSubsystem()
+        );
+        /*
+         or:
+         for (int i = 0; i < NUMBER_OF_ELEVATORS; ++i) elevatorSubsystems.add(new ElevatorSubsystem());
+         for (int i = 0; i < NUMBER_OF_FLOORS; ++i) floorSubsystems.add(new FloorSubsystem());
+        */
 
-        // initialize threads
-        Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem");
-        Thread schedulerThread = new Thread(scheduler, "Scheduler");
-        Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "ElevatorSubsystem");
+        // start subsystem threads
+        for (ElevatorSubsystem elevatorSubsystem : elevatorSubsystems) (new Thread(elevatorSubsystem)).start();
+        for (FloorSubsystem floorSubsystem : floorSubsystems) (new Thread(floorSubsystem)).start();
+        (new Thread(new Scheduler(elevatorSubsystems, floorSubsystems))).start();
 
-        // start threads
-        floorSubsystemThread.start();
-        schedulerThread.start();
-        elevatorSubsystemThread.start();
     }
 
 }

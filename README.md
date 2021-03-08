@@ -1,4 +1,4 @@
-# Multithreaded Elevator System v2.0
+# Multithreaded Elevator System v3.0
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
 ### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
 
@@ -6,13 +6,13 @@
 
 ***Welcome!***
 
-We hope you enjoy the 2nd iteration of our multithreaded elevator system!
+We hope you enjoy the 3rd iteration of our multithreaded elevator system!
 
 This project aims to design a real-time elevator control system that will quickly and efficiently transport passengers between floors.
 
 ---
 
-***Authors and Their Contributions***
+***Authors and their contributions***
 
 Paul Roode
 > Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Made the scheduler state machine diagram. Formatted this README.
@@ -39,13 +39,13 @@ Chase Fridgen
 
 ---
 
-***Running the Application***
+***Running the application***
 
 project/Runner.java is the driver – run it and observe the terminal output.
 
 ---
 
-***Main Components***
+***Main components***
 
 - FloorSubsystem: acts as the client; sends floor requests to the scheduler for relaying to an elevator, and manages the sending and receiving of requests for all the floors
 - ElevatorSubsystem: receives relayed floor requests from the scheduler and sends them to the routed elevator node
