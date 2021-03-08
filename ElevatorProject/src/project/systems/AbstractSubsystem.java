@@ -19,21 +19,25 @@ public abstract class AbstractSubsystem {
 
     /**
      * Initializes the inlet and outlet datagram sockets.
+     *
+     * @param inetAddress   The IP address of the concrete subsystem.
+     * @param inSocketPort  The inlet socket port number.
+     * @param outSocketPort The outlet socket port number.
      */
-    protected AbstractSubsystem() {
+    protected AbstractSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
 
         try {
 
             inSocket = new DatagramSocket();
             outSocket = new DatagramSocket();
 
-            // bind the sockets to arbitrary available socket addresses
-            inSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 0));
-            outSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 0));
+            // bind the sockets to the given socket addresses
+            inSocket.bind(new InetSocketAddress(inetAddress, inSocketPort));
+            outSocket.bind(new InetSocketAddress(inetAddress, outSocketPort));
 
-        } catch (SocketException | UnknownHostException e) {
+        } catch (SocketException se) {
 
-            e.printStackTrace();
+            se.printStackTrace();
             System.exit(1);
 
         }
@@ -41,12 +45,15 @@ public abstract class AbstractSubsystem {
     }
 
     /**
-     * Serializes the given Request, then sends it in a DatagramPacket to the given target.
+     * Serializes the given Request, then sends it in a DatagramPacket to the given destination.
      *
-     * @param request The Request to serialize and send in a DatagramPacket.
-     * @param target  The target; i.e., receiver of the packet.
+     * @param request                The Request to serialize and send in a DatagramPacket.
+     * @param destinationInetAddress The Request's destination IP address.
+     * @param destinationSocketPort  The Request's destination socket port number.
      */
-    protected void sendRequest(Request request, AbstractSubsystem target) {
+    protected void sendRequest(Request request,
+                               InetAddress destinationInetAddress,
+                               int destinationSocketPort) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream;
@@ -60,7 +67,12 @@ public abstract class AbstractSubsystem {
             byte[] requestInBytes = byteArrayOutputStream.toByteArray();
 
             // send the serialized Request in a DatagramPacket to the target
-            sendPacket(requestInBytes, requestInBytes.length, target.getInSocketAddress(), outSocket);
+            sendPacket(
+                    requestInBytes,
+                    requestInBytes.length,
+                    new InetSocketAddress(destinationInetAddress, destinationSocketPort),
+                    outSocket
+            );
 
         } catch (IOException ioe) {
 
