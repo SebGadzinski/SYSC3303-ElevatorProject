@@ -6,6 +6,7 @@ import project.state_machines.SchedulerStateMachine.SchedulerState;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,8 +21,8 @@ import java.util.List;
 
 public class Scheduler extends AbstractSubsystem implements Runnable {
 
-    private final List<ElevatorSubsystem> elevatorSubsystems;
-    private final List<FloorSubsystem> floorSubsystems;
+    private final List<ElevatorSubsystem> elevatorSubsystems; // deprecated (needs to be updated/removed)
+    private final List<FloorSubsystem> floorSubsystems; // deprecated
     private SchedulerState state;
 
     // for FIFO (just for iter 2 - throughput will be maximized in the next iter)
@@ -31,15 +32,25 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     /**
      * A parameterized Scheduler constructor that initializes all fields.
      *
+     * @param inetAddress        The Scheduler's IP address.
+     * @param inSocketPort       The Scheduler's inlet socket port number.
+     * @param outSocketPort      The Scheduler's outlet socket port number.
      * @param elevatorSubsystems The elevator subsystems with which the Scheduler will communicate.
      * @param floorSubsystems    The floor subsystems with which the Scheduler will communicate.
      */
-    public Scheduler(List<ElevatorSubsystem> elevatorSubsystems, List<FloorSubsystem> floorSubsystems) {
+    public Scheduler(InetAddress inetAddress,
+                     int inSocketPort,
+                     int outSocketPort,
+                     List<ElevatorSubsystem> elevatorSubsystems, // deprecated
+                     List<FloorSubsystem> floorSubsystems) { // deprecated
+
+        super(inetAddress, inSocketPort, outSocketPort);
         this.elevatorSubsystems = Collections.synchronizedList(elevatorSubsystems);
         this.floorSubsystems = Collections.synchronizedList(floorSubsystems);
         state = SchedulerState.AWAIT_REQUEST;
         fileRequestsQueue = new ArrayList<>();
         isLastFileRequestFulfilled = true;
+
     }
 
     /**
