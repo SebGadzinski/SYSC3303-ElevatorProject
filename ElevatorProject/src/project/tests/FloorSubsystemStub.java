@@ -15,7 +15,7 @@ public class FloorSubsystemStub {
 
 	public FloorSubsystemStub() {
 		try {
-			socket = new DatagramSocket();
+			socket = new DatagramSocket(69);
 		} catch (SocketException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -24,7 +24,7 @@ public class FloorSubsystemStub {
 
 	public void receiveAndAcknowledge() {
 
-		byte data[] = new byte[100];
+		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
 
 		// Receiveing a packet from floorSubSytem
@@ -40,12 +40,7 @@ public class FloorSubsystemStub {
 		// creating acknowledgment to be sent to the host
 		byte[] request = new byte[] { 1 }; // creating request message
 
-		try {
-			sendPacket = new DatagramPacket(request, request.length, InetAddress.getLocalHost(), 69);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+		sendPacket = new DatagramPacket(request, request.length, receivePacket.getAddress(), receivePacket.getPort());
 
 		// sending the Datagram packet
 		try {

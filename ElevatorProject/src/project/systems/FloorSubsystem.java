@@ -103,7 +103,11 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         boolean hasInput = true;
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
-            this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
+            if(readRequestResult.getRequest().getOriginFloor() == this.floorNo) {
+            	System.out.println("Sending request to scheduler from floor " + this.floorNo);
+                //this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
+            	this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), 69);
+            }
             hasInput = readRequestResult.isThereAnotherRequest();
         }
         while (true) {
