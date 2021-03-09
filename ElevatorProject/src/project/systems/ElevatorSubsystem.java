@@ -1,13 +1,15 @@
 package project.systems;
 
+import static project.Config.*;
 import project.state_machines.ElevatorStateMachine;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.utils.datastructs.*;
 import project.utils.datastructs.Request.Source;
 
+import java.net.InetAddress;
 import java.util.HashMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * Receives data from the scheduler and then sends it right back
@@ -16,16 +18,13 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
-    private BlockingQueue<Request> incomingRequests; // data from scheduler
-    private BlockingQueue<Request> outgoingRequests; // data to scheduler
     private ElevatorStateMachine stateMachine;
     public HashMap<Integer, Boolean> lamps;
 
-    public ElevatorSubsystem(BlockingQueue<Request> incomingRequests, BlockingQueue<Request> outgoingRequests,
-                             ElevatorStateMachine stateMachine) {
-        this.incomingRequests = incomingRequests;
-        this.outgoingRequests = outgoingRequests;
-        this.stateMachine = stateMachine;
+    public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
+    	super(inetAddress, inSocketPort, outSocketPort);
+        this.stateMachine = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED,
+			ElevatorDirection.IDLE, 1, new HashMap<Integer, Boolean>());
     }
 
     /**
@@ -33,13 +32,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      *
      * @param response the data to send to the scheduler
      */
-    public synchronized void sendResponse(Request response) {
-        try {
-            outgoingRequests.put(response);
-            System.out.println("ElevatorSubsystem responded to Scheduler\n");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public synchronized void sendResponse(Request response) throws InterruptedException {
+        sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
+        System.out.println("ElevatorSubsystem responded to Scheduler\n");
     }
 
     /**
@@ -49,16 +44,10 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      * @return the received packet
      */
     public synchronized Request fetchRequest() {
-        try {
-            Request fetchedRequest = incomingRequests.take();
-            System.out.println("Request received by ElevatorSubsystem:");
+        Request fetchedRequest = waitForRequest();
+        System.out.println("Request received by ElevatorSubsystem:");
 
-            return fetchedRequest;
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return fetchedRequest;
     }
 
     /**
@@ -79,14 +68,18 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
             response = stateMachine.handleRequest(doorRequest);
 
-            //As long as its not a fault request, check for any more file requests, if none set state to IDLE
-            if (!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS) {
-                boolean noFileRequests = reOrderQueue();
-
-                if (noFileRequests && stateMachine.noMoreDestinations()) {
-                    stateMachine.setState(ElevatorState.IDLE);
-                }
+            if (stateMachine.noMoreDestinations()) {
+                stateMachine.setState(ElevatorState.IDLE);
             }
+
+            //As long as its not a fault request, check for any more file requests, if none set state to IDLE
+            // if (!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS) {
+            //     boolean noFileRequests = reOrderQueue();
+
+            //     if (noFileRequests && stateMachine.noMoreDestinations()) {
+            //         stateMachine.setState(ElevatorState.IDLE);
+            //     }
+            // }
         } else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
             System.out.println("Receiving: \n" + motorRequest.toString());
@@ -100,7 +93,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
         }
         if (response != null) {
             System.out.println("Response: \n" + response.toString());
-            sendResponse(response);
+            sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
         }
     }
 
@@ -121,29 +114,29 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
                 request.getDirection());
     }
 
-    /**
-     * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
-     */
-    public boolean reOrderQueue() {
-        int incomingListSize = incomingRequests.size();
-        boolean noFileRequests = true;
+    // /**
+    //  * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
+    //  */
+    // public boolean reOrderQueue() {
+    //     int incomingListSize = incomingRequests.size();
+    //     boolean noFileRequests = true;
 
-        if (incomingListSize > 0) {
-            BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
+    //     if (incomingListSize > 0) {
+    //         BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
 
-            for (int i = 0; i < incomingListSize; i++) {
-                Request tempRequest = incomingRequests.poll();
-                if (tempRequest instanceof FileRequest) {
-                    incomingRequests.offer(tempRequest);
-                    noFileRequests = false;
-                } else {
-                    tempQueue.offer(tempRequest);
-                }
-            }
-            incomingRequests.addAll(tempQueue);
-        }
-        return noFileRequests;
-    }
+    //         for (int i = 0; i < incomingListSize; i++) {
+    //             Request tempRequest = incomingRequests.poll();
+    //             if (tempRequest instanceof FileRequest) {
+    //                 incomingRequests.offer(tempRequest);
+    //                 noFileRequests = false;
+    //             } else {
+    //                 tempQueue.offer(tempRequest);
+    //             }
+    //         }
+    //         incomingRequests.addAll(tempQueue);
+    //     }
+    //     return noFileRequests;
+    // }
 
     /**
      * Sets a lamps state, notifies other threads about the change
@@ -169,4 +162,11 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
             handleRequest(fetchedRequest);
         }
     }
+
+    public static void main(String[] args) {
+
+
+    }
+
+
 }
