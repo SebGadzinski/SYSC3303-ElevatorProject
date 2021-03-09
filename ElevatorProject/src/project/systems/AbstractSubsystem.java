@@ -13,35 +13,25 @@ import java.net.*;
  */
 public abstract class AbstractSubsystem {
 
-    protected static final int MAX_PACKET_SIZE = 200; // bytes
+    private static final int MAX_PACKET_SIZE = 200; // bytes
 
-    protected DatagramSocket inSocket, outSocket;
+    private DatagramSocket inSocket, outSocket;
 
     /**
-     * Initializes the inlet and outlet datagram sockets.
+     * Initializes the inlet and outlet datagram sockets, binding them to the given socket addresses.
      *
-     * @param inetAddress   The IP address of the concrete subsystem.
+     * @param inetAddress   The socket IP address.
      * @param inSocketPort  The inlet socket port number.
      * @param outSocketPort The outlet socket port number.
      */
     protected AbstractSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
-
         try {
-
-            inSocket = new DatagramSocket(null);
-            outSocket = new DatagramSocket(null);
-
-            // bind the sockets to the given socket addresses
-            inSocket.bind(new InetSocketAddress(inetAddress, inSocketPort));
-            outSocket.bind(new InetSocketAddress(inetAddress, outSocketPort));
-
+            inSocket = new DatagramSocket(new InetSocketAddress(inetAddress, inSocketPort));
+            outSocket = new DatagramSocket(new InetSocketAddress(inetAddress, outSocketPort));
         } catch (SocketException se) {
-
             se.printStackTrace();
             System.exit(1);
-
         }
-
     }
 
     /**
@@ -195,12 +185,21 @@ public abstract class AbstractSubsystem {
     }
 
     /**
-     * Returns the address of the inlet DatagramSocket of a concrete specialization of this class.
+     * Returns the inlet socket IP address.
      *
-     * @return the address of the inlet DatagramSocket of a concrete specialization of this class.
+     * @return the inlet socket IP address.
      */
-    private SocketAddress getInSocketAddress() {
-        return inSocket.getLocalSocketAddress();
+    protected InetAddress getInSocketInetAddress() {
+        return inSocket.getInetAddress();
+    }
+
+    /**
+     * Returns the inlet socket port number.
+     *
+     * @return the inlet socket port number.
+     */
+    protected int getInSocketPort() {
+        return inSocket.getPort();
     }
 
 }

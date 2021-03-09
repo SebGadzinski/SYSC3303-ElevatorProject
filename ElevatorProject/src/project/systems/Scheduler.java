@@ -8,8 +8,9 @@ import project.utils.datastructs.Request.Source;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static project.Config.SCHEDULER_UDP_INFO;
 
 /**
  * A request/response transmission intermediary for elevator and floor subsystems;
@@ -21,8 +22,6 @@ import java.util.List;
 
 public class Scheduler extends AbstractSubsystem implements Runnable {
 
-    private final List<ElevatorSubsystem> elevatorSubsystems; // deprecated (needs to be updated/removed)
-    private final List<FloorSubsystem> floorSubsystems; // deprecated
     private SchedulerState state;
 
     // for FIFO (just for iter 2 - throughput will be maximized in the next iter)
@@ -30,27 +29,17 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     private boolean isLastFileRequestFulfilled;
 
     /**
-     * A parameterized Scheduler constructor that initializes all fields.
+     * A parameterized Scheduler constructor that initializes all fields, including those inherited.
      *
-     * @param inetAddress        The Scheduler's IP address.
-     * @param inSocketPort       The Scheduler's inlet socket port number.
-     * @param outSocketPort      The Scheduler's outlet socket port number.
-     * @param elevatorSubsystems The elevator subsystems with which the Scheduler will communicate.
-     * @param floorSubsystems    The floor subsystems with which the Scheduler will communicate.
+     * @param inetAddress   The Scheduler's IP address.
+     * @param inSocketPort  The Scheduler's inlet socket port number.
+     * @param outSocketPort The Scheduler's outlet socket port number.
      */
-    public Scheduler(InetAddress inetAddress,
-                     int inSocketPort,
-                     int outSocketPort,
-                     List<ElevatorSubsystem> elevatorSubsystems, // deprecated
-                     List<FloorSubsystem> floorSubsystems) { // deprecated
-
+    public Scheduler(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
         super(inetAddress, inSocketPort, outSocketPort);
-        this.elevatorSubsystems = Collections.synchronizedList(elevatorSubsystems);
-        this.floorSubsystems = Collections.synchronizedList(floorSubsystems);
         state = SchedulerState.AWAIT_REQUEST;
         fileRequestsQueue = new ArrayList<>();
         isLastFileRequestFulfilled = true;
-
     }
 
     /**
@@ -61,9 +50,9 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      */
     public synchronized void dispatchRequestToElevatorSubsystem(Request request, ElevatorSubsystem elevatorSubsystem) {
         request.setSource(Source.SCHEDULER);
-        sendRequest(request, elevatorSubsystem);
+        sendRequest(request, elevatorSubsystem.getInSocketInetAddress(), elevatorSubsystem.getInSocketPort());
         System.out.println(this + " says:");
-        System.out.println(this + " sent a request to ElevatorSubsystem:");
+        System.out.println(this + " sent a request to " + elevatorSubsystem);
         System.out.println(request);
         System.out.println();
     }
@@ -76,9 +65,9 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      */
     public synchronized void dispatchRequestToFloorSubsystem(Request request, FloorSubsystem floorSubsystem) {
         request.setSource(Source.SCHEDULER);
-        sendRequest(request, floorSubsystem);
+        sendRequest(request, floorSubsystem.getInSocketInetAddress(), floorSubsystem.getInSocketPort());
         System.out.println(this + " says:");
-        System.out.println(this + " sent a request to FloorSubsystem:");
+        System.out.println(this + " sent a request to " + floorSubsystem);
         System.out.println(request);
         System.out.println();
     }
@@ -209,6 +198,21 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
         while (true) {
             consumeRequest(fetchRequest());
         }
+    }
+
+    /**
+     * Initializes and starts the Scheduler thread.
+     *
+     * @param args Command-line arguments.
+     */
+    public static void main(String[] args) {
+        Scheduler scheduler = new Scheduler(
+                SCHEDULER_UDP_INFO.getInetAddress(),
+                SCHEDULER_UDP_INFO.getInSocketPort(),
+                SCHEDULER_UDP_INFO.getOutSocketPort()
+        );
+        Thread schedulerThread = new Thread(scheduler);
+        schedulerThread.start();
     }
 
 }
