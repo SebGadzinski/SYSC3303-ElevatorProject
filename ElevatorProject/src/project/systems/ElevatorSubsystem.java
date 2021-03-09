@@ -22,11 +22,13 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
     private ElevatorStateMachine stateMachine;
     public HashMap<Integer, Boolean> lamps;
+    public int elevatorNumber; 
 
-    public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
+    public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber) {
     	super(inetAddress, inSocketPort, outSocketPort);
         this.stateMachine = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED,
-			ElevatorDirection.IDLE, 1, new HashMap<Integer, Boolean>());
+            ElevatorDirection.IDLE, 1, new HashMap<Integer, Boolean>());
+        this.elevatorNumber = elevatorNumber;
     }
 
     /**
@@ -157,7 +159,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("ElevatorSubsystem operational...\n");
+        System.out.println("ElevatorSubsystem: " + elevatorNumber +  " operational...\n");
 
         while (true) {
             Request fetchedRequest = fetchRequest();
@@ -167,7 +169,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
     public static void main(String[] args) {
         for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++){
-            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(Config.ELEVATORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort());
+            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(Config.ELEVATORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), i);
             Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + Integer.toString(i));
             elevatorSubsystemThread.start();
         }
