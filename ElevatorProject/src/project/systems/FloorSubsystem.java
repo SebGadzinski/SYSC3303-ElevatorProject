@@ -4,6 +4,8 @@ import static project.Config.REQUEST_BATCH_FILENAME;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
@@ -22,41 +24,29 @@ import project.utils.datastructs.Request.Source;
  * with the Scheduler on thread-safe queues comprising requests.
  *
  * @author Paul Roode (Iteration One)
- * @author Chase Badalato (Iteration Two)
+ * @author Chase Badalato (Iteration Two and Three)
  * @author Chase Fridgen (Iteration Two)
- * @version Iteration 2
+ * @version Iteration 3
  */
 public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
-    private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
-    private BlockingQueue<Request> requestsFromScheduler;
-    private Floor[] floors;
-    private Thread[] floorThreads;
-    Scanner scanner; // for reading request batch files
-
-    public FloorSubsystem() {
-        // Testing purposes
-    }
-
+    private Scanner scanner; // for reading request batch files
+    private InetAddress inetAddress;
+    //private Floor floor;
+    private int floorNo;
     /**
      * A parameterized constructor.
      *
      * @param requestsFromScheduler Incoming fulfilled requests.
      * @param requestsToScheduler   Requests sent
      */
-    public FloorSubsystem(BlockingQueue<Request> requestsFromScheduler, BlockingQueue<Request> requestsToScheduler) {
-
-        this.requestsFromScheduler = requestsFromScheduler;
-        this.requestsToScheduler = requestsToScheduler;
-        this.floors = new Floor[Config.NUMBER_OF_FLOORS];
-        this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
-
-        for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-            this.floors[i] = new Floor(this.requestsToScheduler);
-            this.floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
-            this.floorThreads[i].start();
-        }
-
+    protected FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
+    	super(inetAddress, inSocketPort, outSocketPort);
+    	
+    	this.inetAddress = inetAddress;
+    	//this.floor = new Floor();
+    	this.floorNo = floorNo;
+    	
         try {
             scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
         } catch (FileNotFoundException e) {
@@ -75,8 +65,8 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
     public synchronized ReadRequestResult readRequest() {
 
         // match input against a regex
-        scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d)");
-        MatchResult matchResult = scanner.match();
+    	this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d)");
+        MatchResult matchResult = this.scanner.match();
 
         // store the matched data in a new request instance
         FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
@@ -85,55 +75,13 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
         // check for another request
         boolean isThereAnotherRequest;
-        if (isThereAnotherRequest = scanner.hasNext()) {
-            scanner.nextLine();
+        if (isThereAnotherRequest = this.scanner.hasNext()) {
+        	this.scanner.nextLine();
         }
 
         // multi-return
         return new ReadRequestResult(request, isThereAnotherRequest);
 
-    }
-
-    /**
-     * Inserts the given request into the outgoing request queue, waiting if
-     * necessary for space to become available.
-     *
-     * @param request The request to be inserted into the outgoing request queue.
-     */
-    public synchronized void sendRequest(Request request) {
-        try {
-            if (request instanceof FileRequest) {
-                FileRequest fileRequest = (FileRequest) request;
-                this.floors[fileRequest.getOriginFloor()].putRequest(fileRequest);
-                System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOriginFloor());
-            }
-
-        } catch (IndexOutOfBoundsException e) {
-            if (request instanceof FileRequest) {
-                FileRequest fileRequest = (FileRequest) request;
-                System.out.println("The requested floor " + fileRequest.getOriginFloor() + " does not exist!");
-            }
-            System.out.println("Ignoring this floor ...");
-        }
-    }
-
-    /**
-     * Retrieves and removes the head of the incoming requests queue, waiting if
-     * necessary until a request becomes available.
-     */
-    public synchronized void fetchRequest() {
-        try {
-            Request fetchedRequest = this.requestsFromScheduler.take();
-
-            if (fetchedRequest instanceof Request) {
-                FileRequest fileRequest = (FileRequest) fetchedRequest;
-                System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource() + "\n" + fileRequest.toString());
-                System.out.println("___________________________________________________________________________________________________");
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public ElevatorDirection getDirectionFromString(String direction) {
@@ -150,27 +98,34 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("FloorSubsystem operational...\n");
+        System.out.println("FloorSubsystem " + this.floorNo + " operational...\n");
         boolean hasInput = true;
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
-            sendRequest(readRequestResult.getRequest());
-            // fetchRequest();
+            //this.sendRequest(readRequestResult.getRequest(), this.inetAddress, 8080);
             hasInput = readRequestResult.isThereAnotherRequest();
         }
 
         while (true) {
-            this.fetchRequest();
+        	this.waitForRequest();
         }
-//        for(int i = 0; i < this.floors.length; i++) {
-//          try {
-//              this.floorThreads[i].join();
-//          } catch (InterruptedException e) {
-//              System.out.println("Could not wait for all floor threads to finish");
-//              e.printStackTrace();
-//          }
-//        }
-        // System.exit(0);
+    }
+    
+    public static void main(String[] args) {
+    	int numberOFloors = 1;
+    	
+    	Thread floorSubsystemThreads[] = new Thread[numberOFloors];
+    	InetAddress netty = null;
+		try {
+			netty = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		
+    	for(int i = 0; i < numberOFloors; i++) {
+    		floorSubsystemThreads[i] = new Thread(new FloorSubsystem(netty, 9001, 9000, i), ("FloorSubsystem" + i));
+    		floorSubsystemThreads[i].start();
+    	}
     }
 
 }

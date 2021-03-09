@@ -15,7 +15,7 @@ public abstract class AbstractSubsystem {
 
     private static final int MAX_PACKET_SIZE = 200; // bytes
 
-    private DatagramSocket inSocket, outSocket;
+    protected DatagramSocket inSocket, outSocket;
 
     /**
      * Initializes the inlet and outlet datagram sockets.

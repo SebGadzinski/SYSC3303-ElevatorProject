@@ -2,6 +2,7 @@ package project.models;
 
 import static project.Config.REQUEST_QUEUE_CAPACITY;
 
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,8 +48,7 @@ public class Floor implements Runnable {
 	private BlockingQueue<Request> floorQueue; // input to the floor
 	private BlockingQueue<Request> serverQueue; // output to the server
 
-	public Floor(BlockingQueue<Request> serverQueue) {
-		this.serverQueue = serverQueue;
+	public Floor() {
 		this.floorQueue = new ArrayBlockingQueue<>(REQUEST_QUEUE_CAPACITY);
 	}
 
