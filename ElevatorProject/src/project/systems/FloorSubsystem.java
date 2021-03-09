@@ -123,7 +123,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 		}
 		
     	for(int i = 0; i < numberOFloors; i++) {
-    		floorSubsystemThreads[i] = new Thread(new FloorSubsystem(netty, 9001, 9000, i), ("FloorSubsystem" + i));
+    		floorSubsystemThreads[i] = new Thread(new FloorSubsystem(Config.FLOORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), i), ("FloorSubsystem" + i));
     		floorSubsystemThreads[i].start();
     	}
     }
