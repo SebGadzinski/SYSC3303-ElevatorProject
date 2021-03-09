@@ -1,6 +1,7 @@
 package project.systems;
 
 import static project.Config.REQUEST_BATCH_FILENAME;
+import static project.Config.SCHEDULER_UDP_INFO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -102,28 +103,19 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         boolean hasInput = true;
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
-            //this.sendRequest(readRequestResult.getRequest(), this.inetAddress, 8080);
+            this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
             hasInput = readRequestResult.isThereAnotherRequest();
         }
-
         while (true) {
         	this.waitForRequest();
         }
     }
     
     public static void main(String[] args) {
-    	int numberOFloors = 1;
+    	Thread floorSubsystemThreads[] = new Thread[Config.NUMBER_OF_FLOORS];
     	
-    	Thread floorSubsystemThreads[] = new Thread[numberOFloors];
-    	InetAddress netty = null;
-		try {
-			netty = InetAddress.getLocalHost();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
-    	for(int i = 0; i < numberOFloors; i++) {
-    		floorSubsystemThreads[i] = new Thread(new FloorSubsystem(Config.FLOORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), i), ("FloorSubsystem" + i));
+    	for(int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
+    		floorSubsystemThreads[i] = new Thread(new FloorSubsystem(Config.FLOORS_UDP_INFO[i].getInetAddress(), Config.FLOORS_UDP_INFO[i].getInSocketPort(), Config.FLOORS_UDP_INFO[i].getOutSocketPort(), i), ("FloorSubsystem" + i));
     		floorSubsystemThreads[i].start();
     	}
     }
