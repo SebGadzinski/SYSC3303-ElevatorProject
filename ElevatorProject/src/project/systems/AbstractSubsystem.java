@@ -13,9 +13,9 @@ import java.net.*;
  */
 public abstract class AbstractSubsystem {
 
-    private static final int MAX_PACKET_SIZE = 200; // bytes
+    protected static final int MAX_PACKET_SIZE = 200; // bytes
 
-    private DatagramSocket inSocket, outSocket;
+    protected DatagramSocket inSocket, outSocket;
 
     /**
      * Initializes the inlet and outlet datagram sockets.
@@ -28,8 +28,8 @@ public abstract class AbstractSubsystem {
 
         try {
 
-            inSocket = new DatagramSocket();
-            outSocket = new DatagramSocket();
+            inSocket = new DatagramSocket(null);
+            outSocket = new DatagramSocket(null);
 
             // bind the sockets to the given socket addresses
             inSocket.bind(new InetSocketAddress(inetAddress, inSocketPort));
