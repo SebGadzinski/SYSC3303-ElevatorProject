@@ -22,12 +22,12 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
     private ElevatorStateMachine stateMachine;
     public HashMap<Integer, Boolean> lamps;
-    public int elevatorNumber; 
+    public int elevatorNumber;
 
     public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber) {
-    	super(inetAddress, inSocketPort, outSocketPort);
+        super(inetAddress, inSocketPort, outSocketPort);
         this.stateMachine = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED,
-            ElevatorDirection.IDLE, 1, new HashMap<Integer, Boolean>());
+                ElevatorDirection.IDLE, 1, new HashMap<>());
         this.elevatorNumber = elevatorNumber;
     }
 
@@ -36,7 +36,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      *
      * @param response the data to send to the scheduler
      */
-    public synchronized void sendResponse(Request response) throws InterruptedException {
+    public synchronized void sendResponse(Request response) {
         sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
         System.out.println("ElevatorSubsystem responded to Scheduler\n");
     }
@@ -159,7 +159,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("ElevatorSubsystem: " + elevatorNumber +  " operational...\n");
+        System.out.println("ElevatorSubsystem: " + elevatorNumber + " operational...\n");
 
         while (true) {
             Request fetchedRequest = fetchRequest();
@@ -168,9 +168,14 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
     }
 
     public static void main(String[] args) {
-        for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++){
-            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(Config.ELEVATORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), i);
-            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + Integer.toString(i));
+        for (int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
+            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
+                    Config.ELEVATORS_UDP_INFO[i].getInetAddress(),
+                    Config.ELEVATORS_UDP_INFO[i].getInSocketPort(),
+                    Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(),
+                    i
+            );
+            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + i);
             elevatorSubsystemThread.start();
         }
     }
