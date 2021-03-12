@@ -49,7 +49,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     public synchronized Request fetchRequest() {
         Request fetchedRequest = waitForRequest();
-        System.out.println("Request received by ElevatorSubsystem:");
+        System.out.println("Request received by ElevatorSubsystem " + elevatorNumber + ":");
 
         return fetchedRequest;
     }
@@ -172,9 +172,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
             ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
                     Config.ELEVATORS_UDP_INFO[i].getInetAddress(),
                     Config.ELEVATORS_UDP_INFO[i].getInSocketPort(),
-                    Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(),
+                    Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), 
                     i
-            );
+            ); //Config.ELEVATORS_UDP_INFO[i].getOutSocketPort()
             Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + i);
             elevatorSubsystemThread.start();
         }
