@@ -113,8 +113,14 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         return new SubsystemSource(SubsystemSource.Subsystem.FLOOR_SUBSYSTEM, Integer.toString(floorNo));
     }
 
+    /**
+     * Once a request is received this request must be parsed and handled.  There is a few
+     * different packets that can be received and must be dealt with accordingly
+     * 
+     * @param request the request to be dealt with
+     */
     public void handleRequest(Request request){
-    	System.out.println("\nRequest received by:\n" + getSource() + "\n");
+    	System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
         if(request instanceof ElevatorArrivalRequest){
             ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
             System.out.println(getSource() + "\nElevator Arriving\n");
