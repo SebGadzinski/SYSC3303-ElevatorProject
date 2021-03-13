@@ -33,7 +33,7 @@ public class FloorSubsystemStub {
 		}
 	}
 
-	public void receiveAndAcknowledge(byte[] dataToSend) {
+	public boolean receiveAndAcknowledge(byte[] dataToSend) {
 
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
@@ -42,6 +42,7 @@ public class FloorSubsystemStub {
 		try {
 			socket.receive(receivePacket);
 			System.out.println("Packet received from the FLOOR SUBSYSTEM");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("packet achnowledgement was not received by host");
@@ -55,12 +56,13 @@ public class FloorSubsystemStub {
 		try {
 			socket.send(sendPacket);
 			System.out.println("SENDING ACK BACK");
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("error in client asking for host data");
 			System.exit(1);
 		}
-
+		return false;
 	}
 
 	public byte[] sendRequest(Request request) {
@@ -93,19 +95,6 @@ public class FloorSubsystemStub {
 
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		System.out.println("Waiting for packet from a floor subsystem");
-		
-		FloorSubsystem floor = new FloorSubsystem(Config.FLOORS_UDP_INFO[0].getInetAddress(), 100, 101, 0);
- 		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, floor.getSource());
-		FloorSubsystemStub test = new FloorSubsystemStub();
-
-		while (true) {
-			byte[] tmp = test.sendRequest(fileRequest);
-			test.receiveAndAcknowledge(tmp);
-		}
 	}
 
 }
