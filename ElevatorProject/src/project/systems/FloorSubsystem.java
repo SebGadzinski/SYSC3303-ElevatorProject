@@ -43,7 +43,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
      * @param outSocketPort
      * @param floorNo
      */
-    protected FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
+    public FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
         super(inetAddress, inSocketPort, outSocketPort);
 
         //this.floor = new Floor();

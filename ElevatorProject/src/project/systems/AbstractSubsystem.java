@@ -97,11 +97,14 @@ public abstract class AbstractSubsystem{
         Request receivedRequest = null;
 
         try {
-
             // deserialize the received Request
             objectInput = new ObjectInputStream(byteArrayInputStream);
             receivedRequest = (Request) objectInput.readObject();
 
+        } catch (EOFException e) {
+        	
+        	System.out.println("EOF Exception");
+        	
         } catch (IOException | ClassNotFoundException e) {
 
             e.printStackTrace();
