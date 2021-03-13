@@ -36,9 +36,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      *
      * @param response the data to send to the scheduler
      */
-    public synchronized void sendResponse(Request response) throws InterruptedException {
+    public synchronized void sendResponse(Request response) {
         sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
-        System.out.println(getSource() + "\n\tResponded to Scheduler\n");
+        System.out.println(getSource() + "\nResponded to Scheduler: \n " + response);
     }
 
     /**
@@ -49,8 +49,6 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     public synchronized Request fetchRequest() {
         Request fetchedRequest = waitForRequest();
-        System.out.println("Request received by:\n" + getSource());
-
         return fetchedRequest;
     }
 
@@ -61,39 +59,40 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     public synchronized void handleRequest(Request request) {
         Request response = null;
+        String reponseString = "\nRequest received by:\n" + getSource() + "\n";
         if (request instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) request;
-            System.out.println(fileRequest);
+            System.out.println(reponseString + fileRequest);
 
             response = handleFileRequest(fileRequest);
         } 
         else if (request instanceof ElevatorDestinationRequest) {
             ElevatorDestinationRequest destinatinonRequest = (ElevatorDestinationRequest) request;
             // Turn on the lamp for the elevator button
+            System.out.println(reponseString + destinatinonRequest);
             setLampStatus(destinatinonRequest.getRequestedDestinationFloor(), true);
             response = request;
         } 
         else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-            System.out.println("\nReceiving: \n" + doorRequest.toString());
+            System.out.println(reponseString + doorRequest);
 
             response = stateMachine.handleRequest(doorRequest);
 
         } else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-            System.out.println("\nReceiving: \n" + motorRequest.toString());
+            System.out.println(reponseString + motorRequest);
 
             response = stateMachine.handleRequest(motorRequest);
         } else if (request instanceof ElevatorPassengerWaitRequest) {
             ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
-            System.out.println("\nReceiving: \n" + waitRequest.toString());
+            System.out.println(reponseString + waitRequest);
 
             response = stateMachine.handleRequest(waitRequest);
         }
         if (response != null) {
-            System.out.println("\nResponse: \n" + response.toString());
-            response.setSource(getSource());
-            sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
+            response.setSource(getSource());            
+            sendResponse(response);
         }
     }
 
