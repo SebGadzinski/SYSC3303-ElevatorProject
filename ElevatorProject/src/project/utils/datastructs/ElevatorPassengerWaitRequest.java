@@ -6,7 +6,7 @@ public class ElevatorPassengerWaitRequest extends Request{
 	private int waitTime;
 	private WaitState state;
 
-	public ElevatorPassengerWaitRequest(Source source, int waitTime, WaitState state) {
+	public ElevatorPassengerWaitRequest(SubsystemSource source, int waitTime, WaitState state) {
 		super(source);
 		this.waitTime = waitTime;
 		this.state = state;
@@ -35,7 +35,6 @@ public class ElevatorPassengerWaitRequest extends Request{
 	@Override
 	public String toString() {
 		return "ElevatorPassengerWaitRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n" 
 		+ "WaitState: " + state + "\n" 
 		+ "Wait time: " + waitTime;
 	}

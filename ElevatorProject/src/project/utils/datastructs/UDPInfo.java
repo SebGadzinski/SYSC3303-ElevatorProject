@@ -26,4 +26,14 @@ public class UDPInfo {
         return outSocketPort;
     }
 
+    @Override
+    public String toString() {
+        return "UDPInfo: \n"
+        + "inSocketPort: "  + inSocketPort + "\n"
+        + "inetAddress: " + inetAddress + "\n"
+        + "outSocketPort: " + outSocketPort;
+    }
+
+    
+
 }

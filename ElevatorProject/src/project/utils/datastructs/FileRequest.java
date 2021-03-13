@@ -14,7 +14,7 @@ public class FileRequest extends Request{
     private ElevatorDirection direction;
     private int destinationFloor, originFloor;
     
-	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, Source source) {
+	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, SubsystemSource source) {
 		super(source);
 		this.time = time;
 		this.originFloor = originFloor;
@@ -42,11 +42,10 @@ public class FileRequest extends Request{
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "FileRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n"
 		+ "Time:  " + this.getTime() + "\n"
 		+ "Direction: " + this.getDirection() + "\n"
 		+ "Pick Up: " + this.getOriginFloor() + "\n"
-		+ "Destination Floor: " + this.getDestinationFloor() + "\n";
+		+ "Destination Floor: " + this.getDestinationFloor();
 	}
 
 }

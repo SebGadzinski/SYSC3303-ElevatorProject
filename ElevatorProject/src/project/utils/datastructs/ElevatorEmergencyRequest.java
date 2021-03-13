@@ -7,7 +7,7 @@ public class ElevatorEmergencyRequest extends Request {
 	ElevatorState emergencyState;
 	Request emergencyRequest;
 
-	public ElevatorEmergencyRequest(Source source, ElevatorState emergencyState, Request emergencyRequest) {
+	public ElevatorEmergencyRequest(SubsystemSource source, ElevatorState emergencyState, Request emergencyRequest) {
 		super(source);
 		this.emergencyState = emergencyState;
 		this.emergencyRequest = emergencyRequest;
@@ -24,7 +24,6 @@ public class ElevatorEmergencyRequest extends Request {
 	@Override
 	public String toString() {
 		return "ElevatorEmergencyRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n" 
 		+ "EmergencyRequest: " + emergencyRequest + "\n"
 		+ "EmergencyState: " + emergencyState + "\n";
 	}

@@ -8,7 +8,7 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.ElevatorStateMachine.ElevatorState;
 import project.utils.datastructs.*;
-import project.utils.datastructs.Request.Source;
+import project.utils.datastructs.SubsystemSource.Subsystem;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -16,18 +16,18 @@ import java.util.HashMap;
 /**
  * Receives data from the scheduler and then sends it right back
  *
- * @author Iter1 (Chase Badalato), Iter2 (Sebastian Gadzinski)
+ * @author Iter1 (Chase Badalato), Iter2 (Sebastian Gadzinski), Iter3 (Sebastian Gadzinski)
  */
 public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
     private ElevatorStateMachine stateMachine;
     public HashMap<Integer, Boolean> lamps;
-    public int elevatorNumber;
+    public int elevatorNumber; 
 
     public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber) {
-        super(inetAddress, inSocketPort, outSocketPort);
+    	super(inetAddress, inSocketPort, outSocketPort);
         this.stateMachine = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED,
-                ElevatorDirection.IDLE, 1, new HashMap<>());
+            ElevatorDirection.IDLE, 0, new HashMap<Integer, Boolean>());
         this.elevatorNumber = elevatorNumber;
     }
 
@@ -36,9 +36,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      *
      * @param response the data to send to the scheduler
      */
-    public synchronized void sendResponse(Request response) {
+    public synchronized void sendResponse(Request response) throws InterruptedException {
         sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
-        System.out.println("ElevatorSubsystem responded to Scheduler\n");
+        System.out.println(getSource() + "\n\tResponded to Scheduler\n");
     }
 
     /**
@@ -49,7 +49,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     public synchronized Request fetchRequest() {
         Request fetchedRequest = waitForRequest();
-        System.out.println("Request received by ElevatorSubsystem:");
+        System.out.println("Request received by:\n" + getSource());
 
         return fetchedRequest;
     }
@@ -66,37 +66,33 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
             System.out.println(fileRequest);
 
             response = handleFileRequest(fileRequest);
-        } else if (request instanceof ElevatorDoorRequest) {
+        } 
+        else if (request instanceof ElevatorDestinationRequest) {
+            ElevatorDestinationRequest destinatinonRequest = (ElevatorDestinationRequest) request;
+            // Turn on the lamp for the elevator button
+            setLampStatus(destinatinonRequest.getRequestedDestinationFloor(), true);
+            response = request;
+        } 
+        else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-            System.out.println("Receiving: \n" + doorRequest.toString());
+            System.out.println("\nReceiving: \n" + doorRequest.toString());
 
             response = stateMachine.handleRequest(doorRequest);
 
-            if (stateMachine.noMoreDestinations()) {
-                stateMachine.setState(ElevatorState.IDLE);
-            }
-
-            //As long as its not a fault request, check for any more file requests, if none set state to IDLE
-            // if (!(request instanceof ElevatorFaultRequest) && stateMachine.getState() == ElevatorState.CLOSING_DOORS) {
-            //     boolean noFileRequests = reOrderQueue();
-
-            //     if (noFileRequests && stateMachine.noMoreDestinations()) {
-            //         stateMachine.setState(ElevatorState.IDLE);
-            //     }
-            // }
         } else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-            System.out.println("Receiving: \n" + motorRequest.toString());
+            System.out.println("\nReceiving: \n" + motorRequest.toString());
 
             response = stateMachine.handleRequest(motorRequest);
         } else if (request instanceof ElevatorPassengerWaitRequest) {
             ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
-            System.out.println("Receiving: \n" + waitRequest.toString());
+            System.out.println("\nReceiving: \n" + waitRequest.toString());
 
             response = stateMachine.handleRequest(waitRequest);
         }
         if (response != null) {
-            System.out.println("Response: \n" + response.toString());
+            System.out.println("\nResponse: \n" + response.toString());
+            response.setSource(getSource());
             sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
         }
     }
@@ -108,39 +104,23 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
      */
     public Request handleFileRequest(FileRequest request) {
         // Turn on the lamp for the elevator button
-        setLampStatus(request.getDestinationFloor(), true);
-        stateMachine.putDestinationQueue(request);
+        // setLampStatus(request.getOriginFloor(), true);
 
-        notifyAll();
+        // notifyAll();
 
-        return new ElevatorDestinationRequest(Source.ELEVATOR_SUBSYSTEM,
-                request.getDestinationFloor(),
+        return new ElevatorDestinationRequest(new SubsystemSource(Subsystem.ELEVATOR_SUBSYSTEM, Integer.toString(elevatorNumber)),
+                request.getOriginFloor(),
                 request.getDirection());
     }
 
-    // /**
-    //  * Reorder the queue so that fileRequests are at the front in order to create destination requests (Button presses)
-    //  */
-    // public boolean reOrderQueue() {
-    //     int incomingListSize = incomingRequests.size();
-    //     boolean noFileRequests = true;
-
-    //     if (incomingListSize > 0) {
-    //         BlockingQueue<Request> tempQueue = new ArrayBlockingQueue<Request>(incomingRequests.size());
-
-    //         for (int i = 0; i < incomingListSize; i++) {
-    //             Request tempRequest = incomingRequests.poll();
-    //             if (tempRequest instanceof FileRequest) {
-    //                 incomingRequests.offer(tempRequest);
-    //                 noFileRequests = false;
-    //             } else {
-    //                 tempQueue.offer(tempRequest);
-    //             }
-    //         }
-    //         incomingRequests.addAll(tempQueue);
-    //     }
-    //     return noFileRequests;
-    // }
+    /**
+     * Get subsystem identification
+     * 
+     * @return this subsystems identification
+     */
+    public SubsystemSource getSource(){
+        return new SubsystemSource(SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM, Integer.toString(elevatorNumber));
+    }
 
     /**
      * Sets a lamps state, notifies other threads about the change
@@ -156,10 +136,11 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
     /**
      * Attempts to fetch a packet. When this gets fetched,
      * sends the response to the scheduler.
+     * 
      */
     @Override
     public void run() {
-        System.out.println("ElevatorSubsystem: " + elevatorNumber + " operational...\n");
+        System.out.println("ElevatorSubsystem: " + elevatorNumber +  " operational...\n");
 
         while (true) {
             Request fetchedRequest = fetchRequest();
@@ -168,14 +149,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
-            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
-                    Config.ELEVATORS_UDP_INFO[i].getInetAddress(),
-                    Config.ELEVATORS_UDP_INFO[i].getInSocketPort(),
-                    Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(),
-                    i
-            );
-            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + i);
+        for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++){
+            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(Config.ELEVATORS_UDP_INFO[i].getInetAddress(), Config.ELEVATORS_UDP_INFO[i].getInSocketPort(), Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(), i);
+            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + Integer.toString(i));
             elevatorSubsystemThread.start();
         }
     }

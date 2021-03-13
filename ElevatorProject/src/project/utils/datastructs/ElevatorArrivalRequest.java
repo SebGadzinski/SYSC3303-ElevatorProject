@@ -6,23 +6,19 @@ public class ElevatorArrivalRequest extends Request {
 
 	private int floorArrivedAt;
 	private ElevatorDirection currentDirection;
-	private int destinationFloor;
 
 
-	public ElevatorArrivalRequest(Source source, int floorArrivedAt, ElevatorDirection currentDirection, int destinationFloor) {
+	public ElevatorArrivalRequest(SubsystemSource source, int floorArrivedAt, ElevatorDirection currentDirection) {
 		super(source);
 		this.floorArrivedAt = floorArrivedAt;
 		this.currentDirection = currentDirection;
-		this.destinationFloor = destinationFloor;
 	}
 
 	@Override
 	public String toString() {
 		return "ElevatorArrivalRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n"
 		+ "Floor Arrived At: " + this.floorArrivedAt + "\n"
-		+ "Current Direction: " + this.currentDirection + "\n"
-		+ "Destination Floor: " + this.destinationFloor + "\n";
+		+ "Current Direction: " + this.currentDirection;
 	}
 
 	public int getFloorArrivedAt() {
@@ -39,10 +35,6 @@ public class ElevatorArrivalRequest extends Request {
 
 	public void setCurrentDirection(ElevatorDirection currentDirection) {
 		this.currentDirection = currentDirection;
-	}
-
-	public int getDestinationFloor() {
-		return destinationFloor;
 	}
 	
 }

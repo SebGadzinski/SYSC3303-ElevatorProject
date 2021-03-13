@@ -2,9 +2,13 @@ package project.systems;
 
 import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.utils.datastructs.ElevatorArrivalRequest;
+import project.utils.datastructs.ElevatorDoorRequest;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.ReadRequestResult;
-import project.utils.datastructs.Request.Source;
+import project.utils.datastructs.Request;
+import project.utils.datastructs.SubsystemSource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,7 +73,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         // store the matched data in a new request instance
         FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
                 getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)),
-                Source.FLOOR_SUBSYSTEM);
+                getSource());
 
         // check for another request
         boolean isThereAnotherRequest;
@@ -82,6 +86,12 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
     }
 
+    /**
+     * Gets ElevatorDirection from string
+     * 
+     * @param direction ElevatorDirection in string form
+     * @return Direction from string
+     */
     public ElevatorDirection getDirectionFromString(String direction) {
         if (direction.toLowerCase().trim().equals("up")) {
             return ElevatorDirection.UP;
@@ -89,6 +99,28 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
             return ElevatorDirection.DOWN;
         } else
             return ElevatorDirection.IDLE;
+    }
+
+    /**
+     * Get subsystem identification
+     * 
+     * @return this subsystems identification
+     */
+    public SubsystemSource getSource(){
+        return new SubsystemSource(SubsystemSource.Subsystem.FLOOR_SUBSYSTEM, Integer.toString(floorNo));
+    }
+
+    public void handleRequest(Request request){
+        if(request instanceof ElevatorArrivalRequest){
+            ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
+            System.out.println(getSource() + "\nElevator Arriving\n");
+        }
+        else if(request instanceof ElevatorDoorRequest){
+            ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
+            if(doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED)System.out.println(getSource() + "\nElevator opening doors\n");
+            else System.out.println(getSource() + "\nElevator closing doors\n ");
+        }
+        else System.out.println(getSource() +  "\nInvalid Request\n");
     }
 
     /**
@@ -103,12 +135,12 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
             if (readRequestResult.getRequest().getOriginFloor() == this.floorNo) {
                 System.out.println("Sending request to scheduler from floor " + this.floorNo);
                 //this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
-                this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), 69);
+                this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
             }
             hasInput = readRequestResult.isThereAnotherRequest();
         }
         while (true) {
-            this.waitForRequest();
+            handleRequest(this.waitForRequest());
         }
     }
 

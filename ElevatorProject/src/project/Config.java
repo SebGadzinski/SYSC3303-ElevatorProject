@@ -16,6 +16,7 @@ public final class Config {
     public static final int    NUMBER_OF_FLOORS             = 4;
     public static final int    REQUEST_QUEUE_CAPACITY       = 10;
     public static final String REQUEST_BATCH_FILENAME       = "input.txt";
+    public static final int    MAX_PASSENGERS_IN_ELEVATOR   = 10;
 
     // UDP config
     //---------------------------------------------------------------------------------------------------------------
@@ -36,7 +37,6 @@ public final class Config {
             new UDPInfo(host1InetAddress, 5002, 5003),
             new UDPInfo(host1InetAddress, 5004, 5005),
             new UDPInfo(host1InetAddress, 5006, 5007),
-            new UDPInfo(host1InetAddress, 5008, 5009)
     };
 
     public static final UDPInfo[] FLOORS_UDP_INFO = {

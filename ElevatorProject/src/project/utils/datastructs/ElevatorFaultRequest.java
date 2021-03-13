@@ -4,7 +4,7 @@ public class ElevatorFaultRequest extends Request {
 
 	ElevatorFault fault;
 
-	public ElevatorFaultRequest(Source source, ElevatorFault fault) {
+	public ElevatorFaultRequest(SubsystemSource source, ElevatorFault fault) {
 		super(source);
 		this.fault = fault;
 	}
@@ -20,7 +20,6 @@ public class ElevatorFaultRequest extends Request {
 	@Override
 	public String toString() {
 		return "ElevatorFaultRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n" 
 		+ "Fault: " + fault;
 	}
 

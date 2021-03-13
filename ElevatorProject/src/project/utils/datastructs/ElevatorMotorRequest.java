@@ -6,7 +6,7 @@ public class ElevatorMotorRequest extends Request {
 
 	private ElevatorDirection requestedDirection;
 
-	public ElevatorMotorRequest(Source source, ElevatorDirection requestedDirection) {
+	public ElevatorMotorRequest(SubsystemSource source, ElevatorDirection requestedDirection) {
 		super(source);
 		this.requestedDirection = requestedDirection;
 		// TODO Auto-generated constructor stub
@@ -16,7 +16,6 @@ public class ElevatorMotorRequest extends Request {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "ElevatorMotorRequest: " + "\n"
-		+ "Source: " + this.getSource() + "\n" 
 		+ "Motor to Move:  " + this.requestedDirection + "\n";
 	}
 

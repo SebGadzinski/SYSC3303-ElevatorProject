@@ -7,7 +7,7 @@ public class ElevatorDestinationRequest extends Request {
     private int requestedDestinationFloor;
     private ElevatorDirection direction;
 
-    public ElevatorDestinationRequest(Source source, int requestedDestinationFloor, ElevatorDirection direction) {
+    public ElevatorDestinationRequest(SubsystemSource source, int requestedDestinationFloor, ElevatorDirection direction) {
         super(source);
         this.requestedDestinationFloor = requestedDestinationFloor;
         this.direction = direction;
@@ -16,8 +16,7 @@ public class ElevatorDestinationRequest extends Request {
     @Override
     public String toString() {
         return "ElevatorDestinationRequest: " + "\n"
-        + "Source: " + getSource() + "\n"
-        + " Set Destination to floor: " + this.requestedDestinationFloor + "\n";
+        + "Destination: " + this.requestedDestinationFloor;
     }
 
     public int getRequestedDestinationFloor() {
