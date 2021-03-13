@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
@@ -32,8 +33,9 @@ import static project.Config.SCHEDULER_UDP_INFO;
 public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
     private Scanner scanner; // for reading request batch files
-    //private Floor floor;
     private int floorNo;
+    private boolean upLamp;
+    private boolean downLamp;
 
     /**
      * A parameterized constructor.
@@ -46,7 +48,8 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
     public FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
         super(inetAddress, inSocketPort, outSocketPort);
 
-        //this.floor = new Floor();
+        this.downLamp = false;
+        this.upLamp = false;
         this.floorNo = floorNo;
 
         try {
@@ -110,15 +113,28 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         return new SubsystemSource(SubsystemSource.Subsystem.FLOOR_SUBSYSTEM, Integer.toString(floorNo));
     }
 
+    /**
+     * Once a request is received this request must be parsed and handled.  There is a few
+     * different packets that can be received and must be dealt with accordingly
+     * 
+     * @param request the request to be dealt with
+     */
     public void handleRequest(Request request){
+    	System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
         if(request instanceof ElevatorArrivalRequest){
             ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
             System.out.println(getSource() + "\nElevator Arriving\n");
         }
         else if(request instanceof ElevatorDoorRequest){
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-            if(doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED)System.out.println(getSource() + "\nElevator opening doors\n");
-            else System.out.println(getSource() + "\nElevator closing doors\n ");
+            if(doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
+            	this.upLamp = false;
+            	this.downLamp = false;
+            	System.out.println(getSource() + "\nElevator opening doors\n");
+            }
+            else {
+            	System.out.println(getSource() + "\nElevator closing doors\n ");
+            }
         }
         else System.out.println(getSource() +  "\nInvalid Request\n");
     }
@@ -133,8 +149,13 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
             if (readRequestResult.getRequest().getOriginFloor() == this.floorNo) {
+            	if(readRequestResult.getRequest().getOriginFloor() > readRequestResult.getRequest().getDestinationFloor()) {
+            		this.downLamp = true;
+            	}
+            	else {
+            		this.upLamp = true;
+            	}
                 System.out.println("Sending request to scheduler from floor " + this.floorNo);
-                //this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
                 this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
             }
             hasInput = readRequestResult.isThereAnotherRequest();
