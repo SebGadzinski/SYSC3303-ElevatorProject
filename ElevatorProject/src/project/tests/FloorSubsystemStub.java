@@ -41,7 +41,7 @@ public class FloorSubsystemStub {
 		// Receiveing a packet from floorSubSytem
 		try {
 			socket.receive(receivePacket);
-			System.out.println("packet received");
+			System.out.println("Packet received from the FLOOR SUBSYSTEM");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("packet achnowledgement was not received by host");
@@ -54,7 +54,7 @@ public class FloorSubsystemStub {
 		// sending the Datagram packet
 		try {
 			socket.send(sendPacket);
-			System.out.println("Acknowledgment sent");
+			System.out.println("SENDING ACK BACK");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("error in client asking for host data");
@@ -96,6 +96,8 @@ public class FloorSubsystemStub {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("Waiting for packet from a floor subsystem");
+		
 		FloorSubsystem floor = new FloorSubsystem(Config.FLOORS_UDP_INFO[0].getInetAddress(), 100, 101, 0);
  		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, floor.getSource());
 		FloorSubsystemStub test = new FloorSubsystemStub();
