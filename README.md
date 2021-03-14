@@ -15,33 +15,33 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and their contributions***
 
 Paul Roode
-> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Made the scheduler state machine diagram. Formatted this README.
+> Added an abstraction layer by extracting the UDP mechanism and request serialization into an AbstractSubsystem class, from which all subsystems (ElevatorSubsystem, FloorSubsystem, and Scheduler) inherit; and updated the concrete subsystem classes accordingly. Refactored UDP configuration to accommodate multiple hosts. De-smelled and formatted all src files. 
 
 <br>
 
 Chase Badalato
-> Reworked floorSubsystem class to send FileRequest packets to the respective floors. Reworked the Floor class to in parse, wait, and then forward the FileRequest packet to the scheduler. Created UML Sequence Diagram. 
+> Converted the FloorSubsystem to use UDP, and wrote test cases for all subsystems.
 
 <br>
 
 Sebastian Gadzinksi
-> Updated Request.java, allowing for different requests to be made. Also worked on the elevator subsystem and elevator state machine class and diagram. I also worked on the UML sequence diagram.
+> Worked on the Scheduler and ElevatorSubsystem classes.
 
 <br>
 
 Oluwaseyi Sehinde-Ibini
-> Worked on tests for the system to ensure it worked properly.
+> Nothing.
 
 <br>
 
 Chase Fridgen
-> Coded methods realTimeWait() and toMilliSeconds() in the Floor class to make it wait for the proper time, as well as helped with floorSubSystem class. Made the UML class diagram.
+> Made the CreateFile class and updated ElevatorSubsystem and Scheduler to output to .txt files. Helped with the FloorSubsystemStub test class. Made the UML class and sequence UML diagrams.
 
 ---
 
 ***Running the application***
 
-project/Runner.java is the driver – run it and observe the terminal output.
+In src/project/systems, first run (as a Java Application) ElevatorSubsystem, followed by Scheduler, followed by FloorSubsystem; and observe the terminal output, as well as the outputted ElevatorX.txt files and schedulerFile.txt in the assets directory.
 
 ---
 
