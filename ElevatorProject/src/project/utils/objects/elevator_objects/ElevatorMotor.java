@@ -16,7 +16,8 @@ public class ElevatorMotor {
         this.state = state;
     }
 
-    public enum ElevatorMotorStatus{
-        ON, OFF;
+    public enum ElevatorMotorStatus {
+        ON, OFF
     }
+
 }

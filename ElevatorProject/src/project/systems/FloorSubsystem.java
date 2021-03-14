@@ -3,49 +3,41 @@ package project.systems;
 import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
-import project.utils.datastructs.ElevatorArrivalRequest;
-import project.utils.datastructs.ElevatorDoorRequest;
-import project.utils.datastructs.FileRequest;
-import project.utils.datastructs.ReadRequestResult;
-import project.utils.datastructs.Request;
-import project.utils.datastructs.SubsystemSource;
+import project.utils.datastructs.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
-import static project.Config.REQUEST_BATCH_FILENAME;
-import static project.Config.SCHEDULER_UDP_INFO;
+import static project.Config.*;
 
 /**
  * Reads requests from a batch file and sends them to the Scheduler; coordinates
  * with the Scheduler on thread-safe queues comprising requests.
  *
- * @author Paul Roode (Iteration One)
- * @author Chase Badalato (Iteration Two and Three)
- * @author Chase Fridgen (Iteration Two)
+ * @author Chase Badalato (iter 3 and 2), Chase Fridgen (iter 2), Paul Roode (iter 1)
  * @version Iteration 3
  */
 public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
     private Scanner scanner; // for reading request batch files
-    private int floorNo;
+    private final int floorNo;
     private boolean upLamp;
     private boolean downLamp;
 
     /**
-     * A parameterized constructor.
+     * A parameterized FloorSubsystem constructor.
      *
-     * @param inetAddress
-     * @param inSocketPort
-     * @param outSocketPort
-     * @param floorNo
+     * @param inetAddress   This FloorSubsystem's IP address.
+     * @param inSocketPort  This FloorSubsystem's inlet socket port number.
+     * @param outSocketPort This FloorSubsystem's outlet socket port number.
+     * @param floorNo       This FloorSubsystem's floor number.
      */
     public FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
+
         super(inetAddress, inSocketPort, outSocketPort);
 
         this.downLamp = false;
@@ -91,7 +83,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
     /**
      * Gets ElevatorDirection from string
-     * 
+     *
      * @param direction ElevatorDirection in string form
      * @return Direction from string
      */
@@ -106,37 +98,34 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
     /**
      * Get subsystem identification
-     * 
+     *
      * @return this subsystems identification
      */
-    public SubsystemSource getSource(){
+    public SubsystemSource getSource() {
         return new SubsystemSource(SubsystemSource.Subsystem.FLOOR_SUBSYSTEM, Integer.toString(floorNo));
     }
 
     /**
      * Once a request is received this request must be parsed and handled.  There is a few
      * different packets that can be received and must be dealt with accordingly
-     * 
+     *
      * @param request the request to be dealt with
      */
-    public void handleRequest(Request request){
-    	System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
-        if(request instanceof ElevatorArrivalRequest){
+    public void handleRequest(Request request) {
+        System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
+        if (request instanceof ElevatorArrivalRequest) {
             ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
             System.out.println(getSource() + "\nElevator Arriving\n");
-        }
-        else if(request instanceof ElevatorDoorRequest){
+        } else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-            if(doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
-            	this.upLamp = false;
-            	this.downLamp = false;
-            	System.out.println(getSource() + "\nElevator opening doors\n");
+            if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
+                this.upLamp = false;
+                this.downLamp = false;
+                System.out.println(getSource() + "\nElevator opening doors\n");
+            } else {
+                System.out.println(getSource() + "\nElevator closing doors\n ");
             }
-            else {
-            	System.out.println(getSource() + "\nElevator closing doors\n ");
-            }
-        }
-        else System.out.println(getSource() +  "\nInvalid Request\n");
+        } else System.out.println(getSource() + "\nInvalid Request\n");
     }
 
     /**
@@ -149,12 +138,11 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
         while (hasInput) {
             ReadRequestResult readRequestResult = readRequest();
             if (readRequestResult.getRequest().getOriginFloor() == this.floorNo) {
-            	if(readRequestResult.getRequest().getOriginFloor() > readRequestResult.getRequest().getDestinationFloor()) {
-            		this.downLamp = true;
-            	}
-            	else {
-            		this.upLamp = true;
-            	}
+                if (readRequestResult.getRequest().getOriginFloor() > readRequestResult.getRequest().getDestinationFloor()) {
+                    this.downLamp = true;
+                } else {
+                    this.upLamp = true;
+                }
                 System.out.println("Sending request to scheduler from floor " + this.floorNo);
                 this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
             }
@@ -166,12 +154,21 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
     }
 
     public static void main(String[] args) {
+
         Thread[] floorSubsystemThreads = new Thread[Config.NUMBER_OF_FLOORS];
 
         for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-            floorSubsystemThreads[i] = new Thread(new FloorSubsystem(Config.FLOORS_UDP_INFO[i].getInetAddress(), Config.FLOORS_UDP_INFO[i].getInSocketPort(), Config.FLOORS_UDP_INFO[i].getOutSocketPort(), i), ("FloorSubsystem" + i));
+            floorSubsystemThreads[i] = new Thread(
+                    new FloorSubsystem(
+                            FLOORS_UDP_INFO[i].getInetAddress(),
+                            FLOORS_UDP_INFO[i].getInSocketPort(),
+                            FLOORS_UDP_INFO[i].getOutSocketPort(), i
+                    ),
+                    ("FloorSubsystem" + i)
+            );
             floorSubsystemThreads[i].start();
         }
+
     }
 
 }

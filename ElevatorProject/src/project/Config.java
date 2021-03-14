@@ -19,10 +19,10 @@ public final class Config {
     public static final int    MAX_PASSENGERS_IN_ELEVATOR   = 10;
 
     // UDP config
-    //---------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
     private static InetAddress host1InetAddress;
 
-    static {
+    static { // static initializer block
         try {
             host1InetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException uhe) {
@@ -45,7 +45,7 @@ public final class Config {
             new UDPInfo(host1InetAddress, 5012, 5013),
             new UDPInfo(host1InetAddress, 5014, 5015)
     };
-    //---------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
 
     private Config() {
         throw new UnsupportedOperationException(); // prevents instantiation from reflection

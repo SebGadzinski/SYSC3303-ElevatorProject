@@ -7,38 +7,32 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class CreateFile {
-	private File file;
-	private String fileName;
 
-	public CreateFile(String filename) {
-		this.fileName = filename;
-		file = new File(this.fileName);
-		try {
-			if (file.exists()) {
-				file.delete();
-				file.createNewFile();
-			} else {
-				file.createNewFile();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    private final String fileName;
 
-	public void writeToFile(String message) {
-		try {
-			FileWriter writer = new FileWriter(this.fileName, true);
-			BufferedWriter bufWriter = new BufferedWriter(writer);
-			PrintWriter pw = new PrintWriter(bufWriter);
+    public CreateFile(String filename) {
+        this.fileName = filename;
+        File file = new File(this.fileName);
+        try {
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			pw.println(message);
+    public void writeToFile(String message) {
+        try {
+            FileWriter writer = new FileWriter(this.fileName, true);
+            BufferedWriter bufWriter = new BufferedWriter(writer);
+            PrintWriter pw = new PrintWriter(bufWriter);
+            pw.println(message);
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			pw.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

@@ -1,17 +1,14 @@
 package project.state_machines;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.utils.datastructs.*;
-import project.utils.datastructs.SubsystemSource;
-import project.utils.datastructs.SubsystemSource.Subsystem;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 
 /**
  * The Scheduler state machine.
  *
  * @author Paul Roode
- * @version Iteration 2
+ * @version Iteration 3
  */
 public class SchedulerStateMachine {
 
@@ -40,7 +37,6 @@ public class SchedulerStateMachine {
                     }
 
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
-
                 }
 
                 // dispatch a MotorRequest to an Elevator to move it in the direction of its destination
@@ -48,23 +44,20 @@ public class SchedulerStateMachine {
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
-                // dispatch an ElevatorDoorRequest to an Elevator to open its doors once it's reached its destination
+                /*
+                 dispatch an ElevatorDoorRequest to an Elevator to open its doors once it's reached its destination;
+                 if opening the doors, also send a request to the appropriate Floor
+                */
                 else if (request instanceof ElevatorDoorRequest) {
-                    //IF im opening the doors send a request to the floor
-
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
                 // respond to an ElevatorPassengerWaitRequest from an Elevator
                 else if (request instanceof ElevatorPassengerWaitRequest) {
-
                     WaitState waitState = ((ElevatorPassengerWaitRequest) request).getState();
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
-                }
-
-                else if (request instanceof ElevatorArrivalRequest) {
+                } else if (request instanceof ElevatorArrivalRequest) {
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
-
                 }
 
                 // the request type is not recognized
@@ -74,7 +67,7 @@ public class SchedulerStateMachine {
         },
 
         /**
-         * Scheduler dispatches a given FileRequest to an ElevatorSubsystem.
+         * Scheduler dispatches a given request to a subsystem.
          */
         DISPATCH_REQUEST_TO_SUBSYSTEM {
             @Override

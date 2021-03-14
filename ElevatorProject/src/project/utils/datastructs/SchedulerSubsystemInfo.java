@@ -1,10 +1,11 @@
 package project.utils.datastructs;
 
-public class AbstractSchedulerSubSystemInfo {
+public abstract class SchedulerSubsystemInfo {
+
     private String id;
     private UDPInfo udpInfo;
 
-    public AbstractSchedulerSubSystemInfo(String id, UDPInfo udpInfo) {
+    public SchedulerSubsystemInfo(String id, UDPInfo udpInfo) {
         this.id = id;
         this.udpInfo = udpInfo;
     }

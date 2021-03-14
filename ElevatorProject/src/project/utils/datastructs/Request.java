@@ -12,10 +12,6 @@ public abstract class Request implements Serializable {
 
     private SubsystemSource source;
 
-    /**
-     * Subsystems from which a concrete Request specialization can be transmitted.
-     */
-
     public Request(SubsystemSource source) {
         this.source = source;
     }
