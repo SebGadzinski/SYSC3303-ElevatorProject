@@ -1,6 +1,7 @@
 package project.utils.datastructs;
 
 public class ReceivedRequest {
+
     public Request requestReceived;
 
     public ReceivedRequest(Request requestReceived) {
@@ -17,9 +18,7 @@ public class ReceivedRequest {
 
     @Override
     public String toString() {
-        return "ReceivedRequest: \n" 
-        + requestReceived;
+        return "ReceivedRequest:\n" + requestReceived;
     }
 
-    
 }

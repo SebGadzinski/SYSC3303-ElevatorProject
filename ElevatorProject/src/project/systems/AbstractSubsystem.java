@@ -11,7 +11,7 @@ import java.net.*;
  * @author Paul Roode
  * @version Iteration 3
  */
-public abstract class AbstractSubsystem{
+public abstract class AbstractSubsystem {
 
     private static final int MAX_PACKET_SIZE = 10000; // bytes
 
@@ -47,7 +47,7 @@ public abstract class AbstractSubsystem{
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream;
-        
+
         try {
 
             // serialize the given Request
@@ -55,8 +55,6 @@ public abstract class AbstractSubsystem{
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
             byte[] requestInBytes = byteArrayOutputStream.toByteArray();
-
-            
 
             // send the serialized Request in a DatagramPacket to the target
             sendPacket(
@@ -97,15 +95,12 @@ public abstract class AbstractSubsystem{
         Request receivedRequest = null;
 
         try {
+
             // deserialize the received Request
             objectInput = new ObjectInputStream(byteArrayInputStream);
             receivedRequest = (Request) objectInput.readObject();
 
-        } catch (EOFException e) {
-        	
-        	System.out.println("EOF Exception");
-        	
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
 
             e.printStackTrace();
 

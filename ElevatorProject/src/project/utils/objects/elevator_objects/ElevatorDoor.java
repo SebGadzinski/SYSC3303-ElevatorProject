@@ -10,11 +10,12 @@ public class ElevatorDoor {
         this.state = state;
     }
 
-	public ElevatorDoorStatus getDoorState() {
-		return state;
-	}
+    public ElevatorDoorStatus getDoorState() {
+        return state;
+    }
 
-	public void setDoorState(ElevatorDoorStatus doorState) {
-		this.state = doorState;
-	}
+    public void setDoorState(ElevatorDoorStatus doorState) {
+        this.state = doorState;
+    }
+
 }

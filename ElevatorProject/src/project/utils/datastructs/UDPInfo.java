@@ -29,11 +29,9 @@ public class UDPInfo {
     @Override
     public String toString() {
         return "UDPInfo: \n"
-        + "inSocketPort: "  + inSocketPort + "\n"
-        + "inetAddress: " + inetAddress + "\n"
-        + "outSocketPort: " + outSocketPort;
+                + "inSocketPort: " + inSocketPort + "\n"
+                + "inetAddress: " + inetAddress + "\n"
+                + "outSocketPort: " + outSocketPort;
     }
-
-    
 
 }

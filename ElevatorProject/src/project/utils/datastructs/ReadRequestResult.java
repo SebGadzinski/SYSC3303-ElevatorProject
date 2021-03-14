@@ -3,7 +3,8 @@ package project.utils.datastructs;
 /**
  * Multi-return auxiliary to FloorSubsystem::readRequest().
  *
- * @author Paul Roode, Sebastian Gadzinski
+ * @author Paul Roode
+ * @version Iteration 1
  */
 public final class ReadRequestResult {
 
