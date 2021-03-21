@@ -8,44 +8,41 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
  *
  * @author Sebastian Gadzinski
  */
-public class FileRequest extends Request{
+public class FileRequest extends Request {
 
-    private String time;
-    private ElevatorDirection direction;
-    private int destinationFloor, originFloor;
-    
-	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, Source source) {
-		super(source);
-		this.time = time;
-		this.originFloor = originFloor;
-		this.direction = direction;
-		this.destinationFloor = destinationFloor;
-	}
+    private final String time;
+    private final ElevatorDirection direction;
+    private final int destinationFloor;
+    private final int originFloor;
 
-	public String getTime() {
-		return time;
-	}
+    public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, SubsystemSource source) {
+        super(source);
+        this.time = time;
+        this.originFloor = originFloor;
+        this.direction = direction;
+        this.destinationFloor = destinationFloor;
+    }
 
-	public int getOriginFloor() {
-		return originFloor;
-	}
+    public String getTime() {
+        return time;
+    }
 
-	public ElevatorDirection getDirection() {
-		return direction;
-	}
+    public int getOriginFloor() {
+        return originFloor;
+    }
 
-	public int getDestinationFloor() {
-		return destinationFloor;
-	}
+    public ElevatorDirection getDirection() {
+        return direction;
+    }
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "Source: " + this.getSource() + "\n"
-		+ "Time:  " + this.getTime() + "\n"
-		+ "Direction: " + this.getDirection() + "\n"
-		+ "Pick Up: " + this.getOriginFloor() + "\n"
-		+ "Destination Floor: " + this.getDestinationFloor() + "\n";
-	}
+    public int getDestinationFloor() {
+        return destinationFloor;
+    }
+
+    @Override
+    public String toString() {
+        return "FileRequest:\nTime: " + getTime() + "\nDirection: " + getDirection()
+                + "\nPick up: " + getOriginFloor() + "\nDestination Floor: " + getDestinationFloor();
+    }
 
 }

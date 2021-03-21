@@ -1,4 +1,4 @@
-# Multithreaded Elevator System v2.0
+# Multithreaded Elevator System v3.0
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
 ### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
 
@@ -6,46 +6,46 @@
 
 ***Welcome!***
 
-We hope you enjoy the 2nd iteration of our multithreaded elevator system!
+We hope you enjoy the 3rd iteration of our multithreaded elevator system!
 
 This project aims to design a real-time elevator control system that will quickly and efficiently transport passengers between floors.
 
 ---
 
-***Authors and Their Contributions***
+***Authors and their contributions***
 
 Paul Roode
-> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Formatted this README.
+> Added an abstraction layer by extracting the UDP mechanism and request serialization into an AbstractSubsystem class, from which all subsystems (ElevatorSubsystem, FloorSubsystem, and Scheduler) inherit; and updated the concrete subsystem classes accordingly. Refactored UDP configuration to accommodate multiple hosts. De-smelled and formatted all src files. 
 
 <br>
 
 Chase Badalato
-> Constructed the UML sequence diagram, and implemented ElevatorSubsystem and helped establish its connection to Scheduler. Implemented JUnit tests for verification. 
+> Converted the FloorSubsystem to use UDP, and wrote test cases for all subsystems.
 
 <br>
 
 Sebastian Gadzinksi
-> Set up the initial project hierarchy and GitHub repo, and implemented Scheduler and helped establish its connection to ElevatorSubsystem and FloorSubsystem. Helped implement JUnit tests for verification.
+> Worked on the Scheduler and ElevatorSubsystem classes.
 
 <br>
 
 Oluwaseyi Sehinde-Ibini
-> Worked through and understood what the project classes and subsystems were doing. Used this knowledge to write the README file content that explains the aim of the project and what the classes within the project are doing (i.e., Main components below).
+> Nothing.
 
 <br>
 
 Chase Fridgen
-> Created the two UML diagrams (one for subsystems and one for elevators and floors), implemented methods for Floor.java and Elevator.java, and implemented the JUnit tests for verifying the FloorSubsystem.
+> Made the CreateFile class and updated ElevatorSubsystem and Scheduler to output to .txt files. Helped with the FloorSubsystemStub test class. Made the UML class and sequence UML diagrams.
 
 ---
 
-***Running the Application***
+***Running the application***
 
-Runner.java is the driver.
+In src/project/systems, first run (as a Java Application) ElevatorSubsystem, followed by Scheduler, followed by FloorSubsystem; and observe the terminal output, as well as the outputted ElevatorX.txt files and schedulerFile.txt in the root directory.
 
 ---
 
-***Main Components***
+***Main components***
 
 - FloorSubsystem: acts as the client; sends floor requests to the scheduler for relaying to an elevator, and manages the sending and receiving of requests for all the floors
 - ElevatorSubsystem: receives relayed floor requests from the scheduler and sends them to the routed elevator node

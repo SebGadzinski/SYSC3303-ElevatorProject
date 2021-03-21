@@ -5,9 +5,9 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 public class ElevatorDestinationRequest extends Request {
 
     private int requestedDestinationFloor;
-    private ElevatorDirection direction;
+    private final ElevatorDirection direction;
 
-    public ElevatorDestinationRequest(Source source, int requestedDestinationFloor, ElevatorDirection direction) {
+    public ElevatorDestinationRequest(SubsystemSource source, int requestedDestinationFloor, ElevatorDirection direction) {
         super(source);
         this.requestedDestinationFloor = requestedDestinationFloor;
         this.direction = direction;
@@ -15,7 +15,7 @@ public class ElevatorDestinationRequest extends Request {
 
     @Override
     public String toString() {
-        return "Source: " + getSource() + "Set Destination to floor: " + this.requestedDestinationFloor + "\n";
+        return "ElevatorDestinationRequest:\nDestination: " + requestedDestinationFloor;
     }
 
     public int getRequestedDestinationFloor() {

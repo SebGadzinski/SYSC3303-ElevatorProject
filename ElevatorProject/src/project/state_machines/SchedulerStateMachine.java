@@ -2,14 +2,13 @@ package project.state_machines;
 
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.utils.datastructs.*;
-import project.utils.datastructs.Request.Source;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 
 /**
  * The Scheduler state machine.
  *
  * @author Paul Roode
- * @version Iteration 2
+ * @version Iteration 3
  */
 public class SchedulerStateMachine {
 
@@ -24,9 +23,8 @@ public class SchedulerStateMachine {
 
                 // dispatch a request read in from a file
                 if (request instanceof FileRequest) {
-
                     FileRequest fileRequest = (FileRequest) request;
-                    Source source = fileRequest.getSource();
+                    SubsystemSource source = fileRequest.getSource();
                     Integer originFloor = fileRequest.getOriginFloor();
                     ElevatorDirection direction = fileRequest.getDirection();
                     Integer destinationFloor = fileRequest.getDestinationFloor();
@@ -38,41 +36,28 @@ public class SchedulerStateMachine {
                         return INVALID_REQUEST;
                     }
 
-                    // dispatch the validated request
-                    if (source == Source.FLOOR_SUBSYSTEM) {
-                        return DISPATCH_FILE_REQUEST_TO_ELEVATOR;
-                    } else if (source == Source.ELEVATOR_SUBSYSTEM) {
-                        return DISPATCH_FILE_REQUEST_TO_FLOOR;
-                    }
-
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
-                // dispatch a MotorRequest to an ElevatorSubsystem
+                // dispatch a MotorRequest to an Elevator to move it in the direction of its destination
                 else if (request instanceof ElevatorDestinationRequest) {
-                    return DISPATCH_MOTOR_REQUEST_TO_ELEVATOR;
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
-                // dispatch an ElevatorDoorRequest to an ElevatorSubsystem
+                /*
+                 dispatch an ElevatorDoorRequest to an Elevator to open its doors once it's reached its destination;
+                 if opening the doors, also send a request to the appropriate Floor
+                */
                 else if (request instanceof ElevatorDoorRequest) {
-                    return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
-                // respond to an ElevatorPassengerWaitRequest from an ElevatorSubsystem
+                // respond to an ElevatorPassengerWaitRequest from an Elevator
                 else if (request instanceof ElevatorPassengerWaitRequest) {
                     WaitState waitState = ((ElevatorPassengerWaitRequest) request).getState();
-                    if (waitState == WaitState.WAITING) {
-                        return DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR;
-                    } else if (waitState == WaitState.FINISHED) {
-                        return DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR;
-                    }
-                }
-
-                // consume an ElevatorArrivalRequest
-                else if (request instanceof ElevatorArrivalRequest) {
-                    ElevatorArrivalRequest elevatorArrivalRequest = (ElevatorArrivalRequest) request;
-                    int floorArrivedAt = elevatorArrivalRequest.getFloorArrivedAt();
-                    int destinationFloor = elevatorArrivalRequest.getDestinationFloor();
-                    return floorArrivedAt == destinationFloor ? DISPATCH_MOTOR_REQUEST_TO_ELEVATOR : CONSUME_ELEVATOR_ARRIVAL_REQUEST;
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
+                } else if (request instanceof ElevatorArrivalRequest) {
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
 
                 // the request type is not recognized
@@ -82,59 +67,9 @@ public class SchedulerStateMachine {
         },
 
         /**
-         * Scheduler dispatches a given FileRequest to an ElevatorSubsystem.
+         * Scheduler dispatches a given request to a subsystem.
          */
-        DISPATCH_FILE_REQUEST_TO_ELEVATOR {
-            @Override
-            public SchedulerState advance(Request request) {
-                return AWAIT_REQUEST;
-            }
-        },
-
-        /**
-         * Scheduler dispatches a given FileRequest to a FloorSubsystem.
-         */
-        DISPATCH_FILE_REQUEST_TO_FLOOR {
-            @Override
-            public SchedulerState advance(Request request) {
-                return AWAIT_REQUEST;
-            }
-        },
-
-        /**
-         * Scheduler dispatches a new MotorRequest to an ElevatorSubsystem.
-         */
-        DISPATCH_MOTOR_REQUEST_TO_ELEVATOR {
-            @Override
-            public SchedulerState advance(Request request) {
-                return AWAIT_REQUEST;
-            }
-        },
-
-        /**
-         * Scheduler dispatches an ElevatorDoorRequest to an ElevatorSubsystem.
-         */
-        DISPATCH_ELEVATOR_DOOR_REQUEST_TO_ELEVATOR {
-            @Override
-            public SchedulerState advance(Request request) {
-                return AWAIT_REQUEST;
-            }
-        },
-
-        /**
-         * Scheduler dispatches an ElevatorPassengerWaitRequest to an ElevatorSubsystem.
-         */
-        DISPATCH_ELEVATOR_PASSENGER_WAIT_REQUEST_TO_ELEVATOR {
-            @Override
-            public SchedulerState advance(Request request) {
-                return AWAIT_REQUEST;
-            }
-        },
-
-        /**
-         * Scheduler consumes an ElevatorArrivalRequest.
-         */
-        CONSUME_ELEVATOR_ARRIVAL_REQUEST {
+        DISPATCH_REQUEST_TO_SUBSYSTEM {
             @Override
             public SchedulerState advance(Request request) {
                 return AWAIT_REQUEST;

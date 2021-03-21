@@ -1,176 +1,174 @@
 package project.systems;
 
-import static project.Config.REQUEST_BATCH_FILENAME;
+import project.Config;
+import project.state_machines.ElevatorStateMachine.ElevatorDirection;
+import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.utils.datastructs.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.InetAddress;
 import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
 import java.util.regex.MatchResult;
 
-import project.Config;
-import project.models.Floor;
-import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.utils.datastructs.FileRequest;
-import project.utils.datastructs.ReadRequestResult;
-import project.utils.datastructs.Request;
-import project.utils.datastructs.Request.Source;
+import static project.Config.*;
 
 /**
  * Reads requests from a batch file and sends them to the Scheduler; coordinates
  * with the Scheduler on thread-safe queues comprising requests.
  *
- * @author Paul Roode (Iteration One)
- * @author Chase Badalato (Iteration Two)
- * @author Chase Fridgen (Iteration Two)
- * @version Iteration 2
+ * @author Chase Badalato (iter 3 and 2), Chase Fridgen (iter 2), Paul Roode (iter 1)
+ * @version Iteration 3
  */
-public class FloorSubsystem implements Runnable {
+public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
-	private BlockingQueue<Request> requestsToScheduler; // requests to be fulfilled
-	private BlockingQueue<Request> requestsFromScheduler;
-	private Floor[] floors;
-	private Thread[] floorThreads;
-	Scanner scanner; // for reading request batch files
+    private Scanner scanner; // for reading request batch files
+    private final int floorNo;
+    private boolean upLamp;
+    private boolean downLamp;
 
-	public FloorSubsystem() {
-		// Testing purposes
-	}
+    /**
+     * A parameterized FloorSubsystem constructor.
+     *
+     * @param inetAddress   This FloorSubsystem's IP address.
+     * @param inSocketPort  This FloorSubsystem's inlet socket port number.
+     * @param outSocketPort This FloorSubsystem's outlet socket port number.
+     * @param floorNo       This FloorSubsystem's floor number.
+     */
+    public FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo) {
 
-	/**
-	 * A parameterized constructor.
-	 * 
-	 * @param incomingRequests    Incoming fulfilled requests.
-	 * @param requestsToScheduler Requests sent
-	 */
-	public FloorSubsystem(BlockingQueue<Request> requestsFromScheduler, BlockingQueue<Request> requestsToScheduler) {
+        super(inetAddress, inSocketPort, outSocketPort);
 
-		this.requestsFromScheduler = requestsFromScheduler;
-		this.requestsToScheduler = requestsToScheduler;
-		this.floors = new Floor[Config.NUMBER_OF_FLOORS];
-		this.floorThreads = new Thread[Config.NUMBER_OF_FLOORS];
+        this.downLamp = false;
+        this.upLamp = false;
+        this.floorNo = floorNo;
 
-		for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
-			this.floors[i] = new Floor(this.requestsToScheduler);
-			this.floorThreads[i] = new Thread(this.floors[i], ("Thread for floor: " + i));
-			this.floorThreads[i].start();
-		}
+        try {
+            scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-		try {
-			scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+    }
 
-	}
+    /**
+     * Reads a request from the request batch file. The stipulated time format is
+     * hh:mm:ss.mmm.
+     *
+     * @return A multi-return auxiliary comprising the read-in request and whether
+     * there is another request.
+     */
+    public synchronized ReadRequestResult readRequest() {
 
-	/**
-	 * Reads a request from the request batch file. The stipulated time format is
-	 * hh:mm:ss.mmm.
-	 *
-	 * @return A multi-return auxiliary comprising the read-in request and whether
-	 *         there is another request.
-	 */
-	public synchronized ReadRequestResult readRequest() {
+        // match input against a regex
+        this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d)");
+        MatchResult matchResult = this.scanner.match();
 
-		// match input against a regex
-		scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d)");
-		MatchResult matchResult = scanner.match();
+        // store the matched data in a new request instance
+        FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
+                getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)),
+                getSource());
 
-		// store the matched data in a new request instance
-		FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
-				getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)),
-				Source.FLOOR_SUBSYSTEM);
+        // check for another request
+        boolean isThereAnotherRequest;
+        if (isThereAnotherRequest = this.scanner.hasNext()) {
+            this.scanner.nextLine();
+        }
 
-		// check for another request
-		boolean isThereAnotherRequest;
-		if (isThereAnotherRequest = scanner.hasNext()) {
-			scanner.nextLine();
-		}
+        // multi-return
+        return new ReadRequestResult(request, isThereAnotherRequest);
 
-		// multi-return
-		return new ReadRequestResult(request, isThereAnotherRequest);
+    }
 
-	}
+    /**
+     * Gets ElevatorDirection from string
+     *
+     * @param direction ElevatorDirection in string form
+     * @return Direction from string
+     */
+    public ElevatorDirection getDirectionFromString(String direction) {
+        if (direction.toLowerCase().trim().equals("up")) {
+            return ElevatorDirection.UP;
+        } else if (direction.equalsIgnoreCase("down")) {
+            return ElevatorDirection.DOWN;
+        } else
+            return ElevatorDirection.IDLE;
+    }
 
-	/**
-	 * Inserts the given request into the outgoing request queue, waiting if
-	 * necessary for space to become available.
-	 *
-	 * @param request The request to be inserted into the outgoing request queue.
-	 */
-	public synchronized void sendRequest(Request request) {
-		try {
-			if (request instanceof FileRequest) {
-				FileRequest fileRequest = (FileRequest) request;
-				this.floors[fileRequest.getOriginFloor()].putRequest(fileRequest);
-				System.out.println("FloorSubsystem sent a request to floor " + fileRequest.getOriginFloor());
-			}
+    /**
+     * Get subsystem identification
+     *
+     * @return this subsystems identification
+     */
+    public SubsystemSource getSource() {
+        return new SubsystemSource(SubsystemSource.Subsystem.FLOOR_SUBSYSTEM, Integer.toString(floorNo));
+    }
 
-		} catch (IndexOutOfBoundsException e) {
-			if (request instanceof FileRequest) {
-				FileRequest fileRequest = (FileRequest) request;
-				System.out.println("The requested floor " + fileRequest.getOriginFloor() + " does not exist!");
-			}
-			System.out.println("Ignoring this floor ...");
-		}
-	}
+    /**
+     * Once a request is received this request must be parsed and handled.  There is a few
+     * different packets that can be received and must be dealt with accordingly
+     *
+     * @param request the request to be dealt with
+     */
+    public void handleRequest(Request request) {
+        System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
+        if (request instanceof ElevatorArrivalRequest) {
+            ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
+            System.out.println(getSource() + "\nElevator Arriving\n");
+        } else if (request instanceof ElevatorDoorRequest) {
+            ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
+            if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
+                this.upLamp = false;
+                this.downLamp = false;
+                System.out.println(getSource() + "\nElevator opening doors\n");
+            } else {
+                System.out.println(getSource() + "\nElevator closing doors\n ");
+            }
+        } else System.out.println(getSource() + "\nInvalid Request\n");
+    }
 
-	/**
-	 * Retrieves and removes the head of the incoming requests queue, waiting if
-	 * necessary until a request becomes available.
-	 */
-	public synchronized void fetchRequest() {
-		try {
-			Request fetchedRequest = requestsFromScheduler.take();
+    /**
+     * Reads and transmits requests to be fulfilled, and fetches fulfilled requests.
+     */
+    @Override
+    public void run() {
+        System.out.println("FloorSubsystem " + this.floorNo + " operational...\n");
+        boolean hasInput = true;
+        while (hasInput) {
+            ReadRequestResult readRequestResult = readRequest();
+            if (readRequestResult.getRequest().getOriginFloor() == this.floorNo) {
+                if (readRequestResult.getRequest().getOriginFloor() > readRequestResult.getRequest().getDestinationFloor()) {
+                    this.downLamp = true;
+                } else {
+                    this.upLamp = true;
+                }
+                System.out.println("Sending request to scheduler from floor " + this.floorNo);
+                this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
+            }
+            hasInput = readRequestResult.isThereAnotherRequest();
+        }
+        while (true) {
+            handleRequest(this.waitForRequest());
+        }
+    }
 
-			if (fetchedRequest instanceof FileRequest) {
-				FileRequest fileRequest = (FileRequest) fetchedRequest;
-				System.out.println("Request received by FloorSubsystem from " + fileRequest.getSource());
+    public static void main(String[] args) {
 
-			}
+        Thread[] floorSubsystemThreads = new Thread[Config.NUMBER_OF_FLOORS];
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+        for (int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
+            floorSubsystemThreads[i] = new Thread(
+                    new FloorSubsystem(
+                            FLOORS_UDP_INFO[i].getInetAddress(),
+                            FLOORS_UDP_INFO[i].getInSocketPort(),
+                            FLOORS_UDP_INFO[i].getOutSocketPort(), i
+                    ),
+                    ("FloorSubsystem" + i)
+            );
+            floorSubsystemThreads[i].start();
+        }
 
-	public ElevatorDirection getDirectionFromString(String direction) {
-		if (direction.toLowerCase().trim().equals("up")) {
-			return ElevatorDirection.UP;
-		} else if (direction.toLowerCase().equals("down")) {
-			return ElevatorDirection.DOWN;
-		} else
-			return ElevatorDirection.IDLE;
-	}
-
-	/**
-	 * Reads and transmits requests to be fulfilled, and fetches fulfilled requests.
-	 */
-	@Override
-	public void run() {
-		System.out.println("FloorSubsystem operational...\n");
-		boolean hasInput = true;
-		while (hasInput) {
-			ReadRequestResult readRequestResult = readRequest();
-			sendRequest(readRequestResult.getRequest());
-			// fetchRequest();
-			hasInput = readRequestResult.isThereAnotherRequest();
-		}
-
-		while (true) {
-			this.fetchRequest();
-		}
-//        for(int i = 0; i < this.floors.length; i++) {
-//          try {
-//              this.floorThreads[i].join();
-//          } catch (InterruptedException e) {
-//              System.out.println("Could not wait for all floor threads to finish");
-//              e.printStackTrace();
-//          }
-//        }
-		// System.exit(0);
-	}
+    }
 
 }
