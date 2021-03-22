@@ -1,4 +1,4 @@
-package project.tests;
+package project.tests.stubs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,8 +7,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import project.Config;
 import project.utils.datastructs.Request;
+
+import static project.Config.FLOORS_UDP_INFO;
+import static project.Config.SCHEDULER_UDP_INFO;
 
 public class FloorSubsystemStub {
 
@@ -18,7 +20,7 @@ public class FloorSubsystemStub {
 
     public FloorSubsystemStub() {
         try {
-            socket = new DatagramSocket(Config.SCHEDULER_UDP_INFO.getInSocketPort());
+            socket = new DatagramSocket(SCHEDULER_UDP_INFO.getInSocketPort());
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(1);
@@ -30,31 +32,27 @@ public class FloorSubsystemStub {
         byte[] data = new byte[1000];
         receivePacket = new DatagramPacket(data, data.length);
 
-        // Receiving a packet from FloorSubsystem
+        // receiving a packet from FloorSubsystem
         try {
             socket.receive(receivePacket);
-            System.out.println("Packet received from the FLOOR SUBSYSTEM");
-
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("packet acknowledgement was not received by host");
             System.exit(1);
         }
 
-
-        sendPacket = new DatagramPacket(dataToSend, dataToSend.length, Config.FLOORS_UDP_INFO[0].getInetAddress(), Config.FLOORS_UDP_INFO[0].getInSocketPort());
+        sendPacket = new DatagramPacket(dataToSend, dataToSend.length, FLOORS_UDP_INFO[0].getInetAddress(), FLOORS_UDP_INFO[0].getInSocketPort());
 
         // sending the Datagram packet
         try {
             socket.send(sendPacket);
-            System.out.println("SENDING ACK BACK");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("error in client asking for host data");
             System.exit(1);
         }
+
         return false;
+
     }
 
     public byte[] sendRequest(Request request) {
@@ -71,7 +69,6 @@ public class FloorSubsystemStub {
             objectOutputStream.flush();
             requestInBytes = byteArrayOutputStream.toByteArray();
 
-
         } catch (IOException ioe) {
 
             ioe.printStackTrace();
@@ -86,7 +83,9 @@ public class FloorSubsystemStub {
             }
 
         }
+
         return null;
+
     }
 
 }
