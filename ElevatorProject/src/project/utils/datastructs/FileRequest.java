@@ -10,39 +10,47 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
  */
 public class FileRequest extends Request {
 
-    private final String time;
-    private final ElevatorDirection direction;
-    private final int destinationFloor;
-    private final int originFloor;
+	private String time;
+	private ElevatorDirection direction;
+	private int destinationFloor, originFloor;
+	private int fault;
 
-    public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor, SubsystemSource source) {
-        super(source);
-        this.time = time;
-        this.originFloor = originFloor;
-        this.direction = direction;
-        this.destinationFloor = destinationFloor;
-    }
+	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor,
+			SubsystemSource source, int fault) {
+		super(source);
+		this.time = time;
+		this.originFloor = originFloor;
+		this.direction = direction;
+		this.destinationFloor = destinationFloor;
+		this.fault = fault;
+	}
 
-    public String getTime() {
-        return time;
-    }
+	public String getTime() {
+		return time;
+	}
 
-    public int getOriginFloor() {
-        return originFloor;
-    }
+	public int getOriginFloor() {
+		return originFloor;
+	}
 
-    public ElevatorDirection getDirection() {
-        return direction;
-    }
+	public ElevatorDirection getDirection() {
+		return direction;
+	}
 
-    public int getDestinationFloor() {
-        return destinationFloor;
-    }
+	public int getDestinationFloor() {
+		return destinationFloor;
+	}
 
-    @Override
-    public String toString() {
-        return "FileRequest:\nTime: " + getTime() + "\nDirection: " + getDirection()
-                + "\nPick up: " + getOriginFloor() + "\nDestination Floor: " + getDestinationFloor();
-    }
+	public int getFault() {
+		return this.fault;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "FileRequest: " + "\n" + "Time:  " + this.getTime() + "\n" + "Direction: " + this.getDirection() + "\n"
+				+ "Pick Up: " + this.getOriginFloor() + "\n" + "Destination Floor: " + this.getDestinationFloor()
+				+ this.getFault();
+	}
 
 }
