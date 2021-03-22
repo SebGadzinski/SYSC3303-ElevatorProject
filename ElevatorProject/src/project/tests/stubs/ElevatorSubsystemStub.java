@@ -1,13 +1,13 @@
-package project.tests;
+package project.tests.stubs;
 
 import java.net.InetAddress;
 
 import project.systems.AbstractSubsystem;
 import project.utils.datastructs.Request;
 
-public class ElevatorSubsystemStub_2 extends AbstractSubsystem {
+public class ElevatorSubsystemStub extends AbstractSubsystem {
 
-    public ElevatorSubsystemStub_2(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
+    public ElevatorSubsystemStub(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
         super(inetAddress, inSocketPort, outSocketPort);
     }
 

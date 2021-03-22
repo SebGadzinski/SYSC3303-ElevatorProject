@@ -1,11 +1,12 @@
-package project.tests;
+package project.tests.unit;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class miscFloorTest {
+public class TestFloor {
 
     public void realtimeWait(String chya) {
+
         String[] arrMilTime = chya.split(":");
         String[] arrSec = arrMilTime[2].split("[.]");
 
@@ -16,7 +17,7 @@ public class miscFloorTest {
         dateFormat = new SimpleDateFormat("kk:mm:ss");
         String currDate = dateFormat.format(dt);
         String[] currTime = currDate.split(":");
-        System.out.println("Current time : " + currTime[0] + ":" + currTime[1] + ":" + currTime[2] + "\n");
+        System.out.println("Current time: " + currTime[0] + ":" + currTime[1] + ":" + currTime[2] + "\n");
 
         int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1], arrSec[0]);
         int currentTime = toMilliSeconds(currTime[0], currTime[1], currTime[2]);
@@ -43,11 +44,12 @@ public class miscFloorTest {
         int milliS = intSec * 1000;
 
         return milliH + milliM + milliS;
+
     }
 
     public static void main(String[] args) {
         String penis = "15:27:17.020";
-        miscFloorTest test = new miscFloorTest();
+        TestFloor test = new TestFloor();
         test.realtimeWait(penis);
     }
 
