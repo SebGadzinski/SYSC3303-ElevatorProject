@@ -1,6 +1,6 @@
 # Multithreaded Elevator System v4.0 (Iteration 4)
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
-### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
+### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Chase Fridgen (101077379)
 
 ---
 
