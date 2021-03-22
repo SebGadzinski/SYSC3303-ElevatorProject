@@ -1,4 +1,4 @@
-package project.tests;
+package project.tests.stubs;
 
 import java.net.InetAddress;
 
@@ -8,7 +8,7 @@ import project.utils.datastructs.Request;
 
 public class SchedulerStub extends AbstractSubsystem {
 
-    protected SchedulerStub(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
+    public SchedulerStub(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
         super(inetAddress, inSocketPort, outSocketPort);
     }
 
