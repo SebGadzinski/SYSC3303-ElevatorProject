@@ -65,6 +65,19 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      * @param elevatorInfo The UDP info of the ElevatorSubsystem to which the Request will be dispatched.
      */
     public synchronized void dispatchRequestToElevatorSubsystem(Request request, SchedulerElevatorInfo elevatorInfo) {
+    	if(request instanceof ElevatorMotorRequest && elevatorInfo.isTimerRunning() == false) {
+    		file.writeToFile("Starting the timer for elevator: " + elevatorInfo.getId());
+    		System.out.println("Starting the timer for elevator: " + elevatorInfo.getId());
+    		elevatorInfo.startTimer();
+    		try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		System.out.println(elevatorInfo.getTimerRunning());
+    	}
+    	
         request.setSource(elevatorInfo.getSource());
         sendRequest(request, elevatorInfo.getUdpInfo().getInetAddress(), elevatorInfo.getUdpInfo().getInSocketPort());
         file.writeToFile(this + " says:");
@@ -183,6 +196,17 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     // If anybody has a request on this floor open the doors, otherwise go towards
                     // destination
                     if (request instanceof ElevatorArrivalRequest) {
+                    	elevator.stopTimer();
+                    	file.writeToFile("Stopping the timer for elevator: " + elevator.getId());
+                    	 System.out.println("Stopping the timer for elevator: " + elevator.getId());
+                 		try {
+            				Thread.sleep(500);
+            			} catch (InterruptedException e) {
+            				// TODO Auto-generated catch block
+            				e.printStackTrace();
+            			}
+                		System.out.println(elevator.getTimerRunning());
+                		
                         ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
                         ArrayList<PersonRequest> requests = elevator.getRequests();
 

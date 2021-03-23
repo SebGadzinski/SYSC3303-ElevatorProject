@@ -2,14 +2,14 @@ Scheduler operational...
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 1
+id: 3
 subsystem: FLOOR_SUBSYSTEM
 
-FileRequest: 
-Time:  18:17:17.020
-Direction: UP
-Pick Up: 1
-Destination Floor: 3
+FileRequest:
+Time: 18:17:44.319
+Direction: DOWN
+Pick up: 3
+Destination Floor: 1
 Added Request to list of requests to: 
 Source: 
 id: 0
@@ -21,27 +21,27 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destination: 1
-door status: CLOSED
-FileRequest: 
-Time:  18:17:17.020
-Direction: UP
-Pick Up: 1
-Destination Floor: 3
+destinationFloor: 3
+doorStatus: CLOSED
+FileRequest:
+Time: 18:17:44.319
+Direction: DOWN
+Pick up: 3
+Destination Floor: 1
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 2
 subsystem: FLOOR_SUBSYSTEM
 
-FileRequest: 
-Time:  18:18:33.707
+FileRequest:
+Time: 18:18:33.707
 Direction: DOWN
-Pick Up: 2
+Pick up: 2
 Destination Floor: 0
 Added Request to list of requests to: 
 Source: 
@@ -50,14 +50,14 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 3
+id: 1
 subsystem: FLOOR_SUBSYSTEM
 
-FileRequest: 
-Time:  18:17:44.319
-Direction: DOWN
-Pick Up: 3
-Destination Floor: 1
+FileRequest:
+Time: 18:17:17.020
+Direction: UP
+Pick up: 1
+Destination Floor: 3
 Added Request to list of requests to: 
 Source: 
 id: 1
@@ -69,72 +69,75 @@ Scheduler sent a request to Elevator:
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destination: 3
-door status: CLOSED
-FileRequest: 
-Time:  18:17:44.319
-Direction: DOWN
-Pick Up: 3
-Destination Floor: 1
+destinationFloor: 1
+doorStatus: CLOSED
+FileRequest:
+Time: 18:17:17.020
+Direction: UP
+Pick up: 1
+Destination Floor: 3
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDestinationRequest: 
+ElevatorDestinationRequest:
 Destination: 1
+Starting the timer for elevator: 1
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destination: 1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 1
+id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDestinationRequest: 
+ElevatorDestinationRequest:
 Destination: 3
+Starting the timer for elevator: 0
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 1
+id: 0
 UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: UP
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 1
 Source: 
 id: 1
 subsystem: SCHEDULER
@@ -146,186 +149,185 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5011
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: IDLE
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 0
-direction: IDLE
-currentFloor: 1
-destination: -1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: UP
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+Starting the timer for elevator: 1
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 0
-direction: UP
+direction: IDLE
 currentFloor: 1
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 0
+direction: UP
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler sent a request to Floor: 
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5011
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 0
-direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: UP
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 0
-direction: UP
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 0
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5013
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: IDLE
+Starting the timer for elevator: 0
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
 currentFloor: 2
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 3
-Current Direction: UP
-Source: 
-id: 1
-subsystem: SCHEDULER
-
- Destination floor has been reached
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 3
-UDPInfo: 
-inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5015
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 3
-Current Direction: IDLE
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
-currentFloor: 3
-destination: -1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
-
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 1
+id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler sent a request to Floor: 
-id: 3
+id: 2
 UDPInfo: 
-inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5015
+inSocketPort: 5012
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5013
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 1
+id: 0
 UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
-currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+currentFloor: 2
+destinationFloor: 3
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -333,7 +335,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Scheduler says:
 Scheduler says:
@@ -341,15 +343,15 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
+currentFloor: 2
+destinationFloor: 3
+doorStatus: OPENED
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -357,39 +359,15 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
-# of passengers: 0
-direction: IDLE
-currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 Added a passenger: 
 Request: 
-:destinationFloor: 3
+destinationFloor: 3
 destinationFloorCompleted: false
 originFloor: 1
 originFloorCompleted: true
@@ -399,57 +377,11 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5011
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
-Wait time: 0
-************************
- Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-Added a passenger: 
-Request: 
-:destinationFloor: 1
-destinationFloorCompleted: false
-originFloor: 3
-originFloorCompleted: true
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 3
-UDPInfo: 
-inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5015
-
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
@@ -457,177 +389,87 @@ Scheduler sent a request to Elevator:
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
-currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
 currentFloor: 1
-destination: -1
-door status: CLOSED
-ElevatorDestinationRequest: 
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorDestinationRequest:
 Destination: 3
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDestinationRequest: 
+ElevatorDestinationRequest:
 Destination: 3
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
 currentFloor: 1
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: UP
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 2
-UDPInfo: 
-inSocketPort: 5012
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5013
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: IDLE
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 2
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 2
-UDPInfo: 
-inSocketPort: 5012
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5013
-
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 2
-destination: 3
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
-
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
 # of passengers: 1
-direction: IDLE
-currentFloor: 3
-destination: -1
-door status: CLOSED
-ElevatorDestinationRequest: 
-Destination: 1
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDestinationRequest: 
-Destination: 1
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 3
-destination: 1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+direction: UP
+currentFloor: 2
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -635,131 +477,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 2
-destination: 3
-door status: OPENED
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: DOWN
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
-# of passengers: 1
-direction: DOWN
-currentFloor: 2
-destination: 1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: DOWN
-Source: 
-id: 1
-subsystem: SCHEDULER
-
- Destination floor has been reached
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 1
-UDPInfo: 
-inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5011
-
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: IDLE
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destination: -1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 1
-UDPInfo: 
-inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5011
-
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
@@ -767,7 +485,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 Added a passenger: 
 Request: 
-:destinationFloor: 0
+destinationFloor: 0
 destinationFloorCompleted: false
 originFloor: 2
 originFloorCompleted: true
@@ -777,11 +495,11 @@ Scheduler sent a request to Floor:
 id: 2
 UDPInfo: 
 inSocketPort: 5012
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5013
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
@@ -789,72 +507,25 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
-# of passengers: 2
-direction: IDLE
-currentFloor: 2
-destination: 3
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 2
-direction: IDLE
 currentFloor: 2
-destination: 3
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  UP
+destinationFloor: 3
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 3
-Current Direction: UP
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 1
 Source: 
 id: 1
 subsystem: SCHEDULER
@@ -866,116 +537,71 @@ Scheduler sent a request to Floor:
 id: 3
 UDPInfo: 
 inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5015
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 3
-Current Direction: IDLE
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+Starting the timer for elevator: 1
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 2
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
+# of passengers: 1
 direction: IDLE
 currentFloor: 3
-destination: -1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler sent a request to Floor: 
 id: 3
 UDPInfo: 
 inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5015
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 2
-direction: IDLE
-currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 2
-direction: IDLE
-currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorPassengerWaitRequest: 
-WaitState: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
-Wait time: 0
-************************
- Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-Completed passengers request: 
-Request: 
-:destinationFloor: 1
-destinationFloorCompleted: true
-originFloor: 3
-originFloorCompleted: true
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 1
-UDPInfo: 
-inSocketPort: 5010
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5011
-
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler says:
@@ -983,23 +609,117 @@ Scheduler sent a request to Elevator:
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5005
-# of passengers: 0
+# of passengers: 1
 direction: IDLE
-currentFloor: 1
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 0
+Source: 
+id: 1
+subsystem: SCHEDULER
+
+ Destination floor has been reached
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5015
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+Starting the timer for elevator: 0
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -1007,15 +727,39 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 Completed passengers request: 
 Request: 
-:destinationFloor: 3
+destinationFloor: 3
 destinationFloorCompleted: true
 originFloor: 1
 originFloorCompleted: true
@@ -1025,35 +769,65 @@ Scheduler sent a request to Floor:
 id: 3
 UDPInfo: 
 inSocketPort: 5014
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5015
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
-outSocketPort: 5003
-# of passengers: 1
+inSocketPort: 5004
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5005
+# of passengers: 0
 direction: IDLE
 currentFloor: 3
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+************************
+ Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+Added a passenger: 
+Request: 
+destinationFloor: 1
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: true
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
@@ -1061,94 +835,291 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
-# of passengers: 1
+# of passengers: 2
 direction: IDLE
 currentFloor: 3
-destination: -1
-door status: CLOSED
-ElevatorDestinationRequest: 
-Destination: 0
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDestinationRequest: 
-Destination: 0
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
-# of passengers: 1
+# of passengers: 2
 direction: IDLE
 currentFloor: 3
-destination: 0
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorDestinationRequest:
+Destination: 1
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDestinationRequest:
+Destination: 1
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 2
+direction: IDLE
+currentFloor: 3
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: DOWN
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: DOWN
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
-# of passengers: 1
+# of passengers: 2
 direction: DOWN
 currentFloor: 2
-destination: 0
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: DOWN
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: DOWN
+Stopping the timer for elevator: 0
+Source: 
+id: 1
+subsystem: SCHEDULER
+
+ Destination floor has been reached
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5011
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+Starting the timer for elevator: 0
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
-# of passengers: 1
-direction: DOWN
+# of passengers: 2
+direction: IDLE
 currentFloor: 1
-destination: 0
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 0
-Current Direction: DOWN
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5011
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 2
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 2
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+************************
+ Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+Completed passengers request: 
+Request: 
+destinationFloor: 1
+destinationFloorCompleted: true
+originFloor: 3
+originFloorCompleted: true
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5011
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorDestinationRequest:
+Destination: 0
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDestinationRequest:
+Destination: 0
+Scheduler says:
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 0
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: DOWN
+Stopping the timer for elevator: 0
 Source: 
 id: 1
 subsystem: SCHEDULER
@@ -1160,46 +1131,47 @@ Scheduler sent a request to Floor:
 id: 0
 UDPInfo: 
 inSocketPort: 5008
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5009
 
-ElevatorArrivalRequest: 
-Floor Arrived At: 0
-Current Direction: IDLE
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: IDLE
+Starting the timer for elevator: 0
 Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
 currentFloor: 0
-destination: -1
-door status: CLOSED
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler sent a request to Floor: 
 id: 0
 UDPInfo: 
 inSocketPort: 5008
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5009
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Scheduler says:
@@ -1207,15 +1179,15 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
 currentFloor: 0
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -1223,7 +1195,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Scheduler says:
 Scheduler says:
@@ -1231,15 +1203,15 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
 currentFloor: 0
-destination: -1
-door status: OPENED
+destinationFloor: -1
+doorStatus: OPENED
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -1247,7 +1219,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
@@ -1255,7 +1227,7 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 Completed passengers request: 
 Request: 
-:destinationFloor: 0
+destinationFloor: 0
 destinationFloorCompleted: true
 originFloor: 2
 originFloorCompleted: true
@@ -1265,11 +1237,11 @@ Scheduler sent a request to Floor:
 id: 0
 UDPInfo: 
 inSocketPort: 5008
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5009
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Scheduler says:
@@ -1277,21 +1249,21 @@ Scheduler sent a request to Elevator:
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+inetAddress: DESKTOP-B7ST9LG/10.0.0.167
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destination: -1
-door status: OPENED
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 

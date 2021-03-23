@@ -13,6 +13,9 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     private int currentDestinationFloor;
     private int passengers;
     private int currentFloor;
+    private Thread timerWorker;
+    private Boolean timeOut;
+    private ElevatorTimerWorker timer;
 
     public SchedulerElevatorInfo(String id, UDPInfo udpInfo, ElevatorDirection direction,
                                  ElevatorDoorStatus doorStatus, int currentFloor) {
@@ -22,6 +25,10 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.currentFloor = currentFloor;
         this.currentDestinationFloor = -1;
         this.passengers = 0;
+        this.timeOut = false;        
+        this.timer = new ElevatorTimerWorker();
+        this.timerWorker = new Thread(this.timer, "timer");
+        
         requests = new ArrayList<>();
     }
 
@@ -118,6 +125,34 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.passengers--;
     }
 
+    public synchronized void startTimer() {
+    	if(this.timerWorker.getState() == Thread.State.NEW) {
+        	this.timerWorker.start();
+    	}
+    	else if (this.timerWorker.getState() == Thread.State.TERMINATED) {
+    		this.timer = new ElevatorTimerWorker();
+    		this.timerWorker = new Thread(this.timer, "timer");
+    		this.timerWorker.start();
+    	}    	
+    }
+    
+    public synchronized void stopTimer() {
+    	this.timerWorker.interrupt();
+    	while(this.timerWorker.getState() != Thread.State.TERMINATED) {};
+    }
+    
+    public synchronized boolean isTimerRunning() {
+    	return this.timer.getTimerRunning();
+    }
+    
+    public synchronized boolean getTimerRunning() {
+    	return this.timer.getTimerRunning();
+    }
+    
+    public synchronized boolean getTimeOut() {
+    	return this.timeOut;
+    }
+    
     @Override
     public String toString() {
         return "Elevator: " + "\n"
