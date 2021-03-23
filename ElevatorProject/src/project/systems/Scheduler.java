@@ -296,7 +296,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     if (request instanceof ElevatorFaultRequest) {
                     	ElevatorFaultRequest faultRequest = (ElevatorFaultRequest) request;
                     	
-                    	dispatchRequestToFloorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY),
+                    	dispatchRequestToFloorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
                                 floors.get(elevator.getCurrentFloor()));
                     	
                     }
@@ -304,7 +304,21 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     	ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
                     	
                     	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus()) {
-                    		//start up elevator again
+                    		// Check if anyone needs to be dropped off on this floor
+                    		elevator.setDirection(emergencyRequest.getDirectionState());
+                    		elevator.setDoorStatus(emergencyRequest.getDoorState());
+                            if (needToOpenDoors(elevator)) {
+                                dispatchRequestToFloorSubsystem(
+                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
+                                        floors.get(elevator.getCurrentFloor()));
+                                dispatchRequestToElevatorSubsystem(
+                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
+                            } else {
+                                dispatchRequestToElevatorSubsystem(
+                                        new ElevatorMotorRequest(getSource(),
+                                                getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
+                                        elevator);
+                            }
                     	}
                     }
                 }

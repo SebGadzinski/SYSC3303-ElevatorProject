@@ -55,7 +55,7 @@ public class ElevatorStateMachine {
 		Request requestToSendToScheduler = null;
 		if (request instanceof ElevatorEmergencyRequest) {
 			ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
-			handleEmergencyRequest(emergencyRequest);
+			requestToSendToScheduler = handleEmergencyRequest(emergencyRequest);
 		}
 		switch (state) {
 		case IDLE -> {
@@ -112,8 +112,9 @@ public class ElevatorStateMachine {
 		// Fault cases are told to scheduler and taken care of using
 		// ElevatorEmergencyRequest
 		// It should not reach here. If so the fault has not been resolved
-		case FAULT_HANDLING -> // System should shut down?
+		case FAULT_HANDLING ->{ // System should shut down?
 			System.out.println("CRITICAL FAULT");
+		}
 		}
 		System.out.print("State: " + state + "\n");
 		return requestToSendToScheduler;
@@ -123,12 +124,18 @@ public class ElevatorStateMachine {
 	 * Overrides state for emergency purposes
 	 *
 	 * @param request The request to be dealt with.
+	 * @return 
 	 */
-	private void handleEmergencyRequest(ElevatorEmergencyRequest request) {
+	private ElevatorEmergencyRequest handleEmergencyRequest(ElevatorEmergencyRequest request) {
 		if (request.getEmergencyState() == ElevatorEmergency.FIX) {
 			doorFault = false;
 			motorFault = false;
+			doorState = ElevatorDoorStatus.CLOSED;
+			directionState = ElevatorDirection.IDLE;
+			state = ElevatorState.IDLE;
+			return new ElevatorEmergencyRequest(null, ElevatorEmergency.FIX, ElevatorEmergencyRequest.COMPLETED_EMERGENCY, doorState, directionState);
 		}
+		return null;
 	}
 
 	/**
@@ -147,6 +154,10 @@ public class ElevatorStateMachine {
 				return new ElevatorDoorRequest(null, ElevatorDoorStatus.OPENED);
 			} else if (request.getRequestedDirection() == ElevatorDirection.UP) {
 				System.out.println("Moving Elevator Up");
+				if(doorState == ElevatorDoorStatus.OPENED) {
+					doorState = ElevatorDoorStatus.CLOSED;
+					return doorFault();
+				}
 				if (currentFloor == Config.NUMBER_OF_FLOORS) {
 					System.out.println(
 							"Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
@@ -160,6 +171,10 @@ public class ElevatorStateMachine {
 				}
 			} else {
 				System.out.println("Moving Elevator Down");
+				if(doorState == ElevatorDoorStatus.OPENED) {
+					doorState = ElevatorDoorStatus.CLOSED;
+					return doorFault(); 
+				}
 				if (currentFloor == 0) {
 					System.out.println(
 							"Currently at basement floor. Motor request denied. \n Sending a arrival request on basement floor");
