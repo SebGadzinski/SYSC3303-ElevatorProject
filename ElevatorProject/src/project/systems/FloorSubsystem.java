@@ -16,6 +16,7 @@ import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.utils.datastructs.ElevatorArrivalRequest;
 import project.utils.datastructs.ElevatorDoorRequest;
 import project.utils.datastructs.FileRequest;
+import project.utils.datastructs.FloorEmergencyRequest;
 import project.utils.datastructs.ReadRequestResult;
 import project.utils.datastructs.Request;
 import project.utils.datastructs.SubsystemSource;
@@ -132,7 +133,12 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 			} else {
 				System.out.println(getSource() + "\nElevator closing doors\n ");
 			}
-		} else
+		}
+		else if (request instanceof FloorEmergencyRequest) {
+			System.out.println("Floor " + this.floorNo + "shutting down");
+			System.exit(1);
+		}
+		else
 			System.out.println(getSource() + "\nInvalid Request\n");
 	}
 

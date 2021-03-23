@@ -8,6 +8,7 @@ import project.utils.datastructs.*;
 import project.utils.datastructs.ElevatorEmergencyRequest.ElevatorEmergency;
 import project.utils.datastructs.ElevatorFaultRequest.ElevatorFault;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
+import project.utils.datastructs.FloorEmergencyRequest.FloorEmergency;
 import project.utils.objects.general.CreateFile;
 
 import java.net.InetAddress;
@@ -164,15 +165,15 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 
                 if (request.getSource().getSubsystem() == SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM) {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
-                    
-//                    if(elevator.getTimeOut()) {
-//                    	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
-//                                floors.get(elevator.getCurrentFloor()), elevator);
-//                    }
-                    
 
+                    if(elevator.getTimeOut()) {
+                    	file.writeToFile("Shutting down elevator: " + elevator.getId());             
+                    	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+                                elevator);                   
+                    }
+                    
                     // If anybody has a request on this floor open the doors, otherwise go toward destination
-                    if (request instanceof ElevatorDestinationRequest) {
+                    else if (request instanceof ElevatorDestinationRequest) {
 
                         if (elevator.getCurrentDestinationFloor() != -1) {
                             ElevatorDirection direction = getDirectionFromFloor(elevator.getCurrentDestinationFloor(),
@@ -354,6 +355,12 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                             }
                     	}else {
                     		elevators.remove(elevator);
+                        	if(elevators.size() == 0) {
+                        		for(int i = 0; i < this.floors.size(); i++) {
+                        			this.dispatchRequestToFloorSubsystem(new FloorEmergencyRequest(getSource(), FloorEmergency.SHUTDOWN), floors.get(i));
+                        		}
+                        		System.exit(1);
+                        	}
                     	}
                     }
                 }

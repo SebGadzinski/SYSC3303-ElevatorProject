@@ -150,7 +150,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     }
     
     public synchronized boolean getTimeOut() {
-    	return this.timeOut;
+    	return this.timer.getTimeOut();
     }
     
     @Override
