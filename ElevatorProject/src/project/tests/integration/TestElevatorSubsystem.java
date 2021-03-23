@@ -5,6 +5,7 @@ import project.systems.Scheduler;
 import project.tests.stubs.ElevatorSubsystemStub;
 import project.utils.datastructs.FileRequest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static project.Config.*;
 
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class TestElevatorSubsystem {
         numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, localhost, getPort());
         numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, localhost, getPort());
 
-        assert numSendSuccesses == 3;
+        assertEquals(3, numSendSuccesses);
 
     }
 

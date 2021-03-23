@@ -5,6 +5,7 @@ import project.systems.FloorSubsystem;
 import project.tests.stubs.SchedulerStub;
 import project.utils.datastructs.FileRequest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static project.Config.*;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class TestScheduler {
         int numSendSuccesses = 0;
         numSendSuccesses += schedulerStub.sendRequestPub(fileRequest, localhost, getPort());
 
-        assert numSendSuccesses == 1;
+        assertEquals(1, numSendSuccesses);
 
     }
 
