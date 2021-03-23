@@ -9,8 +9,7 @@ import java.net.SocketException;
 
 import project.utils.datastructs.Request;
 
-import static project.Config.FLOORS_UDP_INFO;
-import static project.Config.SCHEDULER_UDP_INFO;
+import static project.Config.*;
 
 public class FloorSubsystemStub {
 
@@ -20,7 +19,7 @@ public class FloorSubsystemStub {
 
     public FloorSubsystemStub() {
         try {
-            socket = new DatagramSocket(SCHEDULER_UDP_INFO.getInSocketPort());
+            socket = new DatagramSocket(getPort());
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(1);
@@ -40,7 +39,7 @@ public class FloorSubsystemStub {
             System.exit(1);
         }
 
-        sendPacket = new DatagramPacket(dataToSend, dataToSend.length, FLOORS_UDP_INFO[0].getInetAddress(), FLOORS_UDP_INFO[0].getInSocketPort());
+        sendPacket = new DatagramPacket(dataToSend, dataToSend.length, localhost, getPort());
 
         // sending the Datagram packet
         try {
