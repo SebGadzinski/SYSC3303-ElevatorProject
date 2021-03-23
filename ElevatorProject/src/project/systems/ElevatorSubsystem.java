@@ -81,7 +81,6 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
              }else {
             	 System.exit(-1);
              }
-             
         } else if (request instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) request;
             file.writeToFile(responseString + fileRequest);
@@ -191,9 +190,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
     public static void main(String[] args) {
         for (int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
             ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
-                    ELEVATORS_UDP_INFO[i].getInetAddress(),
-                    ELEVATORS_UDP_INFO[i].getInSocketPort(),
-                    ELEVATORS_UDP_INFO[i].getOutSocketPort(),
+                    Config.ELEVATORS_UDP_INFO[i].getInetAddress(),
+                    Config.ELEVATORS_UDP_INFO[i].getInSocketPort(),
+                    Config.ELEVATORS_UDP_INFO[i].getOutSocketPort(),
                     i
             );
             Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "elevator#" + i);
