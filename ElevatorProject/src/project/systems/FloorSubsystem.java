@@ -74,8 +74,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
 		// store the matched data in a new request instance
 		FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
-				getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), getSource(),
-				Integer.parseInt(matchResult.group(5)));
+				getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), getSource());
 
 		// check for another request
 		boolean isThereAnotherRequest;

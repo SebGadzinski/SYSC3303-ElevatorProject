@@ -13,16 +13,14 @@ public class FileRequest extends Request {
 	private String time;
 	private ElevatorDirection direction;
 	private int destinationFloor, originFloor;
-	private int fault;
 
 	public FileRequest(String time, int originFloor, ElevatorDirection direction, int destinationFloor,
-			SubsystemSource source, int fault) {
+			SubsystemSource source) {
 		super(source);
 		this.time = time;
 		this.originFloor = originFloor;
 		this.direction = direction;
 		this.destinationFloor = destinationFloor;
-		this.fault = fault;
 	}
 
 	public String getTime() {
@@ -41,16 +39,11 @@ public class FileRequest extends Request {
 		return destinationFloor;
 	}
 
-	public int getFault() {
-		return this.fault;
-	}
-
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "FileRequest: " + "\n" + "Time:  " + this.getTime() + "\n" + "Direction: " + this.getDirection() + "\n"
-				+ "Pick Up: " + this.getOriginFloor() + "\n" + "Destination Floor: " + this.getDestinationFloor()
-				+ this.getFault();
+				+ "Pick Up: " + this.getOriginFloor() + "\n" + "Destination Floor: " + this.getDestinationFloor();
 	}
 
 }
