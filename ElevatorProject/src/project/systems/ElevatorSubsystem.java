@@ -34,6 +34,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	public HashMap<Integer, Boolean> lamps;
 	public int elevatorNumber;
 	private final CreateFile file;
+	private int numOfRequests;
 
 	public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber) {
 		super(inetAddress, inSocketPort, outSocketPort);
@@ -41,6 +42,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 				ElevatorDirection.IDLE, 0, new HashMap<>());
 		this.elevatorNumber = elevatorNumber;
 		file = new CreateFile("Elevator" + elevatorNumber + ".txt");
+		this.numOfRequests = 0;
 	}
 
 	/**
@@ -69,6 +71,10 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	 * @param request received packet
 	 */
 	public synchronized void handleRequest(Request request) {
+
+		this.numOfRequests++;
+		this.sendFault();
+
 		Request response = null;
 		String responseString = "\nRequest received by:\n" + getSource() + "\n";
 		if (request instanceof ElevatorEmergencyRequest) {
@@ -114,21 +120,29 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 		}
 	}
 
+	public void sendFault() {
+		for (int i = 0; i < Config.faults.length; i++) {
+			if (Config.faults[i].numUntilFault == numOfRequests) {
+
+				if (Config.faults[i].fault == 1) {
+					this.makeDoorFault();
+				} else if (Config.faults[i].fault == 2) {
+					this.makeMotorFault();
+				}
+			}
+
+			else {
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Handles file request, sends a destination request from data in file request
 	 *
 	 * @param request The request to be dealt with.
 	 */
 	public Request handleFileRequest(FileRequest request) {
-		// Turn on the lamp for the elevator button
-		// setLampStatus(request.getOriginFloor(), true);
-		// notifyAll();
-//
-//		if (request.getFault() == 1) {
-//			this.makeDoorFault();
-//		} else if (request.getFault() == 2) {
-//			this.makeMotorFault();
-//		}
 
 		return new ElevatorDestinationRequest(
 				new SubsystemSource(Subsystem.ELEVATOR_SUBSYSTEM, Integer.toString(elevatorNumber)),
