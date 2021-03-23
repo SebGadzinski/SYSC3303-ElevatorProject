@@ -25,7 +25,7 @@ public class ElevatorTimerWorker implements Runnable {
 	public void run() {
 		this.timerRunning = true;
 		try {
-			Thread.sleep(20000);
+			Thread.sleep(Config.TIMER_TIMEOUT);
 		} catch (InterruptedException e) {
 			this.timerRunning = false;;
 		}
