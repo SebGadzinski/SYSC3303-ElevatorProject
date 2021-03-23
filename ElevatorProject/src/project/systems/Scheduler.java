@@ -328,13 +328,15 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                                     new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED), elevator);
                         }
                     }
-                    if (request instanceof ElevatorFaultRequest) {
+                    else if (request instanceof ElevatorFaultRequest) {
                     	ElevatorFaultRequest faultRequest = (ElevatorFaultRequest) request;
+                    	
+                    	file.writeToFile("********** INSIDE ELEVATOR FAULT REQUEST *********");
                     	
                     	dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
                                 elevator);
                     }
-                    if (request instanceof ElevatorEmergencyRequest) {
+                    else if (request instanceof ElevatorEmergencyRequest) {
                     	ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
                     	
                     	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus() && emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {

@@ -21,5 +21,11 @@ public class FloorEmergencyRequest extends Request{
 		this.emergencyState = emergencyState;
 	}
 
+	@Override
+	public String toString() {
+		return "FloorEmergencyRequest emergencyState: " + emergencyState;
+	}
+
+	
 	
 }

@@ -55,6 +55,14 @@ public class ElevatorEmergencyRequest extends Request {
 	public void setDirectionState(ElevatorDirection directionState) {
 		this.directionState = directionState;
 	}
+
+	@Override
+	public String toString() {
+		return "ElevatorEmergencyRequest emergencyState: " + emergencyState + "\n code: " + status + " doors: "
+				+ doorState + ", direction: " + directionState + "\n";
+	}
+	
+	
 	
 	
 	
