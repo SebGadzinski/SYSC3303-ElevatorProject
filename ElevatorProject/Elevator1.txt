@@ -7,17 +7,17 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 FileRequest:
-Time: 18:17:17.020
-Direction: UP
-Pick up: 1
-Destination Floor: 3
+Time: 18:18:33.707
+Direction: DOWN
+Pick up: 2
+Destination Floor: 0
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorDestinationRequest:
-Destination: 1
+Destination: 2
 
 Request received by:
 Source: 
@@ -34,6 +34,23 @@ subsystem: ELEVATOR_SUBSYSTEM
 Responded to Scheduler: 
  ElevatorArrivalRequest:
 Floor arrived at: 1
+Current direction: UP
+
+Request received by:
+Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorMotorRequest:
+Motor to move: UP
+
+Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+Responded to Scheduler: 
+ ElevatorArrivalRequest:
+Floor arrived at: 2
 Current direction: UP
 
 Request received by:
@@ -110,14 +127,14 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorDestinationRequest:
-Destination: 3
+Destination: 0
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorDestinationRequest:
-Destination: 3
+Destination: 0
 
 Request received by:
 Source: 
@@ -125,7 +142,7 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorMotorRequest:
-Motor to move: UP
+Motor to move: DOWN
 
 Source: 
 id: 1
@@ -133,8 +150,8 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorArrivalRequest:
-Floor arrived at: 2
-Current direction: UP
+Floor arrived at: 1
+Current direction: DOWN
 
 Request received by:
 Source: 
@@ -142,7 +159,7 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorMotorRequest:
-Motor to move: UP
+Motor to move: DOWN
 
 Source: 
 id: 1
@@ -150,8 +167,8 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorArrivalRequest:
-Floor arrived at: 3
-Current direction: UP
+Floor arrived at: 0
+Current direction: DOWN
 
 Request received by:
 Source: 

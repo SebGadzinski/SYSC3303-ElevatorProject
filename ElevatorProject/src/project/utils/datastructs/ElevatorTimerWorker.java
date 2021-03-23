@@ -31,6 +31,7 @@ public class ElevatorTimerWorker implements Runnable {
 		}
 		
 		if (this.timerRunning) {
+			//send emergencyRequest containing state SHUTDOWN
 			System.out.println("TIMER EXPIRED!!!");
 			this.timeOut = true;
 			this.timerRunning = false;

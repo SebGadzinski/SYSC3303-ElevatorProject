@@ -1,5 +1,6 @@
 package project.systems;
 
+import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.SchedulerStateMachine.SchedulerState;
@@ -66,18 +67,21 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      */
     public synchronized void dispatchRequestToElevatorSubsystem(Request request, SchedulerElevatorInfo elevatorInfo) {
     	if(request instanceof ElevatorMotorRequest && elevatorInfo.isTimerRunning() == false) {
-    		file.writeToFile("Starting the timer for elevator: " + elevatorInfo.getId());
-    		System.out.println("Starting the timer for elevator: " + elevatorInfo.getId());
-    		elevatorInfo.startTimer();
-    		try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		System.out.println(elevatorInfo.getTimerRunning());
+    		ElevatorMotorRequest tmp = (ElevatorMotorRequest) request;
+    		if(tmp.getRequestedDirection() != ElevatorDirection.IDLE) {
+    			file.writeToFile("Starting the timer for elevator: " + elevatorInfo.getId());
+    			System.out.println("Starting the timer for elevator: " + elevatorInfo.getId());
+    			elevatorInfo.startTimer();
+    			try {
+    				Thread.sleep(500);
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    			System.out.println(elevatorInfo.getTimerRunning());	
+    		}
     	}
-    	
+
         request.setSource(elevatorInfo.getSource());
         sendRequest(request, elevatorInfo.getUdpInfo().getInetAddress(), elevatorInfo.getUdpInfo().getInSocketPort());
         file.writeToFile(this + " says:");
@@ -158,7 +162,12 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 
                 if (request.getSource().getSubsystem() == SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM) {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
-
+                    
+//                    if(elevator.getTimeOut()) {
+//                    	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+//                                floors.get(elevator.getCurrentFloor()), elevator);
+//                    }
+                    
                     // If anybody has a request on this floor open the doors, otherwise go toward destination
                     if (request instanceof ElevatorDestinationRequest) {
 
