@@ -14,7 +14,6 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     private int passengers;
     private int currentFloor;
     private Thread timerWorker;
-    private Boolean timeOut;
     private ElevatorTimerWorker timer;
 
     public SchedulerElevatorInfo(String id, UDPInfo udpInfo, ElevatorDirection direction,
@@ -25,9 +24,8 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.currentFloor = currentFloor;
         this.currentDestinationFloor = -1;
         this.passengers = 0;
-        this.timeOut = false;        
         this.timer = new ElevatorTimerWorker();
-        this.timerWorker = new Thread(this.timer, "timer");
+        this.timerWorker = new Thread(this.timer, "timer" + id);
         
         requests = new ArrayList<>();
     }
@@ -133,7 +131,10 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     		this.timer = new ElevatorTimerWorker();
     		this.timerWorker = new Thread(this.timer, "timer");
     		this.timerWorker.start();
-    	}    	
+    	}
+    	else {
+    		this.stopTimer();
+    	}
     }
     
     public synchronized void stopTimer() {

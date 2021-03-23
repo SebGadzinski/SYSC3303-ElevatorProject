@@ -73,15 +73,15 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     		ElevatorMotorRequest tmp = (ElevatorMotorRequest) request;
     		if(tmp.getRequestedDirection() != ElevatorDirection.IDLE) {
     			file.writeToFile("Starting the timer for elevator: " + elevatorInfo.getId());
-    			System.out.println("Starting the timer for elevator: " + elevatorInfo.getId());
+    			//System.out.println("Starting the timer for elevator: " + elevatorInfo.getId());
     			elevatorInfo.startTimer();
     			try {
-    				Thread.sleep(500);
+    				Thread.sleep(100);
     			} catch (InterruptedException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
-    			System.out.println(elevatorInfo.getTimerRunning());	
+    			//System.out.println(elevatorInfo.getTimerRunning());	
     		}
     	}
 
@@ -211,14 +211,14 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     else if (request instanceof ElevatorArrivalRequest) {
                     	elevator.stopTimer();
                     	file.writeToFile("Stopping the timer for elevator: " + elevator.getId());
-                    	 System.out.println("Stopping the timer for elevator: " + elevator.getId());
+                    	//System.out.println("Stopping the timer for elevator: " + elevator.getId());
                  		try {
             				Thread.sleep(500);
             			} catch (InterruptedException e) {
             				// TODO Auto-generated catch block
             				e.printStackTrace();
             			}
-                		System.out.println(elevator.getTimerRunning());
+                		//System.out.println(elevator.getTimerRunning());
                 		
                         ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
                         ArrayList<PersonRequest> requests = elevator.getRequests();
