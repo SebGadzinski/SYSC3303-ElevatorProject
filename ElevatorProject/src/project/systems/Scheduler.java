@@ -164,10 +164,11 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
                     
 //                    if(elevator.getTimeOut()) {
-//                    	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+//                    	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
 //                                floors.get(elevator.getCurrentFloor()), elevator);
 //                    }
                     
+
                     // If anybody has a request on this floor open the doors, otherwise go toward destination
                     if (request instanceof ElevatorDestinationRequest) {
 
@@ -204,7 +205,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     }
                     // If anybody has a request on this floor open the doors, otherwise go towards
                     // destination
-                    if (request instanceof ElevatorArrivalRequest) {
+                    else if (request instanceof ElevatorArrivalRequest) {
                     	elevator.stopTimer();
                     	file.writeToFile("Stopping the timer for elevator: " + elevator.getId());
                     	 System.out.println("Stopping the timer for elevator: " + elevator.getId());
@@ -251,7 +252,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     }
                     // Tell elevator to open or close doors, if closing go to next destination or
                     // continue ongoing
-                    if (request instanceof ElevatorDoorRequest) {
+                    else if (request instanceof ElevatorDoorRequest) {
                         ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
 
                         if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
@@ -284,7 +285,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                                     new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
                         }
                     }
-                    if (request instanceof ElevatorPassengerWaitRequest) {
+                    else if (request instanceof ElevatorPassengerWaitRequest) {
                         ElevatorPassengerWaitRequest passengerWaitRequest = (ElevatorPassengerWaitRequest) request;
                         if (passengerWaitRequest.getState() == WaitState.WAITING) {
                             dispatchRequestToElevatorSubsystem(new ElevatorPassengerWaitRequest(getSource(),
