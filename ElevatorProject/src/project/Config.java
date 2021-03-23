@@ -36,11 +36,10 @@ public final class Config {
 
     // UDP config
     //--------------------------------------------------------------------------------------------
-    private static final ConcurrentSkipListSet<Integer> ports;
+    private static final ConcurrentSkipListSet<Integer> ports = new ConcurrentSkipListSet<>();
     public static InetAddress localhost;
 
     static {
-        ports = new ConcurrentSkipListSet<>();
         for (int port = 5000; port < 5100; ++port) ports.add(port);
         try {
             localhost = InetAddress.getLocalHost();
