@@ -11,7 +11,6 @@ import java.io.Serializable;
 public abstract class Request implements Serializable {
 
     private SubsystemSource source;
-    private int containsFault = -1;
 
     public Request(SubsystemSource source) {
         this.source = source;
@@ -24,15 +23,6 @@ public abstract class Request implements Serializable {
     public synchronized void setSource(SubsystemSource source) {
         this.source = source;
     }
-
-	public int getContainsFault() {
-		return containsFault;
-	}
-
-	public void setContainsFault(int containsFault) {
-		this.containsFault = containsFault;
-	}
-    
     
 
 }

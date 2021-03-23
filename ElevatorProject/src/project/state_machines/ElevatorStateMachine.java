@@ -22,6 +22,7 @@ public class ElevatorStateMachine {
 	private int currentFloor;
 	private HashMap<Integer, Boolean> lamps;
 	private Boolean motorFault, doorFault;
+	private requestCounterForFaulting = 0;
 
 	public ElevatorStateMachine(ElevatorState state, ElevatorDoorStatus doorState, ElevatorDirection directionState,
 			int currentFloor, HashMap<Integer, Boolean> lamps) {
