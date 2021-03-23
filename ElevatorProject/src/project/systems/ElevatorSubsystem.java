@@ -84,6 +84,9 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 				response = stateMachine.handleRequest(emergencyRequest);
 				fixSystem();
 			} else {
+				emergencyRequest.setSource(getSource());
+				emergencyRequest.setStatus(ElevatorEmergencyRequest.COMPLETED_EMERGENCY);
+				sendResponse(emergencyRequest);
 				System.exit(-1);
 			}
 		} else if (request instanceof FileRequest) {

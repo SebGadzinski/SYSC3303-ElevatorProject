@@ -296,14 +296,13 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     if (request instanceof ElevatorFaultRequest) {
                     	ElevatorFaultRequest faultRequest = (ElevatorFaultRequest) request;
                     	
-                    	dispatchRequestToFloorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
-                                floors.get(elevator.getCurrentFloor()));
-                    	
+                    	dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+                                elevator);
                     }
                     if (request instanceof ElevatorEmergencyRequest) {
                     	ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
                     	
-                    	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus()) {
+                    	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus() && emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {
                     		// Check if anyone needs to be dropped off on this floor
                     		elevator.setDirection(emergencyRequest.getDirectionState());
                     		elevator.setDoorStatus(emergencyRequest.getDoorState());
@@ -319,6 +318,8 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                                                 getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
                                         elevator);
                             }
+                    	}else {
+                    		elevators.remove(elevator);
                     	}
                     }
                 }
