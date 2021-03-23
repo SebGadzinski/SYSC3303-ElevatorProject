@@ -4,6 +4,8 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.SchedulerStateMachine.SchedulerState;
 import project.utils.datastructs.*;
+import project.utils.datastructs.ElevatorEmergencyRequest.ElevatorEmergency;
+import project.utils.datastructs.ElevatorFaultRequest.ElevatorFault;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 import project.utils.objects.general.CreateFile;
 
@@ -291,8 +293,20 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                                     new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED), elevator);
                         }
                     }
-                    // Not needed for this iter (iter 3)
-                    // Not needed for this iter (iter 3)
+                    if (request instanceof ElevatorFaultRequest) {
+                    	ElevatorFaultRequest faultRequest = (ElevatorFaultRequest) request;
+                    	
+                    	dispatchRequestToFloorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY),
+                                floors.get(elevator.getCurrentFloor()));
+                    	
+                    }
+                    if (request instanceof ElevatorEmergencyRequest) {
+                    	ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
+                    	
+                    	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus()) {
+                    		//start up elevator again
+                    	}
+                    }
                 }
             }
 
