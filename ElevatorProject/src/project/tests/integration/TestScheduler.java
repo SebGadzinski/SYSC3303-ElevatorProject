@@ -15,7 +15,7 @@ public class TestScheduler {
 
 		FloorSubsystem floorSubsystem = new FloorSubsystem(FLOORS_UDP_INFO[0].getInetAddress(), 100, 101, 0);
 		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3,
-				floorSubsystem.getSource(), 0);
+				floorSubsystem.getSource());
 		SchedulerStub schedulerStub = new SchedulerStub(FLOORS_UDP_INFO[0].getInetAddress(), 6969, 7070);
 
 		int numSendSuccesses = 0;

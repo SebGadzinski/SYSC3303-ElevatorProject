@@ -16,7 +16,7 @@ public class TestFloorSubsystem {
 
 		FloorSubsystem floorSubsystem = new FloorSubsystem(FLOORS_UDP_INFO[0].getInetAddress(), 100, 101, 0);
 		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3,
-				floorSubsystem.getSource(), 0);
+				floorSubsystem.getSource());
 		FloorSubsystemStub floorSubsystemStub = new FloorSubsystemStub();
 
 		byte[] tmp = floorSubsystemStub.sendRequest(fileRequest);

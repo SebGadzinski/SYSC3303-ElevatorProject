@@ -18,7 +18,7 @@ public class TestElevatorSubsystem {
 				SCHEDULER_UDP_INFO.getOutSocketPort());
 		ElevatorSubsystemStub elevatorSubsystemStub = new ElevatorSubsystemStub(FLOORS_UDP_INFO[0].getInetAddress(),
 				6969, 7070);
-		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, scheduler.getSource(), 0);
+		FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, scheduler.getSource());
 
 		int numSendSuccesses = 0;
 		numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, ELEVATORS_UDP_INFO[0].getInetAddress(),
