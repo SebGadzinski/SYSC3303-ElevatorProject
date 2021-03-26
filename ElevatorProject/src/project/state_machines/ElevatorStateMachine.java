@@ -38,14 +38,6 @@ public class ElevatorStateMachine {
 		doorFault = false;
 	}
 
-	public void setDoorFault() {
-		this.doorFault = true;
-	}
-
-	public void setMotorFault() {
-		this.doorFault = true;
-	}
-
 	/**
 	 * Changes the request based off current state and request
 	 *
@@ -291,6 +283,14 @@ public class ElevatorStateMachine {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		return formatter.format(date);
+	}
+	
+	public void setDoorFault() {
+		this.doorFault = true;
+	}
+
+	public void setMotorFault() {
+		this.doorFault = true;
 	}
 
 	/**

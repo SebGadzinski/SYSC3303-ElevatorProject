@@ -34,8 +34,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 
 	private Scanner scanner; // for reading request batch files
 	private int floorNo;
-	private boolean upLamp;
-	private boolean downLamp;
+	private boolean upLamp, downLamp;
 
 	/**
 	 * A parameterized constructor.

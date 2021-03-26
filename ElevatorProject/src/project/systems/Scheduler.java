@@ -88,7 +88,6 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
         request.setSource(elevatorInfo.getSource());
         sendRequest(request, elevatorInfo.getUdpInfo().getInetAddress(), elevatorInfo.getUdpInfo().getInSocketPort());
         file.writeToFile(this + " says:");
-        file.writeToFile(this + " says:");
         file.writeToFile(this + " sent a request to " + elevatorInfo);
         file.writeToFile(request.toString());
     }
@@ -134,35 +133,13 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      * @param request The Request to be processed.
      */
     private synchronized void consumeRequest(Request request) {
-
         switch (state) {
-
             case DISPATCH_REQUEST_TO_SUBSYSTEM -> {
-
-                /*
-                 If a current destination for the elevator has already been picked, add it to
-                 the list requests, otherwise send it to ElevatorSubsystem.
-                */
                 if (request instanceof FileRequest) {
-
                     FileRequest fileRequest = (FileRequest) request;
-                    SchedulerElevatorInfo elevator = selectElevator(fileRequest);
-                    PersonRequest personRequest = new PersonRequest(
-                            fileRequest.getOriginFloor(),
-                            fileRequest.getDestinationFloor(),
-                            false,
-                            false
-                    );
-                    elevator.addToRequests(personRequest);
-                    file.writeToFile("Added Request to list of requests to: \n" + elevator.getSource());
-
-                    if (elevator.getCurrentDestinationFloor() == -1) {
-                        elevator.setCurrentDestinationFloor(fileRequest.getOriginFloor());
-                        dispatchRequestToElevatorSubsystem(fileRequest, elevator);
-                    }
-
+                	SchedulerElevatorInfo elevator = selectElevator(fileRequest);
+                    handleFileRequest(fileRequest, elevator);
                 }
-
                 if (request.getSource().getSubsystem() == SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM) {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
 
@@ -171,211 +148,279 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     	this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
                                 elevator);                   
                     }
-                    
                     // If anybody has a request on this floor open the doors, otherwise go toward destination
                     else if (request instanceof ElevatorDestinationRequest) {
-
-                        if (elevator.getCurrentDestinationFloor() != -1) {
-                            ElevatorDirection direction = getDirectionFromFloor(elevator.getCurrentDestinationFloor(),
-                                    elevator);
-                            if (direction == ElevatorDirection.IDLE) {
-                                elevator.setCurrentDestinationFloor(-1);
-                            }
-                            // Check if anyone needs to be dropped off on this floor
-                            if (needToOpenDoors(elevator)) {
-                                dispatchRequestToFloorSubsystem(
-                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
-                                        floors.get(elevator.getCurrentFloor()));
-                                dispatchRequestToElevatorSubsystem(
-                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
-                            } else {
-                                dispatchRequestToElevatorSubsystem(
-                                        new ElevatorMotorRequest(getSource(),
-                                                getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
-                                        elevator);
-                            }
-                        } else {
-                            if (elevator.getRequests().size() > 0) {
-                                PersonRequest closestRequest = elevator.closestRequest();
-                                elevator.setCurrentDestinationFloor(
-                                        closestRequest.isOriginFloorCompleted() ? closestRequest.getDestinationFloor()
-                                                : closestRequest.getOriginFloor());
-                                handlePersonRequest(closestRequest, elevator);
-                            } else {
-                                elevator.setCurrentDestinationFloor(-1);
-                            }
-                        }
+                    	handleElevatorDestinationRequest((ElevatorDestinationRequest) request, elevator);
                     }
-                    // If anybody has a request on this floor open the doors, otherwise go towards
-                    // destination
+                    // If anybody has a request on this floor open the doors, otherwise go towards destination
                     else if (request instanceof ElevatorArrivalRequest) {
-                    	elevator.stopTimer();
-                    	file.writeToFile("Stopping the timer for elevator: " + elevator.getId());
-                    	//System.out.println("Stopping the timer for elevator: " + elevator.getId());
-                 		try {
-            				Thread.sleep(500);
-            			} catch (InterruptedException e) {
-            				// TODO Auto-generated catch block
-            				e.printStackTrace();
-            			}
-                		//System.out.println(elevator.getTimerRunning());
-                		
-                        ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
-                        ArrayList<PersonRequest> requests = elevator.getRequests();
-
-                        elevator.setDirection(arrivalRequest.getCurrentDirection());
-                        elevator.setCurrentFloor(arrivalRequest.getFloorArrivedAt());
-                        ElevatorMotorRequest motorRequest = new ElevatorMotorRequest(getSource(), elevator.getDirection());
-
-                        if (elevator.getCurrentFloor() == elevator.getCurrentDestinationFloor()) {
-                            elevator.setCurrentDestinationFloor(-1);
-                            file.writeToFile(getSource() + "\n Destination floor has been reached\n");
-                        }
-                        // Check if anyone needs to be dropped off on this floor
-                        for (PersonRequest personRequest : requests) {
-                            if (!personRequest.isOriginFloorCompleted()
-                                    && personRequest.getOriginFloor() == elevator.getCurrentFloor()) {
-                                motorRequest = new ElevatorMotorRequest(getSource(), ElevatorDirection.IDLE);
-                            }
-                            if (personRequest.isOriginFloorCompleted()
-                                    && !personRequest.isDestinationFloorCompleted()
-                                    && personRequest.getDestinationFloor() == elevator.getCurrentFloor()) {
-                                motorRequest = new ElevatorMotorRequest(getSource(), ElevatorDirection.IDLE);
-                            }
-                        }
-
-                        elevator.setDirection(motorRequest.getRequestedDirection());
-                        // Send arrival notice to floor
-                        if (elevator.getDirection() == ElevatorDirection.IDLE) {
-                            dispatchRequestToFloorSubsystem(new ElevatorArrivalRequest(elevator.getSource(),
-                                            elevator.getCurrentFloor(), elevator.getDirection()),
-                                    floors.get(elevator.getCurrentFloor()));
-                        }
-                        dispatchRequestToElevatorSubsystem(motorRequest, elevator);
+                    	handleElevatorArrivalRequest((ElevatorArrivalRequest) request, elevator);
                     }
-                    // Tell elevator to open or close doors, if closing go to next destination or
-                    // continue ongoing
+                    // Tell elevator to open or close doors, if closing go to next destination or continue ongoing
                     else if (request instanceof ElevatorDoorRequest) {
-                        ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-
-                        if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
-                            // If the current floor request isn't completed, go towards it (destination)
-                            elevator.setDoorStatus(ElevatorDoorStatus.CLOSED);
-                            if (elevator.getCurrentDestinationFloor() != -1) {
-                                ElevatorDirection elevatorDirection = getDirectionFromFloor(
-                                        elevator.getCurrentDestinationFloor(), elevator);
-                                if (ElevatorDirection.IDLE == elevatorDirection) {
-                                    file.writeToFile(elevator.getRequests().toString());
-                                } else {
-                                    dispatchRequestToElevatorSubsystem(
-                                            new ElevatorMotorRequest(getSource(), elevatorDirection), elevator);
-                                }
-                            } else {
-                                if (elevator.getRequests().size() > 0) {
-                                    PersonRequest closestRequest = elevator.closestRequest();
-                                    int destination = closestRequest.isOriginFloorCompleted()
-                                            ? closestRequest.getDestinationFloor()
-                                            : closestRequest.getOriginFloor();
-                                    dispatchRequestToElevatorSubsystem(new ElevatorDestinationRequest(getSource(),
-                                            destination, getDirectionFromFloor(destination, elevator)), elevator);
-                                }
-                            }
-                        } else {
-                            elevator.setDoorStatus(ElevatorDoorStatus.OPENED);
-                            dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
-                                    floors.get(elevator.getCurrentFloor()));
-                            dispatchRequestToElevatorSubsystem(
-                                    new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
-                        }
+                        handleElevatorDoorRequest((ElevatorDoorRequest) request, elevator);
                     }
                     else if (request instanceof ElevatorPassengerWaitRequest) {
-                        ElevatorPassengerWaitRequest passengerWaitRequest = (ElevatorPassengerWaitRequest) request;
-                        if (passengerWaitRequest.getState() == WaitState.WAITING) {
-                            dispatchRequestToElevatorSubsystem(new ElevatorPassengerWaitRequest(getSource(),
-                                    passengerWaitRequest.getWaitTime(), WaitState.WAITING), elevator);
-                        } else {
-                            ArrayList<PersonRequest> requests = elevator.getRequests();
-
-                            // Clear all requests on floor
-                            int loopCount = requests.size();
-                            int numberOfDeletions = 0;
-                            for (int i = 0; i < loopCount; i++) {
-                                // Add all the people coming into elevator at this floor (people at floor)
-                                int actualIndex = i - numberOfDeletions;
-                                if (!requests.get(actualIndex).isOriginFloorCompleted()
-                                        && requests.get(actualIndex).getOriginFloor() == elevator.getCurrentFloor()) {
-                                    elevator.setPersonRequestOriginFloorCompleted(actualIndex, true);
-                                    elevator.addPassenger();
-                                    file.writeToFile("************************\n " + elevator.getSource()
-                                            + "Added a passenger: \n" + requests.get(actualIndex));
-                                }
-                                // Remove all the people coming from the elevator at this floor (people at
-                                // floor)
-                                if (requests.get(actualIndex).isOriginFloorCompleted()
-                                        && !requests.get(actualIndex).isDestinationFloorCompleted()
-                                        && requests.get(actualIndex).getDestinationFloor() == elevator.getCurrentFloor()) {
-                                    PersonRequest personRequest = elevator.removeFromRequests(actualIndex);
-                                    elevator.subtractPassenger();
-                                    personRequest.setDestinationFloorCompleted(true);
-                                    numberOfDeletions++;
-                                    file.writeToFile("************************\n " + elevator.getSource()
-                                            + "Completed passengers request: \n" + personRequest);
-                                }
-                            }
-                            dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED),
-                                    floors.get(elevator.getCurrentFloor()));
-                            dispatchRequestToElevatorSubsystem(
-                                    new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED), elevator);
-                        }
+                    	handleElevatorPassengerWaitRequest((ElevatorPassengerWaitRequest) request, elevator);
                     }
                     else if (request instanceof ElevatorFaultRequest) {
-                    	ElevatorFaultRequest faultRequest = (ElevatorFaultRequest) request;
-                    	
-                    	file.writeToFile("********** INSIDE ELEVATOR FAULT REQUEST *********");
-                    	
-                    	dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
-                                elevator);
+                    	handleElevatorFaultRequest((ElevatorFaultRequest) request, elevator);
                     }
                     else if (request instanceof ElevatorEmergencyRequest) {
-                    	ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
-                    	
-                    	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus() && emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {
-                    		// Check if anyone needs to be dropped off on this floor
-                    		elevator.setDirection(emergencyRequest.getDirectionState());
-                    		elevator.setDoorStatus(emergencyRequest.getDoorState());
-                            if (needToOpenDoors(elevator)) {
-                                dispatchRequestToFloorSubsystem(
-                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
-                                        floors.get(elevator.getCurrentFloor()));
-                                dispatchRequestToElevatorSubsystem(
-                                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
-                            } else {
-                                dispatchRequestToElevatorSubsystem(
-                                        new ElevatorMotorRequest(getSource(),
-                                                getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
-                                        elevator);
-                            }
-                    	}else {
-                    		elevators.remove(elevator);
-                        	if(elevators.size() == 0) {
-                        		for(int i = 0; i < this.floors.size(); i++) {
-                        			this.dispatchRequestToFloorSubsystem(new FloorEmergencyRequest(getSource(), FloorEmergency.SHUTDOWN), floors.get(i));
-                        		}
-                        		System.exit(1);
-                        	}
-                    	}
+                    	handleElevatorEmergencyRequest((ElevatorEmergencyRequest) request, elevator);
                     }
                 }
             }
-
             case INVALID_REQUEST -> file.writeToFile(this + " received and discarded an invalid request");
+        }
+        advanceState(request);
+    }
+    
+    /**
+     * Handles FileRequest's from FloorSubsystem
+     *
+     * @param fileRequest: The FileRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleFileRequest(FileRequest fileRequest, SchedulerElevatorInfo elevator) {
+        PersonRequest personRequest = new PersonRequest(
+                fileRequest.getOriginFloor(),
+                fileRequest.getDestinationFloor(),
+                false,
+                false
+        );
+        elevator.addToRequests(personRequest);
+        file.writeToFile("Added Request to list of requests to: \n" + elevator.getSource());
 
+        if (elevator.getCurrentDestinationFloor() == -1) {
+            elevator.setCurrentDestinationFloor(fileRequest.getOriginFloor());
+            dispatchRequestToElevatorSubsystem(fileRequest, elevator);
+        }
+    }
+    
+    /**
+     * Handles ElevatorDestinationRequest's come from ElevatorSubsytem after they have been given a FileRequest
+     * They are basically confirmation requests for the FileRequests sent
+     *
+     * @param destinationRequest: The ElevatorDestinationRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorDestinationRequest(ElevatorDestinationRequest destinationRequest, SchedulerElevatorInfo elevator) {
+    	//Is elevator currently going somewhere
+    	 if (elevator.getCurrentDestinationFloor() != -1) {
+             ElevatorDirection direction = getDirectionFromFloor(elevator.getCurrentDestinationFloor(),
+                     elevator);
+             if (direction == ElevatorDirection.IDLE) {
+                 elevator.setCurrentDestinationFloor(-1);
+             }
+             // Check if anyone needs to be dropped off on this floor
+             if (needToOpenDoors(elevator)) {
+                 dispatchRequestToFloorSubsystem(
+                         new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
+                         floors.get(elevator.getCurrentFloor()));
+                 dispatchRequestToElevatorSubsystem(
+                         new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
+             } else {
+                 dispatchRequestToElevatorSubsystem(
+                         new ElevatorMotorRequest(getSource(),
+                                 getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
+                         elevator);
+             }
+         } else {
+        	//If there are any person requests, see which is the closest and process it
+             if (elevator.getRequests().size() > 0) {
+                 PersonRequest closestRequest = elevator.closestRequest();
+                 elevator.setCurrentDestinationFloor(
+                         closestRequest.isOriginFloorCompleted() ? closestRequest.getDestinationFloor()
+                                 : closestRequest.getOriginFloor());
+                 handlePersonRequest(closestRequest, elevator);
+             } else {
+                 elevator.setCurrentDestinationFloor(-1);
+             }
+         }
+    }
+    
+    /**
+     * Handles ElevatorArrivalRequest's from ElevatorSubsytem
+     *
+     * @param arrivalRequest: The ElevatorArrivalRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorArrivalRequest(ElevatorArrivalRequest arrivalRequest, SchedulerElevatorInfo elevator) {
+    	//Stop the timer that is checking if the elevator kept moving or wont stop
+    	elevator.stopTimer();
+    	file.writeToFile("Stopping the timer for elevator: " + elevator.getId());
+ 		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        ArrayList<PersonRequest> requests = elevator.getRequests();
+
+        elevator.setDirection(arrivalRequest.getCurrentDirection());
+        elevator.setCurrentFloor(arrivalRequest.getFloorArrivedAt());
+        ElevatorMotorRequest motorRequest = new ElevatorMotorRequest(getSource(), elevator.getDirection());
+
+        if (elevator.getCurrentFloor() == elevator.getCurrentDestinationFloor()) {
+            elevator.setCurrentDestinationFloor(-1);
+            file.writeToFile(getSource() + "\n Destination floor has been reached\n");
+        }
+        // Check if anyone needs to be dropped off on this floor
+        for (PersonRequest personRequest : requests) {
+            if (!personRequest.isOriginFloorCompleted()
+                    && personRequest.getOriginFloor() == elevator.getCurrentFloor()) {
+                motorRequest = new ElevatorMotorRequest(getSource(), ElevatorDirection.IDLE);
+            }
+            if (personRequest.isOriginFloorCompleted()
+                    && !personRequest.isDestinationFloorCompleted()
+                    && personRequest.getDestinationFloor() == elevator.getCurrentFloor()) {
+                motorRequest = new ElevatorMotorRequest(getSource(), ElevatorDirection.IDLE);
+            }
         }
 
-        advanceState(request);
-
+        elevator.setDirection(motorRequest.getRequestedDirection());
+        // Send arrival notice to floor
+        if (elevator.getDirection() == ElevatorDirection.IDLE) {
+            dispatchRequestToFloorSubsystem(new ElevatorArrivalRequest(elevator.getSource(),
+                            elevator.getCurrentFloor(), elevator.getDirection()),
+                    floors.get(elevator.getCurrentFloor()));
+        }
+        dispatchRequestToElevatorSubsystem(motorRequest, elevator);
     }
+    
+    /**
+     * Handles ElevatorDoorRequest from ElevatorSubsytem
+     *
+     * @param doorRequest: The ElevatorDoorRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorDoorRequest(ElevatorDoorRequest doorRequest, SchedulerElevatorInfo elevator) {
+        if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
+            // If the current floor request isn't completed, go towards it (destination)
+            elevator.setDoorStatus(ElevatorDoorStatus.CLOSED);
+            if (elevator.getCurrentDestinationFloor() != -1) {
+                ElevatorDirection elevatorDirection = getDirectionFromFloor(
+                        elevator.getCurrentDestinationFloor(), elevator);
+                if (ElevatorDirection.IDLE == elevatorDirection) {
+                    file.writeToFile(elevator.getRequests().toString());
+                } else {
+                    dispatchRequestToElevatorSubsystem(
+                            new ElevatorMotorRequest(getSource(), elevatorDirection), elevator);
+                }
+            } else {
+                if (elevator.getRequests().size() > 0) {
+                    PersonRequest closestRequest = elevator.closestRequest();
+                    int destination = closestRequest.isOriginFloorCompleted()
+                            ? closestRequest.getDestinationFloor()
+                            : closestRequest.getOriginFloor();
+                    dispatchRequestToElevatorSubsystem(new ElevatorDestinationRequest(getSource(),
+                            destination, getDirectionFromFloor(destination, elevator)), elevator);
+                }
+            }
+        } else {
+            elevator.setDoorStatus(ElevatorDoorStatus.OPENED);
+            dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
+                    floors.get(elevator.getCurrentFloor()));
+            dispatchRequestToElevatorSubsystem(
+                    new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
+        }
+    }
+    
+    /**
+     * Handles ElevatorPassengerWaitRequest from ElevatorSubsytem
+     *
+     * @param passengerWaitRequest: The ElevatorPassengerWaitRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorPassengerWaitRequest(ElevatorPassengerWaitRequest passengerWaitRequest, SchedulerElevatorInfo elevator) {
+        if (passengerWaitRequest.getState() == WaitState.WAITING) {
+            dispatchRequestToElevatorSubsystem(new ElevatorPassengerWaitRequest(getSource(),
+                    passengerWaitRequest.getWaitTime(), WaitState.WAITING), elevator);
+        } else {
+            ArrayList<PersonRequest> requests = elevator.getRequests();
 
+            // Clear all requests on floor
+            int loopCount = requests.size();
+            int numberOfDeletions = 0;
+            for (int i = 0; i < loopCount; i++) {
+                // Add all the people coming into elevator at this floor (people at floor)
+                int actualIndex = i - numberOfDeletions;
+                if (!requests.get(actualIndex).isOriginFloorCompleted()
+                        && requests.get(actualIndex).getOriginFloor() == elevator.getCurrentFloor()) {
+                    elevator.setPersonRequestOriginFloorCompleted(actualIndex, true);
+                    elevator.addPassenger();
+                    file.writeToFile("************************\n " + elevator.getSource()
+                            + "Added a passenger: \n" + requests.get(actualIndex));
+                }
+                // Remove all the people coming from the elevator at this floor (people at
+                // floor)
+                if (requests.get(actualIndex).isOriginFloorCompleted()
+                        && !requests.get(actualIndex).isDestinationFloorCompleted()
+                        && requests.get(actualIndex).getDestinationFloor() == elevator.getCurrentFloor()) {
+                    PersonRequest personRequest = elevator.removeFromRequests(actualIndex);
+                    elevator.subtractPassenger();
+                    personRequest.setDestinationFloorCompleted(true);
+                    numberOfDeletions++;
+                    file.writeToFile("************************\n " + elevator.getSource()
+                            + "Completed passengers request: \n" + personRequest);
+                }
+            }
+            dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED),
+                    floors.get(elevator.getCurrentFloor()));
+            dispatchRequestToElevatorSubsystem(
+                    new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED), elevator);
+        }
+    }
+    
+    /**
+     * Handles ElevatorFaultRequest from ElevatorSubsytem
+     *
+     * @param faultRequest: The ElevatorFaultRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorFaultRequest(ElevatorFaultRequest faultRequest, SchedulerElevatorInfo elevator) {    	
+    	dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+                elevator);
+    }
+    
+    /**
+     * Handles ElevatorEmergencyRequest from ElevatorSubsytem
+     *
+     * @param emergencyRequest: The ElevatorEmergencyRequest to be processed.
+     * @param elevator: The SchedulerElevatorInfo to be manipulated
+     */
+    private void handleElevatorEmergencyRequest(ElevatorEmergencyRequest emergencyRequest, SchedulerElevatorInfo elevator) {    	
+    	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus() && emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {
+    		// Check if anyone needs to be dropped off on this floor
+    		elevator.setDirection(emergencyRequest.getDirectionState());
+    		elevator.setDoorStatus(emergencyRequest.getDoorState());
+            if (needToOpenDoors(elevator)) {
+                dispatchRequestToFloorSubsystem(
+                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
+                        floors.get(elevator.getCurrentFloor()));
+                dispatchRequestToElevatorSubsystem(
+                        new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED), elevator);
+            } else {
+                dispatchRequestToElevatorSubsystem(
+                        new ElevatorMotorRequest(getSource(),
+                                getDirectionFromFloor(elevator.getCurrentDestinationFloor(), elevator)),
+                        elevator);
+            }
+    	}
+    	//If it was a SHUTDOWN, remove the elevators from the operational elevators list
+    	else {
+    		elevators.remove(elevator);
+        	if(elevators.size() == 0) {
+        		for(int i = 0; i < this.floors.size(); i++) {
+        			this.dispatchRequestToFloorSubsystem(new FloorEmergencyRequest(getSource(), FloorEmergency.SHUTDOWN), floors.get(i));
+        		}
+        		System.exit(1);
+        	}
+    	}
+    }
+    
     /**
      * Checks to see if anyone on this floor needs to use the elevator
      *
@@ -471,8 +516,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
             // Is this elevator coming towards me
             if (elevatorComingTowardsFloor(elevator, fileRequest.getOriginFloor())) {
                 if (Math.abs(fileRequest.getOriginFloor() - elevator.getCurrentFloor()) < Math
-                        .abs(fileRequest.getOriginFloor() - chosenElevator.getCurrentFloor())
-                        && elevator.getPassengers() < project.Config.MAX_PASSENGERS_IN_ELEVATOR) {
+                        .abs(fileRequest.getOriginFloor() - chosenElevator.getCurrentFloor())) {
                     // Elevator cannot have more than 5 passengers compared to chosen elevator to
                     // become chosen elevator
                     if (chosenElevator.getPassengers() - elevator.getPassengers() > -4) {
@@ -494,8 +538,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
             for (int i = 1; i < elevators.size(); i++) {
                 SchedulerElevatorInfo elevator = elevators.get(i);
                 if (Math.abs(fileRequest.getOriginFloor() - elevator.getCurrentFloor()) < Math
-                        .abs(fileRequest.getOriginFloor() - chosenElevator.getCurrentFloor())
-                        && elevator.getPassengers() < project.Config.MAX_PASSENGERS_IN_ELEVATOR) {
+                        .abs(fileRequest.getOriginFloor() - chosenElevator.getCurrentFloor())) {
                     chosenElevator = elevator;
                 }
             }

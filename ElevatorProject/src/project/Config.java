@@ -17,7 +17,6 @@ public final class Config {
 
     public static final int ELEVATOR_DOOR_TIME = 5; // seconds
     public static final int ELEVATOR_PASSENGER_WAIT_TIME = 10; // seconds
-    public static final int MAX_PASSENGERS_IN_ELEVATOR = 10;
     public static final int NUMBER_OF_ELEVATORS = 3;
     public static final int NUMBER_OF_FLOORS = 4;
     public static final int REQUEST_QUEUE_CAPACITY = 10;

@@ -16,12 +16,11 @@ id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
@@ -35,6 +34,21 @@ Pick Up: 3
 Destination Floor: 1
 Scheduler says:
 Request received by Scheduler from Source: 
+id: 1
+subsystem: FLOOR_SUBSYSTEM
+
+FileRequest: 
+Time:  18:17:17.020
+Direction: UP
+Pick Up: 1
+Destination Floor: 3
+Added Request to list of requests to: 
+Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+Scheduler says:
+Request received by Scheduler from Source: 
 id: 2
 subsystem: FLOOR_SUBSYSTEM
 
@@ -45,62 +59,45 @@ Pick Up: 2
 Destination Floor: 0
 Added Request to list of requests to: 
 Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: FLOOR_SUBSYSTEM
-
-FileRequest: 
-Time:  18:17:17.020
-Direction: UP
-Pick Up: 1
-Destination Floor: 3
-Added Request to list of requests to: 
-Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destinationFloor: 1
+destinationFloor: 2
 doorStatus: CLOSED
 FileRequest: 
-Time:  18:17:17.020
-Direction: UP
-Pick Up: 1
-Destination Floor: 3
+Time:  18:18:33.707
+Direction: DOWN
+Pick Up: 2
+Destination Floor: 0
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorDestinationRequest:
-Destination: 1
+Destination: 2
 Starting the timer for elevator: 1
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
 currentFloor: 0
-destinationFloor: 1
+destinationFloor: 2
 doorStatus: CLOSED
 ElevatorMotorRequest:
 Motor to move: UP
@@ -114,12 +111,11 @@ ElevatorDestinationRequest:
 Destination: 3
 Starting the timer for elevator: 0
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
@@ -138,6 +134,66 @@ ElevatorArrivalRequest:
 Floor arrived at: 1
 Current direction: UP
 Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 1
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 0
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5011
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 1
 Source: 
 id: 1
 subsystem: SCHEDULER
@@ -146,26 +202,25 @@ subsystem: SCHEDULER
 
 Scheduler says:
 Scheduler sent a request to Floor: 
-id: 1
+id: 2
 UDPInfo: 
-inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5011
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5013
 
 ElevatorArrivalRequest:
-Floor arrived at: 1
+Floor arrived at: 2
 Current direction: IDLE
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
-currentFloor: 1
+currentFloor: 2
 destinationFloor: -1
 doorStatus: CLOSED
 ElevatorMotorRequest:
@@ -176,32 +231,6 @@ Request received by Scheduler from Source:
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest:
-Floor arrived at: 1
-Current direction: UP
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 0
-direction: UP
-currentFloor: 1
-destinationFloor: 3
-doorStatus: CLOSED
-ElevatorMotorRequest:
-Motor to move: UP
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
@@ -210,91 +239,30 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 1
+id: 0
 UDPInfo: 
-inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
 currentFloor: 1
-destinationFloor: -1
+destinationFloor: 3
 doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 Scheduler says:
 Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest:
-Floor arrived at: 2
-Current direction: UP
-Stopping the timer for elevator: 0
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 2
-UDPInfo: 
-inSocketPort: 5012
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5013
-
-ElevatorArrivalRequest:
-Floor arrived at: 2
-Current direction: IDLE
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 0
-direction: IDLE
-currentFloor: 2
-destinationFloor: 3
-doorStatus: CLOSED
-ElevatorMotorRequest:
-Motor to move: IDLE
-
-Scheduler says:
-Request received by Scheduler from Source: 
 id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
-# of passengers: 0
-direction: IDLE
-currentFloor: 1
-destinationFloor: -1
-doorStatus: OPENED
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorDoorRequest:
@@ -305,24 +273,23 @@ Scheduler sent a request to Floor:
 id: 2
 UDPInfo: 
 inSocketPort: 5012
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5013
 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 0
+id: 1
 UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
 currentFloor: 2
-destinationFloor: 3
+destinationFloor: -1
 doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: OPENED
@@ -336,16 +303,15 @@ ElevatorPassengerWaitRequest:
 Wait state: WAITING
 Wait time: 10
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
-currentFloor: 2
+currentFloor: 1
 destinationFloor: 3
 doorStatus: OPENED
 ElevatorPassengerWaitRequest: 
@@ -354,6 +320,29 @@ Wait time: 10
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
@@ -361,7 +350,7 @@ Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
-id: 1
+id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 Added a passenger: 
 Request: 
@@ -375,24 +364,23 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
-id: 1
+id: 0
 UDPInfo: 
-inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
 currentFloor: 1
-destinationFloor: -1
+destinationFloor: 3
 doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
@@ -402,35 +390,12 @@ Request received by Scheduler from Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destinationFloor: -1
-doorStatus: CLOSED
-ElevatorDestinationRequest:
-Destination: 3
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
 ElevatorPassengerWaitRequest: 
 Wait state: FINISHED
 Wait time: 0
 ************************
  Source: 
-id: 0
+id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 Added a passenger: 
 Request: 
@@ -444,51 +409,26 @@ Scheduler sent a request to Floor:
 id: 2
 UDPInfo: 
 inSocketPort: 5012
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5013
 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 2
-destinationFloor: 3
-doorStatus: OPENED
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDestinationRequest:
-Destination: 3
-Starting the timer for elevator: 1
-Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
-currentFloor: 1
-destinationFloor: 3
-doorStatus: CLOSED
-ElevatorMotorRequest:
-Motor to move: UP
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -500,15 +440,61 @@ Request for doors to be: CLOSED
 
 Starting the timer for elevator: 0
 Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorDestinationRequest:
+Destination: 0
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 1
-direction: IDLE
+direction: UP
 currentFloor: 2
 destinationFloor: 3
 doorStatus: CLOSED
@@ -520,26 +506,23 @@ Request received by Scheduler from Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorArrivalRequest:
-Floor arrived at: 2
-Current direction: UP
-Stopping the timer for elevator: 1
+ElevatorDestinationRequest:
+Destination: 0
 Starting the timer for elevator: 1
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 1
-direction: UP
+direction: IDLE
 currentFloor: 2
-destinationFloor: 3
+destinationFloor: 0
 doorStatus: CLOSED
 ElevatorMotorRequest:
-Motor to move: UP
+Motor to move: DOWN
 
 Scheduler says:
 Request received by Scheduler from Source: 
@@ -561,19 +544,18 @@ Scheduler sent a request to Floor:
 id: 3
 UDPInfo: 
 inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5015
 
 ElevatorArrivalRequest:
 Floor arrived at: 3
 Current direction: IDLE
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
@@ -589,8 +571,67 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorArrivalRequest:
-Floor arrived at: 3
-Current direction: UP
+Floor arrived at: 1
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 1
+destinationFloor: 0
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: DOWN
 Stopping the timer for elevator: 1
 Source: 
 id: 1
@@ -600,26 +641,25 @@ subsystem: SCHEDULER
 
 Scheduler says:
 Scheduler sent a request to Floor: 
-id: 3
+id: 0
 UDPInfo: 
-inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5015
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5009
 
 ElevatorArrivalRequest:
-Floor arrived at: 3
+Floor arrived at: 0
 Current direction: IDLE
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
-currentFloor: 3
+currentFloor: 0
 destinationFloor: -1
 doorStatus: CLOSED
 ElevatorMotorRequest:
@@ -630,86 +670,15 @@ Request received by Scheduler from Source:
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 3
-UDPInfo: 
-inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5015
-
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 3
-destinationFloor: -1
-doorStatus: OPENED
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 3
-UDPInfo: 
-inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5015
-
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 1
-UDPInfo: 
-inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 3
-destinationFloor: -1
-doorStatus: OPENED
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
 ElevatorPassengerWaitRequest: 
 Wait state: WAITING
 Wait time: 10
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 1
 direction: IDLE
@@ -724,20 +693,53 @@ Request received by Scheduler from Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
 Scheduler says:
+Scheduler sent a request to Floor: 
+id: 0
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5009
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
-currentFloor: 3
+currentFloor: 0
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 1
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 0
 destinationFloor: -1
 doorStatus: OPENED
 ElevatorPassengerWaitRequest: 
@@ -762,26 +764,36 @@ destinationFloorCompleted: false
 originFloor: 3
 originFloorCompleted: true
 
+************************
+ Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+Completed passengers request: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: true
+originFloor: 1
+originFloorCompleted: true
+
 Scheduler says:
 Scheduler sent a request to Floor: 
 id: 3
 UDPInfo: 
 inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5015
 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 3
 destinationFloor: -1
@@ -789,6 +801,28 @@ doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
+Scheduler says:
+Request received by Scheduler from Source: 
+id: 0
+subsystem: ELEVATOR_SUBSYSTEM
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Scheduler says:
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorDestinationRequest:
+Destination: 1
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 1
@@ -803,33 +837,32 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 Completed passengers request: 
 Request: 
-destinationFloor: 3
+destinationFloor: 0
 destinationFloorCompleted: true
-originFloor: 1
+originFloor: 2
 originFloorCompleted: true
 
 Scheduler says:
 Scheduler sent a request to Floor: 
-id: 3
+id: 0
 UDPInfo: 
-inSocketPort: 5014
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5015
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
+outSocketPort: 5009
 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5005
 # of passengers: 0
 direction: IDLE
-currentFloor: 3
+currentFloor: 0
 destinationFloor: -1
 doorStatus: OPENED
 ElevatorDoorRequest:
@@ -840,41 +873,17 @@ Request received by Scheduler from Source:
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 2
-direction: IDLE
-currentFloor: 3
-destinationFloor: -1
-doorStatus: CLOSED
-ElevatorDestinationRequest:
-Destination: 1
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
 ElevatorDestinationRequest:
 Destination: 1
 Starting the timer for elevator: 0
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 3
 destinationFloor: 1
@@ -901,14 +910,13 @@ Current direction: DOWN
 Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: DOWN
 currentFloor: 2
 destinationFloor: 1
@@ -936,21 +944,20 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorArrivalRequest:
 Floor arrived at: 1
 Current direction: IDLE
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 1
 destinationFloor: -1
@@ -971,21 +978,20 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 1
 destinationFloor: -1
@@ -1000,49 +1006,48 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorFaultRequest:
 Fault: DOOR_FAULT
-********** INSIDE ELEVATOR FAULT REQUEST *********
-Scheduler says:
 Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 1
 destinationFloor: -1
 doorStatus: OPENED
 ElevatorEmergencyRequest emergencyState: FIX
- code: 1 doors: null, direction: null]
+ code: 1 doors: null, direction: null
+
 Scheduler says:
 Request received by Scheduler from Source: 
 id: 0
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorEmergencyRequest emergencyState: FIX
- code: 0 doors: CLOSED, direction: IDLE]
+ code: 0 doors: CLOSED, direction: IDLE
+
 Scheduler says:
 Scheduler sent a request to Floor: 
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 1
 destinationFloor: -1
@@ -1059,14 +1064,13 @@ ElevatorPassengerWaitRequest:
 Wait state: WAITING
 Wait time: 10
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 1
 direction: IDLE
 currentFloor: 1
 destinationFloor: -1
@@ -1098,219 +1102,24 @@ Scheduler sent a request to Floor:
 id: 1
 UDPInfo: 
 inSocketPort: 5010
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5011
 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Scheduler says:
-Scheduler says:
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destinationFloor: -1
-doorStatus: CLOSED
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destinationFloor: -1
-doorStatus: CLOSED
-ElevatorDestinationRequest:
-Destination: 0
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDestinationRequest:
-Destination: 0
-Starting the timer for elevator: 0
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 1
-destinationFloor: 0
-doorStatus: CLOSED
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorArrivalRequest:
-Floor arrived at: 0
-Current direction: DOWN
-Stopping the timer for elevator: 0
-Source: 
-id: 1
-subsystem: SCHEDULER
-
- Destination floor has been reached
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 0
-UDPInfo: 
-inSocketPort: 5008
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5009
-
-ElevatorArrivalRequest:
-Floor arrived at: 0
-Current direction: IDLE
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 0
-destinationFloor: -1
-doorStatus: CLOSED
-ElevatorMotorRequest:
-Motor to move: IDLE
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 0
-UDPInfo: 
-inSocketPort: 5008
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5009
-
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 0
-destinationFloor: -1
-doorStatus: OPENED
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 1
-direction: IDLE
-currentFloor: 0
-destinationFloor: -1
-doorStatus: OPENED
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-Scheduler says:
-Request received by Scheduler from Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorPassengerWaitRequest: 
-Wait state: FINISHED
-Wait time: 0
-************************
- Source: 
-id: 0
-subsystem: ELEVATOR_SUBSYSTEM
-Completed passengers request: 
-Request: 
-destinationFloor: 0
-destinationFloorCompleted: true
-originFloor: 2
-originFloorCompleted: true
-
-Scheduler says:
-Scheduler sent a request to Floor: 
-id: 0
-UDPInfo: 
-inSocketPort: 5008
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5009
-
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-Scheduler says:
-Scheduler says:
-Scheduler sent a request to Elevator: 
-id: 0
-UDPInfo: 
-inSocketPort: 5002
-inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5003
 # of passengers: 0
 direction: IDLE
-currentFloor: 0
+currentFloor: 1
 destinationFloor: -1
-doorStatus: OPENED
+doorStatus: CLOSED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 

@@ -73,7 +73,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	public synchronized void handleRequest(Request request) {
 
 		this.numOfRequests++;
-		this.sendFault();
+		this.createFault();
 
 		Request response = null;
 		String responseString = "\nRequest received by:\n" + getSource() + "\n";
@@ -123,7 +123,11 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 		}
 	}
 
-	public void sendFault() {
+	/**
+	 * Creates a fault for elevator subsystem
+	 *
+	 */
+	public void createFault() {
 		for (int i = 0; i < Config.faults.length; i++) {
 			if (Config.faults[i].numUntilFault == numOfRequests) {
 
@@ -172,6 +176,10 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 		notifyAll();
 	}
 
+	/**
+	 * "Fixes ElevatorSubsystem" -> sleeps thread for a certain fix time
+	 *
+	 */
 	public void fixSystem() {
 		try {
 			Thread.sleep(Config.FIX_ELEVATOR_TIME);
@@ -181,10 +189,18 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 		}
 	}
 
+	/**
+	 * Creates a door fault for testing purposes
+	 *
+	 */
 	public void makeDoorFault() {
 		this.stateMachine.setDoorFault();
 	}
 
+	/**
+	 * Creates a motor fault for testing purposes
+	 *
+	 */
 	public void makeMotorFault() {
 		this.stateMachine.setMotorFault();
 	}
