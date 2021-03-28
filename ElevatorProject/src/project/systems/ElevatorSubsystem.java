@@ -26,7 +26,7 @@ import project.utils.objects.general.CreateFile;
  * Receives data from the scheduler and then sends it right back
  *
  * @author Iter1 (Chase Badalato), Iter2 (Sebastian Gadzinski), Iter3 (Sebastian
- *         Gadzinski)
+ *         Gadzinski), Iter4 (Sebastian Gadzinski and Chase Fridgen)
  */
 public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 
