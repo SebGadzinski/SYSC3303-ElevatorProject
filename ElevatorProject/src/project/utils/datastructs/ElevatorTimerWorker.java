@@ -16,10 +16,12 @@ public class ElevatorTimerWorker implements Runnable {
 	
 	boolean timerRunning;
 	boolean timeOut;
+	int timeOutTime;
 	
-	public ElevatorTimerWorker() {
+	public ElevatorTimerWorker(int timeout) {
 		this.timeOut = false;
 		this.timerRunning = false;
+		this.timeOutTime = timeout;
 	}
 	
 	public synchronized boolean getTimerRunning () {
@@ -35,7 +37,7 @@ public class ElevatorTimerWorker implements Runnable {
 		this.timerRunning = true;
 		try {
 			//Try to sleep for the timer timeout length
-			Thread.sleep(Config.TIMER_TIMEOUT);
+			Thread.sleep(timeOutTime);
 		} catch (InterruptedException e) {
 			//If the Scheduler receives an arrived request in time then the
 			//timer is interrupted

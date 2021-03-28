@@ -20,6 +20,7 @@ public class FloorSubsystemStub {
     public FloorSubsystemStub() {
         try {
             socket = new DatagramSocket(getPort());
+            socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(1);
@@ -35,9 +36,9 @@ public class FloorSubsystemStub {
         try {
             socket.receive(receivePacket);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+        	return true;
         }
+        
 
         sendPacket = new DatagramPacket(dataToSend, dataToSend.length, localhost, getPort());
 

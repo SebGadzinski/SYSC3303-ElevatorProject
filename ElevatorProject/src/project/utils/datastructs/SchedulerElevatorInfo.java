@@ -2,6 +2,7 @@ package project.utils.datastructs;
 
 import java.util.ArrayList;
 
+import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
@@ -24,7 +25,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.currentFloor = currentFloor;
         this.currentDestinationFloor = -1;
         this.passengers = 0;
-        this.timer = new ElevatorTimerWorker();
+        this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
         this.timerWorker = new Thread(this.timer, "timer" + id);
         
         requests = new ArrayList<>();
@@ -128,7 +129,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         	this.timerWorker.start();
     	}
     	else if (this.timerWorker.getState() == Thread.State.TERMINATED) {
-    		this.timer = new ElevatorTimerWorker();
+    		this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
     		this.timerWorker = new Thread(this.timer, "timer");
     		this.timerWorker.start();
     	}
