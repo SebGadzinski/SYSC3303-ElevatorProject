@@ -10,7 +10,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 /**
  * A utility class for configuration.
  *
- * @author Paul Roode, Sebastian Gadzinksi
+ * @author Paul Roode
+ * @author Sebastian Gadzinksi
  * @version Iteration 4
  */
 public final class Config {
@@ -67,7 +68,7 @@ public final class Config {
     }
 
     /**
-     * Returns a port if one is available.
+     * Gets a port if one is available.
      *
      * @return a port if one is available.
      * @throws NullPointerException if there are no available ports.
