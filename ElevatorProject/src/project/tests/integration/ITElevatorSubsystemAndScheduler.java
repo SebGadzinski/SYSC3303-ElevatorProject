@@ -10,7 +10,7 @@ import static project.Config.*;
 
 import org.junit.jupiter.api.Test;
 
-public class TestElevatorSubsystem {
+public class ITElevatorSubsystemAndScheduler {
 
     @Test
     public void testElevatorSubsystem() {

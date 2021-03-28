@@ -36,9 +36,8 @@ public class FloorSubsystemStub {
         try {
             socket.receive(receivePacket);
         } catch (IOException e) {
-        	return true;
+            return true;
         }
-        
 
         sendPacket = new DatagramPacket(dataToSend, dataToSend.length, localhost, getPort());
 
