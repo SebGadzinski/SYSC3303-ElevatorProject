@@ -1,69 +1,56 @@
 package project.tests.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
+public class TestFloor {
 
-import project.models.Floor;
+    public void realtimeWait(String chya) {
 
-/**
- * Tests Floor.
- *
- * @author Chase Badalato
- * @author Paul Roode
- * @version Iteration 4
- */
-public class TestFloor extends Floor {
-
-    private static final int TIME_FOR_ELEVATOR_ARRIVAL = 2; // seconds
-
-    /**
-     * Simulates and tests Floor::realTimeWait() and its inherited auxiliaries.
-     */
-    @Test
-    public void testRealTimeWait() {
-        TestFloor floor = new TestFloor();
-        Instant arrivalTime = Instant.now().plus(TIME_FOR_ELEVATOR_ARRIVAL, ChronoUnit.SECONDS);
-        floor.realTimeWait(arrivalTime);
-        assertEquals(Instant.now().truncatedTo(ChronoUnit.SECONDS), arrivalTime.truncatedTo(ChronoUnit.SECONDS));
-    }
-
-    /**
-     * Simulates Floor::realTimeWait() and invokes its inherited auxiliaries for testing purposes.
-     *
-     * @param arrivalTime The time at which the elevator shall arrive.
-     */
-    private void realTimeWait(Instant arrivalTime) {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
-        String arrivalTimeStr = formatter.format(Date.from(arrivalTime));
-
-        String[] arrMilTime = arrivalTimeStr.split(":");
+        String[] arrMilTime = chya.split(":");
         String[] arrSec = arrMilTime[2].split("[.]");
+
+        System.out.println("When elevator should arrive: " + arrMilTime[0] + ":" + arrMilTime[1] + ":" + arrSec[0]);
 
         Date dt = new Date();
         SimpleDateFormat dateFormat;
         dateFormat = new SimpleDateFormat("kk:mm:ss");
         String currDate = dateFormat.format(dt);
         String[] currTime = currDate.split(":");
+        System.out.println("Current time: " + currTime[0] + ":" + currTime[1] + ":" + currTime[2] + "\n");
 
         int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1], arrSec[0]);
         int currentTime = toMilliSeconds(currTime[0], currTime[1], currTime[2]);
+
         int timeToWait = arrTime - currentTime;
+        System.out.println(timeToWait);
 
         try {
-            TimeUnit.MILLISECONDS.sleep(Duration.ofMillis(timeToWait).toMillis());
+            Thread.sleep(timeToWait);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public int toMilliSeconds(String hour, String min, String sec) {
+
+        int intHour = Integer.parseInt(hour);
+        int intMin = Integer.parseInt(min);
+        int intSec = Integer.parseInt(sec);
+
+        int milliH = intHour * 3600000;
+        int milliM = intMin * 60000;
+        int milliS = intSec * 1000;
+
+        return milliH + milliM + milliS;
+
+    }
+
+    public static void main(String[] args) {
+        String penis = "15:27:17.020";
+        TestFloor test = new TestFloor();
+        test.realtimeWait(penis);
     }
 
 }

@@ -13,7 +13,7 @@ import java.net.*;
  */
 public abstract class AbstractSubsystem {
 
-    public static final int MAX_PACKET_SIZE = 10000; // bytes
+    protected static final int MAX_PACKET_SIZE = 10000; // bytes
 
     protected DatagramSocket inSocket, outSocket;
 
@@ -158,24 +158,6 @@ public abstract class AbstractSubsystem {
             System.exit(1);
         }
         return receivedPacket;
-    }
-
-    /**
-     * Gets the inlet socket IP address.
-     *
-     * @return the inlet socket IP address.
-     */
-    public InetAddress getInSocketInetAddress() {
-        return inSocket.getInetAddress();
-    }
-
-    /**
-     * Gets the inlet socket port number.
-     *
-     * @return the inlet socket port number.
-     */
-    public int getInSocketPort() {
-        return inSocket.getPort();
     }
 
 }
