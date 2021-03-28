@@ -16,10 +16,10 @@ This project aims to design a real-time elevator control system that quickly and
 
 Author | Contributions
 --- | ---
-Paul Roode | Added an abstraction layer by abstracting the UDP mechanism and request serialization into an AbstractSubsystem class, from which all subsystems (ElevatorSubsystem, FloorSubsystem, and Scheduler) inherit; and updated the concrete subsystem classes accordingly. Refactored UDP configuration to accommodate multiple hosts. De-smelled and formatted all src files.
-Chase Badalato | Converted the FloorSubsystem to use UDP, and wrote test cases for all subsystems.
-Sebastian Gadzinski | Worked on the Scheduler and ElevatorSubsystem classes.
-Chase Fridgen | Made the CreateFile class and updated ElevatorSubsystem and Scheduler to output to .txt files. Helped with the FloorSubsystemStub test class. Made the UML class and sequence UML diagrams.
+Paul Roode | Wrote TestRunner, which discovers and executes all JUnit-annotated tests and reports the results; wrote TestRealTimeElevatorArrival, which tests the real-time capability of the system; revamped Config to permit the spinning up of multiple test threads without interference with one another or those constituting the main application; reorganized the codebase and documentation; updated README; general de-smelling.
+Chase Badalato | Created ElevatorTimerWorker class of which each ElevatorSubsystem has an instance. The timer starts when an elevator is on its way to a floor. If the timer runs out then the elevator is placed in a fatal state, and if the elevator arrives successfully the timer resets. Created an integrated test case (ITFaultsTimer) for this timer. Created a FloorSubsystemEmergencyRequest packet. Modified FloorSubsystem to receive these packets.
+Sebastian Gadzinski | Created the UML diagrams. Created ElevatorSubsystemEmergencyPacket. Implemented the sending and receiving of these packets, and what to do once an emergency request is received.
+Chase Fridgen | Implemented the fault detection within the Scheduler and ElevatorSubsystem. Created a unit test (TestElevatorFaults) which tests the emergency packet handling, and makes sure that emergency packets do not get randomly sent.
 
 ---
 
