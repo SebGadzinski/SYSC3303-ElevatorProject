@@ -29,14 +29,14 @@ import project.utils.datastructs.SubsystemSource.Subsystem;
  * konw when a major elevator fault has occured.
  *
  */
-class TimerFaultTest {
+class TestFaultsTimer {
 	
 	Scheduler scheduler;
 	ElevatorSubsystem elevator;
 	int outgoing;
 	int incoming;
 	
-	public TimerFaultTest() {
+	public TestFaultsTimer() {
 		int outgoingScheduler = Config.getPort();		
 		int incomingScheduler = Config.getPort();
 		int outgoingElevator = Config.getPort();

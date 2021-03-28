@@ -10,7 +10,7 @@ import static project.Config.*;
 
 import org.junit.jupiter.api.Test;
 
-public class TestScheduler {
+public class ITFloorSubsystemAndScheduler {
 
     @Test
     public void testScheduler() {

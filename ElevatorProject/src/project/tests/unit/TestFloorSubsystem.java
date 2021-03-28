@@ -19,7 +19,7 @@ public class TestFloorSubsystem {
         FloorSubsystemStub floorSubsystemStub = new FloorSubsystemStub();
 
         FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, floorSubsystem.getSource());
-                
+
         byte[] tmp = floorSubsystemStub.sendRequest(fileRequest);
 
         assertTrue(floorSubsystemStub.receiveAndAcknowledge(tmp));

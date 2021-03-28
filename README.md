@@ -8,7 +8,7 @@
 
 We hope you enjoy the 4th iteration of our multithreaded elevator system!
 
-This project aims to design a real-time elevator control system that will quickly and efficiently transport passengers between floors.
+This project aims to design a real-time elevator control system that quickly and efficiently transports passengers between floors.
 
 ---
 
@@ -31,7 +31,7 @@ In src/project/systems, first run (as a Java Application) ElevatorSubsystem, fol
 
 ***Running the tests***
 
-Navigate to src/project/tests; run TestRunner as a Java Application and observe the terminal output.
+Navigate to src/project/tests, then run TestRunner as a Java Application and observe the terminal output. You may have to wait a few seconds for TestRunner to discover and execute all the tests and output the results.
 
 ---
 
