@@ -51,14 +51,15 @@ public class Floor implements Runnable {
 
     /**
      * Each thread waits for a given amount of time in real time before it sends a
-     * packet off the the scheduler
+     * request off the the scheduler
      *
-     * @param packet the received packet from the floor subsystem
+     * @param request the received request from the floor subsystem
      */
-    public void realTimeWait(Request packet) {
+    public void realtimeWait(Request request) {
 
-        if (packet instanceof FileRequest) {
-            FileRequest fileRequest = (FileRequest) packet;
+        if (request instanceof FileRequest) {
+
+            FileRequest fileRequest = (FileRequest) request;
 
             String milTime = fileRequest.getTime();
             String[] arrMilTime = milTime.split(":");
@@ -72,21 +73,19 @@ public class Floor implements Runnable {
 
             int arrTime = toMilliSeconds(arrMilTime[0], arrMilTime[1], arrSec[0]);
             int currentTime = toMilliSeconds(currTime[0], currTime[1], currTime[2]);
-
             int timeToWait = arrTime - currentTime;
-
             if (timeToWait < 0) {
                 timeToWait += 8.64 * Math.pow(10, 7); // wait 24 more hours for the next time
             }
-
-            System.out.println(timeToWait);
 
             try {
                 Thread.sleep(timeToWait);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
+
     }
 
     public int toMilliSeconds(String hour, String min, String sec) {

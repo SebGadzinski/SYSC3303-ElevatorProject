@@ -2,6 +2,7 @@ package project.utils.datastructs;
 
 import java.util.ArrayList;
 
+import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
@@ -13,6 +14,8 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     private int currentDestinationFloor;
     private int passengers;
     private int currentFloor;
+    private Thread timerWorker;
+    private ElevatorTimerWorker timer;
 
     public SchedulerElevatorInfo(String id, UDPInfo udpInfo, ElevatorDirection direction,
                                  ElevatorDoorStatus doorStatus, int currentFloor) {
@@ -22,6 +25,9 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.currentFloor = currentFloor;
         this.currentDestinationFloor = -1;
         this.passengers = 0;
+        this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
+        this.timerWorker = new Thread(this.timer, "timer" + id);
+        
         requests = new ArrayList<>();
     }
 
@@ -118,6 +124,37 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.passengers--;
     }
 
+    public synchronized void startTimer() {
+    	if(this.timerWorker.getState() == Thread.State.NEW) {
+        	this.timerWorker.start();
+    	}
+    	else if (this.timerWorker.getState() == Thread.State.TERMINATED) {
+    		this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
+    		this.timerWorker = new Thread(this.timer, "timer");
+    		this.timerWorker.start();
+    	}
+    	else {
+    		this.stopTimer();
+    	}
+    }
+    
+    public synchronized void stopTimer() {
+    	this.timerWorker.interrupt();
+    	while(this.timerWorker.getState() != Thread.State.TERMINATED) {};
+    }
+    
+    public synchronized boolean isTimerRunning() {
+    	return this.timer.getTimerRunning();
+    }
+    
+    public synchronized boolean getTimerRunning() {
+    	return this.timer.getTimerRunning();
+    }
+    
+    public synchronized boolean getTimeOut() {
+    	return this.timer.getTimeOut();
+    }
+    
     @Override
     public String toString() {
         return "Elevator: " + "\n"

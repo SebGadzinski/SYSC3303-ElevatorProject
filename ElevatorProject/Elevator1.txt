@@ -7,84 +7,67 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 FileRequest: 
-Time:  18:17:44.319
+Time:  18:18:33.707
 Direction: DOWN
-Pick Up: 3
-Destination Floor: 1
+Pick Up: 2
+Destination Floor: 0
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorDestinationRequest: 
-Destination: 3
+ ElevatorDestinationRequest:
+Destination: 2
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  UP
+ElevatorMotorRequest:
+Motor to move: UP
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: UP
+ ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  UP
+ElevatorMotorRequest:
+Motor to move: UP
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: UP
+ ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  UP
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorArrivalRequest: 
-Floor Arrived At: 3
-Current Direction: UP
-
-Request received by:
-Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
-
-Source: 
-id: 1
-subsystem: ELEVATOR_SUBSYSTEM
-
-Responded to Scheduler: 
- ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 
 Request received by:
@@ -92,8 +75,8 @@ Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Source: 
 id: 1
@@ -101,7 +84,7 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 
 Request received by:
@@ -110,7 +93,7 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Source: 
 id: 1
@@ -118,7 +101,7 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: FINISHED
 Wait time: 0
 
 Request received by:
@@ -126,16 +109,16 @@ Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 
 Request received by:
@@ -143,65 +126,65 @@ Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDestinationRequest: 
-Destination: 1
+ElevatorDestinationRequest:
+Destination: 0
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorDestinationRequest: 
-Destination: 1
+ ElevatorDestinationRequest:
+Destination: 0
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+ElevatorMotorRequest:
+Motor to move: DOWN
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorArrivalRequest: 
-Floor Arrived At: 2
-Current Direction: DOWN
+ ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: DOWN
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  DOWN
+ElevatorMotorRequest:
+Motor to move: DOWN
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorArrivalRequest: 
-Floor Arrived At: 1
-Current Direction: DOWN
+ ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: DOWN
 
 Request received by:
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorMotorRequest: 
-Motor to Move:  IDLE
+ElevatorMotorRequest:
+Motor to move: IDLE
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 
 Request received by:
@@ -209,8 +192,8 @@ Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 Source: 
 id: 1
@@ -218,7 +201,7 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 
 Request received by:
@@ -227,7 +210,7 @@ id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 ElevatorPassengerWaitRequest: 
-WaitState: WAITING
+Wait state: WAITING
 Wait time: 10
 Source: 
 id: 1
@@ -235,7 +218,7 @@ subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
  ElevatorPassengerWaitRequest: 
-WaitState: FINISHED
+Wait state: FINISHED
 Wait time: 0
 
 Request received by:
@@ -243,14 +226,14 @@ Source:
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
-ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 Source: 
 id: 1
 subsystem: ELEVATOR_SUBSYSTEM
 
 Responded to Scheduler: 
- ElevatorDoorRequest: 
-Request for Doors to be: CLOSED
+ ElevatorDoorRequest:
+Request for doors to be: CLOSED
 

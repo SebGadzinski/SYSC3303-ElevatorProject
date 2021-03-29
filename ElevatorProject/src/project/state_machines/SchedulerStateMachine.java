@@ -59,6 +59,14 @@ public class SchedulerStateMachine {
                 } else if (request instanceof ElevatorArrivalRequest) {
                     return DISPATCH_REQUEST_TO_SUBSYSTEM;
                 }
+                
+                else if (request instanceof ElevatorFaultRequest) {
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
+                }
+                
+                else if (request instanceof ElevatorEmergencyRequest) {
+                    return DISPATCH_REQUEST_TO_SUBSYSTEM;
+                }
 
                 // the request type is not recognized
                 return INVALID_REQUEST;

@@ -9,16 +9,16 @@ import java.net.*;
  * Abstracts the UDP mechanism and request serialization.
  *
  * @author Paul Roode
- * @version Iteration 3
+ * @version Iteration 4
  */
 public abstract class AbstractSubsystem {
 
-    private static final int MAX_PACKET_SIZE = 10000; // bytes
+    protected static final int MAX_PACKET_SIZE = 10000; // bytes
 
-    private DatagramSocket inSocket, outSocket;
+    protected DatagramSocket inSocket, outSocket;
 
     /**
-     * Initializes the inlet and outlet datagram sockets, binding them to the given socket addresses.
+     * Initializes the inlet and outlet Datagram sockets, binding them to the given socket addresses.
      *
      * @param inetAddress   The socket IP address.
      * @param inSocketPort  The inlet socket port number.
@@ -41,9 +41,7 @@ public abstract class AbstractSubsystem {
      * @param destinationInetAddress The Request's destination IP address.
      * @param destinationSocketPort  The Request's destination socket port number.
      */
-    protected void sendRequest(Request request,
-                               InetAddress destinationInetAddress,
-                               int destinationSocketPort) {
+    protected void sendRequest(Request request, InetAddress destinationInetAddress, int destinationSocketPort) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream;
@@ -133,7 +131,7 @@ public abstract class AbstractSubsystem {
                             SocketAddress destinationSocketAddress,
                             DatagramSocket sendingSocket) {
 
-        DatagramPacket packetToSend = getNewPacket(packetData, packetLength, destinationSocketAddress);
+        DatagramPacket packetToSend = new DatagramPacket(packetData, packetLength, destinationSocketAddress);
 
         try {
             sendingSocket.send(packetToSend);
@@ -152,7 +150,7 @@ public abstract class AbstractSubsystem {
      */
     private DatagramPacket waitForPacket(DatagramSocket receivingSocket) {
         byte[] packetData = new byte[MAX_PACKET_SIZE];
-        DatagramPacket receivedPacket = getNewPacket(packetData, packetData.length);
+        DatagramPacket receivedPacket = new DatagramPacket(packetData, packetData.length);
         try {
             receivingSocket.receive(receivedPacket);
         } catch (IOException ioe) {
@@ -160,47 +158,6 @@ public abstract class AbstractSubsystem {
             System.exit(1);
         }
         return receivedPacket;
-    }
-
-    /**
-     * Gets a new DatagramPacket.
-     *
-     * @param packetData   The data constituting the packet.
-     * @param packetLength The length of the packet.
-     * @return a new DatagramPacket.
-     */
-    private DatagramPacket getNewPacket(byte[] packetData, int packetLength) {
-        return new DatagramPacket(packetData, packetLength);
-    }
-
-    /**
-     * Gets a new DatagramPacket.
-     *
-     * @param packetData               The data constituting the packet.
-     * @param packetLength             The length of the packet.
-     * @param destinationSocketAddress The packet's destination socket address.
-     * @return a new DatagramPacket.
-     */
-    private DatagramPacket getNewPacket(byte[] packetData, int packetLength, SocketAddress destinationSocketAddress) {
-        return new DatagramPacket(packetData, packetLength, destinationSocketAddress);
-    }
-
-    /**
-     * Returns the inlet socket IP address.
-     *
-     * @return the inlet socket IP address.
-     */
-    protected InetAddress getInSocketInetAddress() {
-        return inSocket.getInetAddress();
-    }
-
-    /**
-     * Returns the inlet socket port number.
-     *
-     * @return the inlet socket port number.
-     */
-    protected int getInSocketPort() {
-        return inSocket.getPort();
     }
 
 }

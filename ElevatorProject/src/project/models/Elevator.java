@@ -14,8 +14,8 @@ public class Elevator {
 
     // buttons are represented by the lamps
     private final HashMap<Integer, Boolean> buttonLamps;
-    private Boolean upDirectionLamp;
-    private Boolean downDirectionLamp;
+    private boolean upDirectionLamp;
+    private boolean downDirectionLamp;
     private final ElevatorMotor motor;
     private final ElevatorDoor door;
 
