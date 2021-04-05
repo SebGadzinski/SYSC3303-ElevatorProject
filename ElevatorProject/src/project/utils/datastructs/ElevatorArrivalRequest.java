@@ -8,10 +8,17 @@ public class ElevatorArrivalRequest extends Request {
     private ElevatorDirection currentDirection;
 
     public ElevatorArrivalRequest(SubsystemSource source, int floorArrivedAt, ElevatorDirection currentDirection) {
-        super(source);
+        super(source, 0);
         this.floorArrivedAt = floorArrivedAt;
         this.currentDirection = currentDirection;
     }
+    
+    public ElevatorArrivalRequest(SubsystemSource source, int floorArrivedAt, ElevatorDirection currentDirection, int fault) {
+		super(source, fault);
+        this.floorArrivedAt = floorArrivedAt;
+        this.currentDirection = currentDirection;
+    }
+
 
     @Override
     public String toString() {

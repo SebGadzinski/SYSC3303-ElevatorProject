@@ -16,6 +16,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     private int currentFloor;
     private Thread timerWorker;
     private ElevatorTimerWorker timer;
+    private boolean printingEnabled = false;
 
     public SchedulerElevatorInfo(String id, UDPInfo udpInfo, ElevatorDirection direction,
                                  ElevatorDoorStatus doorStatus, int currentFloor) {
@@ -27,7 +28,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.passengers = 0;
         this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
         this.timerWorker = new Thread(this.timer, "timer" + id);
-        
+        this.printingEnabled = !Config.FAULT_PRINTING;
         requests = new ArrayList<>();
     }
 
@@ -154,8 +155,16 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     public synchronized boolean getTimeOut() {
     	return this.timer.getTimeOut();
     }
-    
-    @Override
+
+    public boolean isPrintingEnabled() {
+		return printingEnabled;
+	}
+
+	public void setPrintingEnabled(boolean printingEnabled) {
+		this.printingEnabled = printingEnabled;
+	}
+
+	@Override
     public String toString() {
         return "Elevator: " + "\n"
                 + "id: " + getId() + "\n"

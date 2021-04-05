@@ -4,6 +4,8 @@ import project.utils.datastructs.Request;
 
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Abstracts the UDP mechanism and request serialization.
@@ -61,6 +63,7 @@ public abstract class AbstractSubsystem {
                     new InetSocketAddress(destinationInetAddress, destinationSocketPort),
                     outSocket
             );
+            
 
         } catch (IOException ioe) {
 
@@ -159,5 +162,14 @@ public abstract class AbstractSubsystem {
         }
         return receivedPacket;
     }
+    
+	/**
+	 * Get current time stamp
+	 */
+	protected String getTimeStamp() {
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		return formatter.format(date);
+	}
 
 }

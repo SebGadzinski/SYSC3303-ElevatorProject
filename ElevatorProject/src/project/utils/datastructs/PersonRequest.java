@@ -1,11 +1,15 @@
 package project.utils.datastructs;
 
+import project.utils.datastructs.ElevatorFaultRequest.ElevatorFault;
+
 public class PersonRequest {
 
     private int originFloor;
     private int destinationFloor;
     private boolean originFloorCompleted;
     private boolean destinationFloorCompleted;
+    private int fault;
+    private boolean faultCompleted;
 
     public PersonRequest(int originFloor,
                          int destinationFloor,
@@ -16,7 +20,20 @@ public class PersonRequest {
         this.destinationFloor = destinationFloor;
         this.originFloorCompleted = originFloorCompleted;
         this.destinationFloorCompleted = destinationFloorCompleted;
-
+        this.faultCompleted = false;
+        
+    }
+    
+    public PersonRequest(int originFloor,
+			            int destinationFloor,
+			            boolean originFloorCompleted,
+			            boolean destinationFloorCompleted, int fault) {
+		this.originFloor = originFloor;
+		this.destinationFloor = destinationFloor;
+		this.originFloorCompleted = originFloorCompleted;
+		this.destinationFloorCompleted = destinationFloorCompleted;
+		this.fault = fault;
+		this.faultCompleted = false;
     }
 
     public int getOriginFloor() {
@@ -50,14 +67,32 @@ public class PersonRequest {
     public void setDestinationFloorCompleted(boolean destinationFloorCompleted) {
         this.destinationFloorCompleted = destinationFloorCompleted;
     }
+    
+    public boolean isFaultCompleted() {
+		return faultCompleted;
+	}
 
-    @Override
+	public void setFaultCompleted(boolean faultCompleted) {
+		this.faultCompleted = faultCompleted;
+	}
+
+	public int getFault() {
+		return fault;
+	}
+
+	public void setFault(int fault) {
+		this.fault = fault;
+	}
+
+	@Override
     public String toString() {
         return "Request: " + "\n"
                 + "destinationFloor: " + destinationFloor + "\n"
                 + "destinationFloorCompleted: " + destinationFloorCompleted + "\n"
                 + "originFloor: " + originFloor + "\n"
-                + "originFloorCompleted: " + originFloorCompleted + "\n";
+                + "originFloorCompleted: " + originFloorCompleted + "\n"
+                + "fault: " + fault + "\n"
+                + "faultCompleted: " + faultCompleted + "\n";
     }
 
 }

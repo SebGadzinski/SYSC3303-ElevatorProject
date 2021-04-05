@@ -15,6 +15,7 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.utils.datastructs.ElevatorArrivalRequest;
 import project.utils.datastructs.ElevatorDoorRequest;
+import project.utils.datastructs.ElevatorFaultRequest.ElevatorFault;
 import project.utils.datastructs.FileRequest;
 import project.utils.datastructs.FloorEmergencyRequest;
 import project.utils.datastructs.ReadRequestResult;
@@ -69,12 +70,12 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 	public synchronized ReadRequestResult readRequest() {
 
 		// match input against a regex
-		this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d)");
+		this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d) (\\d)");
 		MatchResult matchResult = this.scanner.match();
 
 		// store the matched data in a new request instance
 		FileRequest request = new FileRequest(matchResult.group(1), Integer.parseInt(matchResult.group(2)),
-				getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), getSource());
+				getDirectionFromString(matchResult.group(3)), Integer.parseInt(matchResult.group(4)), getSource(), Integer.parseInt(matchResult.group(5)));
 
 		// check for another request
 		boolean isThereAnotherRequest;
@@ -119,7 +120,8 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 	 * @param request the request to be dealt with
 	 */
 	public void handleRequest(Request request) {
-		System.out.println("\n[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
+		System.out.println("\nTimeStamp: " + getTimeStamp());
+		System.out.println("[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
 		if (request instanceof ElevatorArrivalRequest) {
 			ElevatorArrivalRequest arrivalRequest = (ElevatorArrivalRequest) request;
 			System.out.println(getSource() + "\nElevator Arriving\n");
@@ -128,9 +130,9 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 			if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
 				this.upLamp = false;
 				this.downLamp = false;
-				System.out.println(getSource() + "\nElevator opening doors\n");
+				System.out.println("\nElevator opening doors\n");
 			} else {
-				System.out.println(getSource() + "\nElevator closing doors\n ");
+				System.out.println("\nElevator closing doors\n ");
 			}
 		}
 		else if (request instanceof FloorEmergencyRequest) {
@@ -138,7 +140,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 			System.exit(1);
 		}
 		else
-			System.out.println(getSource() + "\nInvalid Request\n");
+			System.out.println("\nInvalid Request\n");
 	}
 
 	/**
@@ -157,6 +159,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 				} else {
 					this.upLamp = true;
 				}
+				System.out.println("\nTimeStamp: " + getTimeStamp());
 				System.out.println("Sending request to scheduler from floor " + this.floorNo);
 				this.sendRequest(readRequestResult.getRequest(), SCHEDULER_UDP_INFO.getInetAddress(),
 						SCHEDULER_UDP_INFO.getInSocketPort());

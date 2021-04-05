@@ -27,11 +27,8 @@ public final class Config {
     //--------------------------------------------------------------------------------------------
     public static final int FIX_ELEVATOR_TIME = 5000; // milliseconds
     public static final int TIMER_TIMEOUT = 20000; // milliseconds
-    public static final Pair[] faults = {
-            new Pair(15, 1),
-            new Pair(30, 2),
-            new Pair(45, 1)
-    };
+    public static final boolean FAULT_PRINTING = true;
+
     //--------------------------------------------------------------------------------------------
 
     // UDP config

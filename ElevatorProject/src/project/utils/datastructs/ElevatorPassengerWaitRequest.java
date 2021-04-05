@@ -7,10 +7,17 @@ public class ElevatorPassengerWaitRequest extends Request {
     private WaitState state;
 
     public ElevatorPassengerWaitRequest(SubsystemSource source, int waitTime, WaitState state) {
-        super(source);
+        super(source, 0);
         this.waitTime = waitTime;
         this.state = state;
     }
+    
+    public ElevatorPassengerWaitRequest(SubsystemSource source, int waitTime, WaitState state, int fault) {
+		super(source, fault);
+        this.waitTime = waitTime;
+        this.state = state;
+    }
+
 
     public enum WaitState {
         WAITING, FINISHED

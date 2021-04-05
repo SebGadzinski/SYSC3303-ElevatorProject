@@ -8,7 +8,13 @@ public class ElevatorDestinationRequest extends Request {
     private final ElevatorDirection direction;
 
     public ElevatorDestinationRequest(SubsystemSource source, int requestedDestinationFloor, ElevatorDirection direction) {
-        super(source);
+        super(source, 0);
+        this.requestedDestinationFloor = requestedDestinationFloor;
+        this.direction = direction;
+    }
+    
+    public ElevatorDestinationRequest(SubsystemSource source, int requestedDestinationFloor, ElevatorDirection direction, int fault) {
+		super(source, fault);
         this.requestedDestinationFloor = requestedDestinationFloor;
         this.direction = direction;
     }

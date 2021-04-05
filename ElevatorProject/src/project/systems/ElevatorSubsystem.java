@@ -35,6 +35,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	public int elevatorNumber;
 	private final CreateFile file;
 	private int numOfRequests;
+	private boolean printingEnabled = true; 
 
 	public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber) {
 		super(inetAddress, inSocketPort, outSocketPort);
@@ -43,6 +44,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 		this.elevatorNumber = elevatorNumber;
 		file = new CreateFile("Elevator" + elevatorNumber + ".txt");
 		this.numOfRequests = 0;
+		if(Config.FAULT_PRINTING) this.printingEnabled = false;
 	}
 
 	/**
@@ -52,7 +54,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	 */
 	public synchronized void sendResponse(Request response) {
 		sendRequest(response, SCHEDULER_UDP_INFO.getInetAddress(), SCHEDULER_UDP_INFO.getInSocketPort());
-		file.writeToFile(getSource() + "\nResponded to Scheduler: \n " + response);
+		printToFile("TimeStamp: " + getTimeStamp() +"\nElevator #" + elevatorNumber +  " sent: \n" + response);
 	}
 
 	/**
@@ -73,13 +75,13 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	public synchronized void handleRequest(Request request) {
 
 		this.numOfRequests++;
-		this.createFault();
+		this.createFault(request);
 
 		Request response = null;
-		String responseString = "\nRequest received by:\n" + getSource() + "\n";
+		String responseString = "TimeStamp: " + getTimeStamp() + "\nElevator #" + elevatorNumber +  " received: \n";
 		if (request instanceof ElevatorEmergencyRequest) {
 			ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
-			file.writeToFile(responseString + emergencyRequest);
+			printToFile(responseString + emergencyRequest);
 			if (emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {
 				response = stateMachine.handleRequest(emergencyRequest);
 				fixSystem();
@@ -91,35 +93,39 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 			}
 		} else if (request instanceof FileRequest) {
 			FileRequest fileRequest = (FileRequest) request;
-			file.writeToFile(responseString + fileRequest);
+			printToFile(responseString + fileRequest);
 
 			response = handleFileRequest(fileRequest);
 		} else if (request instanceof ElevatorDestinationRequest) {
 			ElevatorDestinationRequest destinationRequest = (ElevatorDestinationRequest) request;
 			// Turn on the lamp for the elevator button
-			file.writeToFile(responseString + destinationRequest);
+			printToFile(responseString + destinationRequest);
 			setLampStatus(destinationRequest.getRequestedDestinationFloor(), true);
 			response = request;
 		} else if (request instanceof ElevatorDoorRequest) {
 			ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-			file.writeToFile(responseString + doorRequest);
+			printToFile(responseString + doorRequest);
 
 			response = stateMachine.handleRequest(doorRequest);
 
 		} else if (request instanceof ElevatorMotorRequest) {
 			ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-			file.writeToFile(responseString + motorRequest);
+			printToFile(responseString + motorRequest);
 
 			response = stateMachine.handleRequest(motorRequest);
 		} else if (request instanceof ElevatorPassengerWaitRequest) {
 			ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
-			file.writeToFile(responseString + waitRequest);
+			printToFile(responseString + waitRequest);
 
 			response = stateMachine.handleRequest(waitRequest);
 		}
 		if (response != null) {
 			response.setSource(getSource());
 			sendResponse(response);
+			//Send the emergency request back is the end of a fault cycle
+			if(response instanceof ElevatorEmergencyRequest && Config.FAULT_PRINTING) {
+				printingEnabled = false;
+			}
 		}
 	}
 
@@ -127,19 +133,15 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	 * Creates a fault for elevator subsystem
 	 *
 	 */
-	public void createFault() {
-		for (int i = 0; i < Config.faults.length; i++) {
-			if (Config.faults[i].numUntilFault == numOfRequests) {
-
-				if (Config.faults[i].fault == 1) {
-					this.makeDoorFault();
-				} else if (Config.faults[i].fault == 2) {
-					this.makeMotorFault();
-				}
-			}
-
-			else {
-				break;
+	public void createFault(Request request) {
+		if(request.getFault() > 0) {
+			if(request instanceof FileRequest)return;
+			printingEnabled = true;
+			printToFile("FAULT IS: " + request.getFault());
+			if (request.getFault() == 1) {
+				this.makeDoorFault();
+			} else if (request.getFault() == 2) {
+				this.makeMotorFault();
 			}
 		}
 	}
@@ -204,6 +206,11 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	public void makeMotorFault() {
 		this.stateMachine.setMotorFault();
 	}
+	
+	private void printToFile(String message) {
+		if(printingEnabled)
+			file.writeToFile("\n" + message);
+	}
 
 	/**
 	 * Attempts to fetch a packet. When this gets fetched, sends the response to the
@@ -211,7 +218,7 @@ public class ElevatorSubsystem extends AbstractSubsystem implements Runnable {
 	 */
 	@Override
 	public void run() {
-		file.writeToFile("ElevatorSubsystem: " + elevatorNumber + " operational...\n");
+		printToFile("ElevatorSubsystem: " + elevatorNumber + " operational...\n");
 		while (true) {
 			Request fetchedRequest = fetchRequest();
 			handleRequest(fetchedRequest);

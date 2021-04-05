@@ -48,67 +48,68 @@ public class ElevatorStateMachine {
 		if (request instanceof ElevatorEmergencyRequest) {
 			ElevatorEmergencyRequest emergencyRequest = (ElevatorEmergencyRequest) request;
 			requestToSendToScheduler = handleEmergencyRequest(emergencyRequest);
-		}
-		switch (state) {
-		case IDLE -> {
-			if (request instanceof ElevatorDoorRequest) {
-				ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-				requestToSendToScheduler = handleDoorRequest(doorRequest);
-			} else if (request instanceof ElevatorMotorRequest) {
-				ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-				requestToSendToScheduler = handleMotorRequest(motorRequest);
-			} else {
-				System.out.println("Invalid Request For IDLE State");
+		}else {
+			switch (state) {
+			case IDLE -> {
+				if (request instanceof ElevatorDoorRequest) {
+					ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
+					requestToSendToScheduler = handleDoorRequest(doorRequest);
+				} else if (request instanceof ElevatorMotorRequest) {
+					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+					requestToSendToScheduler = handleMotorRequest(motorRequest);
+				} else {
+					System.out.print(request);
+					System.out.println("Invalid Request For IDLE State");
+				}
+			}
+			case ARRIVAL -> {
+				if (request instanceof ElevatorDoorRequest) {
+					ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
+					requestToSendToScheduler = handleDoorRequest(doorRequest);
+				} else {
+					System.out.println("Invalid Request For ARRIVAL State");
+				}
+			}
+			case MOVING -> {
+				if (request instanceof ElevatorMotorRequest) {
+					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+					requestToSendToScheduler = handleMotorRequest(motorRequest);
+				} else {
+					System.out.println("Invalid Request For MOVING State");
+				}
+			}
+			case OPENING_DOORS -> {
+				if (request instanceof ElevatorPassengerWaitRequest) {
+					ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
+					requestToSendToScheduler = handlePassengerWaitRequest(waitRequest);
+				} else {
+					System.out.println("Invalid Request For OPENING_DOORS State");
+				}
+			}
+			case PASSENGER_HANDLING -> {
+				if (request instanceof ElevatorDoorRequest) {
+					ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
+					requestToSendToScheduler = handleDoorRequest(doorRequest);
+				} else {
+					System.out.println("Invalid Request For PASSENGER_HANDLING State");
+				}
+			}
+			case CLOSING_DOORS -> {
+				if (request instanceof ElevatorMotorRequest) {
+					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+					requestToSendToScheduler = handleMotorRequest(motorRequest);
+				} else {
+					System.out.println("Invalid Request For CLOSING_DOORS State");
+				}
+			}
+			// Fault cases are told to scheduler and taken care of using
+			// ElevatorEmergencyRequest
+			// It should not reach here. If so the fault has not been resolved
+			case FAULT_HANDLING ->{ // System should shut down?
+				System.out.println("CRITICAL FAULT");
+			}
 			}
 		}
-		case ARRIVAL -> {
-			if (request instanceof ElevatorDoorRequest) {
-				ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-				requestToSendToScheduler = handleDoorRequest(doorRequest);
-			} else {
-				System.out.println("Invalid Request For ARRIVAL State");
-			}
-		}
-		case MOVING -> {
-			if (request instanceof ElevatorMotorRequest) {
-				ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-				requestToSendToScheduler = handleMotorRequest(motorRequest);
-			} else {
-				System.out.println("Invalid Request For MOVING State");
-			}
-		}
-		case OPENING_DOORS -> {
-			if (request instanceof ElevatorPassengerWaitRequest) {
-				ElevatorPassengerWaitRequest waitRequest = (ElevatorPassengerWaitRequest) request;
-				requestToSendToScheduler = handlePassengerWaitRequest(waitRequest);
-			} else {
-				System.out.println("Invalid Request For OPENING_DOORS State");
-			}
-		}
-		case PASSENGER_HANDLING -> {
-			if (request instanceof ElevatorDoorRequest) {
-				ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
-				requestToSendToScheduler = handleDoorRequest(doorRequest);
-			} else {
-				System.out.println("Invalid Request For PASSENGER_HANDLING State");
-			}
-		}
-		case CLOSING_DOORS -> {
-			if (request instanceof ElevatorMotorRequest) {
-				ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-				requestToSendToScheduler = handleMotorRequest(motorRequest);
-			} else {
-				System.out.println("Invalid Request For CLOSING_DOORS State");
-			}
-		}
-		// Fault cases are told to scheduler and taken care of using
-		// ElevatorEmergencyRequest
-		// It should not reach here. If so the fault has not been resolved
-		case FAULT_HANDLING ->{ // System should shut down?
-			System.out.println("CRITICAL FAULT");
-		}
-		}
-		System.out.print("State: " + state + "\n");
 		return requestToSendToScheduler;
 	}
 
@@ -139,52 +140,49 @@ public class ElevatorStateMachine {
 	public Request handleMotorRequest(ElevatorMotorRequest request) {
 		// Stop sends a motorRequest letting the
 		if (!motorFault) {
-			if (request.getRequestedDirection() == ElevatorDirection.IDLE) {
-				System.out.println("Stopping Elevator");
-				setUpState(ElevatorDirection.IDLE, ElevatorState.ARRIVAL);
-				setLampStatus(currentFloor, false);
-				return new ElevatorDoorRequest(null, ElevatorDoorStatus.OPENED);
-			} else if (request.getRequestedDirection() == ElevatorDirection.UP) {
-				System.out.println("Moving Elevator Up");
-				if(doorState == ElevatorDoorStatus.OPENED) {
-					doorState = ElevatorDoorStatus.CLOSED;
-					return doorFault();
-				}
-				if (currentFloor == Config.NUMBER_OF_FLOORS) {
-					System.out.println(
-							"Currently at max floor. Motor request denied. \n Sending a arrival request on max floor");
-					return new ElevatorArrivalRequest(null, currentFloor, directionState);
-				}
-				if (!motorFault) {
-					setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
-					currentFloor += 1;
+			if(!doorFault) {
+				if (request.getRequestedDirection() == ElevatorDirection.IDLE) {
+					setUpState(ElevatorDirection.IDLE, ElevatorState.ARRIVAL);
+					setLampStatus(currentFloor, false);
+					return new ElevatorDoorRequest(null, ElevatorDoorStatus.OPENED);
+				} else if (request.getRequestedDirection() == ElevatorDirection.UP) {
+						if(doorState == ElevatorDoorStatus.OPENED) {
+							doorState = ElevatorDoorStatus.CLOSED;
+							return doorFault();
+						}
+						if (currentFloor == Config.NUMBER_OF_FLOORS) {
+							return new ElevatorArrivalRequest(null, currentFloor, directionState);
+						}
+						if (!motorFault) {
+							setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
+							currentFloor += 1;
+						} else {
+							return motorFault();
+						}
+					
 				} else {
-					return motorFault();
+						if(doorState == ElevatorDoorStatus.OPENED) {
+							doorState = ElevatorDoorStatus.CLOSED;
+							return doorFault(); 
+						}
+						if (currentFloor == 0) {
+							return new ElevatorArrivalRequest(null, currentFloor, directionState);
+						}
+						if (!motorFault) {
+							setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
+							waitForTime(Config.ELEVATOR_DOOR_TIME);
+							currentFloor = currentFloor - 1;
+						} else {
+							return motorFault();
+						}
+					
 				}
-			} else {
-				System.out.println("Moving Elevator Down");
-				if(doorState == ElevatorDoorStatus.OPENED) {
-					doorState = ElevatorDoorStatus.CLOSED;
-					return doorFault(); 
-				}
-				if (currentFloor == 0) {
-					System.out.println(
-							"Currently at basement floor. Motor request denied. \n Sending a arrival request on basement floor");
-					return new ElevatorArrivalRequest(null, currentFloor, directionState);
-				}
-				if (!motorFault) {
-					setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
-					waitForTime(Config.ELEVATOR_DOOR_TIME);
-					currentFloor = currentFloor - 1;
-				} else {
-					return motorFault();
-				}
-			}
-			return new ElevatorArrivalRequest(new SubsystemSource(Subsystem.ELEVATOR_SUBSYSTEM, ""), currentFloor,
-					directionState);
-		} else {
+				return new ElevatorArrivalRequest(new SubsystemSource(Subsystem.ELEVATOR_SUBSYSTEM, ""), currentFloor,
+						directionState);
+			}else 
+				return doorFault();
+		}else 
 			return motorFault();
-		}
 	}
 
 	/**
@@ -196,14 +194,12 @@ public class ElevatorStateMachine {
 	public Request handleDoorRequest(ElevatorDoorRequest request) {
 		if (!doorFault) {
 			if (request.getRequestedDoorStatus() == ElevatorDoorStatus.CLOSED) {
-				System.out.println("Closing Doors");
 				state = ElevatorState.CLOSING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.CLOSED;
 				state = ElevatorState.IDLE;
 				return new ElevatorDoorRequest(null, ElevatorDoorStatus.CLOSED);
 			} else {
-				System.out.println("Opening Doors");
 				state = ElevatorState.OPENING_DOORS;
 				waitForTime(Config.ELEVATOR_DOOR_TIME);
 				doorState = ElevatorDoorStatus.OPENED;
@@ -274,15 +270,6 @@ public class ElevatorStateMachine {
 		} catch (java.lang.InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Get current time stamp
-	 */
-	public String getTimeStamp() {
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		return formatter.format(date);
 	}
 	
 	public void setDoorFault() {

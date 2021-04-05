@@ -11,9 +11,11 @@ import java.io.Serializable;
 public abstract class Request implements Serializable {
 
     private SubsystemSource source;
+    private int fault = 0;
 
-    public Request(SubsystemSource source) {
+    public Request(SubsystemSource source, int fault) {
         this.source = source;
+        this.fault = (fault != 0 ? fault : 0);
     }
 
     public SubsystemSource getSource() {
@@ -23,6 +25,14 @@ public abstract class Request implements Serializable {
     public synchronized void setSource(SubsystemSource source) {
         this.source = source;
     }
+
+	public int getFault() {
+		return fault;
+	}
+
+	public void setFault(int fault) {
+		this.fault = fault;
+	}
     
 
 }
