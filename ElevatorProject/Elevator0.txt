@@ -1,25 +1,389 @@
 
-FAULT IS: 1
+ElevatorSubsystem: 0 operational...
 
-TimeStamp: 09:24:52
+
+TimeStamp: 17:27:09
+Elevator #0 received: 
+FileRequest: 
+Creation Time:  18:18:33.707
+Direction: DOWN
+Pick Up: 2
+Destination Floor: 0
+Fault:  2
+
+TimeStamp: 17:27:09
+Elevator #0 sent: 
+ElevatorDestinationRequest:
+Destination: 2
+
+TimeStamp: 17:27:09
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:09
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+
+TimeStamp: 17:27:10
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:10
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Elevator #0 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:14
 Elevator #0 received: 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
-Fault: 1
 
-TimeStamp: 09:24:52
+
+TimeStamp: 17:27:14
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:14
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+
+TimeStamp: 17:27:14
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:14
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:15
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:15
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:15
+Elevator #0 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:15
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+FAULT IS: 2
+
+TimeStamp: 17:27:16
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 2
+
+TimeStamp: 17:27:16
 Elevator #0 sent: 
 ElevatorFaultRequest:
 Fault: DOOR_FAULT
 
-TimeStamp: 09:24:52
+TimeStamp: 17:27:16
 Elevator #0 received: 
 ElevatorEmergencyRequest emergencyState: FIX
  code: 1 doors: null, direction: null
 
 
-TimeStamp: 09:24:57
+TimeStamp: 17:27:21
 Elevator #0 sent: 
 ElevatorEmergencyRequest emergencyState: FIX
  code: 0 doors: CLOSED, direction: IDLE
+
+
+TimeStamp: 17:27:22
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:22
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: DOWN
+
+TimeStamp: 17:27:23
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:23
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: DOWN
+
+TimeStamp: 17:27:24
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:24
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:25
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:25
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:26
+Elevator #0 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:26
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:26
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:26
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:27
+Elevator #0 received: 
+ElevatorDestinationRequest:
+Destination: -1
+
+TimeStamp: 17:27:27
+Elevator #0 sent: 
+ElevatorDestinationRequest:
+Destination: -1
+
+TimeStamp: 17:27:28
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:28
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+
+TimeStamp: 17:27:29
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:29
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+
+TimeStamp: 17:27:30
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:30
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+
+TimeStamp: 17:27:31
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:31
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Elevator #0 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+FAULT IS: 1
+
+TimeStamp: 17:27:32
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 17:27:32
+Elevator #0 sent: 
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 17:27:32
+Elevator #0 received: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 17:27:37
+Elevator #0 sent: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+
+TimeStamp: 17:27:37
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:37
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: DOWN
+
+TimeStamp: 17:27:38
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:38
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:38
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:39
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:39
+Elevator #0 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:39
+Elevator #0 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:40
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:40
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 

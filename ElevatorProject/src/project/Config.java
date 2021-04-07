@@ -18,8 +18,8 @@ public final class Config {
 
     public static final int ELEVATOR_DOOR_TIME = 5; // seconds
     public static final int ELEVATOR_PASSENGER_WAIT_TIME = 10; // seconds
-    public static final int NUMBER_OF_ELEVATORS = 3;
-    public static final int NUMBER_OF_FLOORS = 4;
+    public static final int NUMBER_OF_ELEVATORS = 4;
+    public static final int NUMBER_OF_FLOORS = 22;
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
 
@@ -27,7 +27,7 @@ public final class Config {
     //--------------------------------------------------------------------------------------------
     public static final int FIX_ELEVATOR_TIME = 5000; // milliseconds
     public static final int TIMER_TIMEOUT = 20000; // milliseconds
-    public static final boolean FAULT_PRINTING = true;
+    public static final boolean FAULT_PRINTING = false;
 
     //--------------------------------------------------------------------------------------------
 
@@ -50,9 +50,28 @@ public final class Config {
     public static final UDPInfo[] ELEVATORS_UDP_INFO = {
             new UDPInfo(localhost, getPort(), getPort()),
             new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
             new UDPInfo(localhost, getPort(), getPort())
     };
     public static final UDPInfo[] FLOORS_UDP_INFO = {
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
+            new UDPInfo(localhost, getPort(), getPort()),
             new UDPInfo(localhost, getPort(), getPort()),
             new UDPInfo(localhost, getPort(), getPort()),
             new UDPInfo(localhost, getPort(), getPort()),

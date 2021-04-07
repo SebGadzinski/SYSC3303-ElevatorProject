@@ -1,8 +1,19 @@
 Scheduler operational...
 
+GUI operational...
 
-TimeStamp: 09:24:48
-Elevator Number: 1
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 2
+FileRequest: 
+Creation Time:  18:18:33.707
+Direction: DOWN
+Pick Up: 2
+Destination Floor: 0
+Fault:  2
+
+TimeStamp: 17:27:09
+Elevator Number: 0
 Fault Detected With Person Request: 
 destinationFloor: 0
 destinationFloorCompleted: false
@@ -11,8 +22,68 @@ originFloorCompleted: false
 fault: 2
 faultCompleted: false
 
+Added Request to list of requests to: 
+Source : Elevator # 0
 
-TimeStamp: 09:24:48
+TimeStamp: 17:27:09
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 2
+doorStatus: CLOSED
+FileRequest: 
+Creation Time:  18:18:33.707
+Direction: DOWN
+Pick Up: 2
+Destination Floor: 0
+Fault:  2
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 21
+FileRequest: 
+Creation Time:  18:19:44.319
+Direction: DOWN
+Pick Up: 21
+Destination Floor: 2
+Fault:  0
+Added Request to list of requests to: 
+Source : Elevator # 1
+
+TimeStamp: 17:27:09
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 21
+doorStatus: CLOSED
+FileRequest: 
+Creation Time:  18:19:44.319
+Direction: DOWN
+Pick Up: 21
+Destination Floor: 2
+Fault:  0
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 1
+FileRequest: 
+Creation Time:  18:17:17.020
+Direction: UP
+Pick Up: 1
+Destination Floor: 3
+Fault:  1
+
+TimeStamp: 17:27:09
 Elevator Number: 2
 Fault Detected With Person Request: 
 destinationFloor: 3
@@ -22,8 +93,79 @@ originFloorCompleted: false
 fault: 1
 faultCompleted: false
 
+Added Request to list of requests to: 
+Source : Elevator # 2
 
-TimeStamp: 09:24:48
+TimeStamp: 17:27:09
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 1
+doorStatus: CLOSED
+FileRequest: 
+Creation Time:  18:17:17.020
+Direction: UP
+Pick Up: 1
+Destination Floor: 3
+Fault:  1
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 3
+FileRequest: 
+Creation Time:  18:17:44.319
+Direction: DOWN
+Pick Up: 3
+Destination Floor: 1
+Fault:  0
+Added Request to list of requests to: 
+Source : Elevator # 3
+
+TimeStamp: 17:27:09
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 3
+doorStatus: CLOSED
+FileRequest: 
+Creation Time:  18:17:44.319
+Direction: DOWN
+Pick Up: 3
+Destination Floor: 1
+Fault:  0
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 1
+FileRequest: 
+Creation Time:  18:19:44.319
+Direction: UP
+Pick Up: 1
+Destination Floor: 3
+Fault:  0
+Added Request to list of requests to: 
+Source : Elevator # 0
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 3
+FileRequest: 
+Creation Time:  18:19:44.319
+Direction: DOWN
+Pick Up: 3
+Destination Floor: 2
+Fault:  1
+
+TimeStamp: 17:27:09
 Elevator Number: 0
 Fault Detected With Person Request: 
 destinationFloor: 2
@@ -33,16 +175,531 @@ originFloorCompleted: false
 fault: 1
 faultCompleted: false
 
-Starting the timer for elevator: 2
-Starting the timer for elevator: 1
+Added Request to list of requests to: 
+Source : Elevator # 0
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 2
+FileRequest: 
+Creation Time:  18:20:33.707
+Direction: DOWN
+Pick Up: 2
+Destination Floor: 0
+Fault:  0
+Added Request to list of requests to: 
+Source : Elevator # 0
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Floor # 2
+FileRequest: 
+Creation Time:  18:19:44.319
+Direction: UP
+Pick Up: 2
+Destination Floor: 3
+Fault:  0
+Added Request to list of requests to: 
+Source : Elevator # 1
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDestinationRequest:
+Destination: 2
 Starting the timer for elevator: 0
+
+TimeStamp: 17:27:09
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:09
+Request received by Scheduler from Source : Elevator # 2
+ElevatorDestinationRequest:
+Destination: 1
+Starting the timer for elevator: 2
+
+TimeStamp: 17:27:10
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:10
+Request received by Scheduler from Source : Elevator # 3
+ElevatorDestinationRequest:
+Destination: 3
+Starting the timer for elevator: 3
+
+TimeStamp: 17:27:10
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:10
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDestinationRequest:
+Destination: 21
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:10
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 0
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:10
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:10
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+
+TimeStamp: 17:27:10
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:10
+Request received by Scheduler from Source : Elevator # 2
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
 Stopping the timer for elevator: 2
+
+TimeStamp: 17:27:11
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+
+TimeStamp: 17:27:11
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:11
+Request received by Scheduler from Source : Elevator # 3
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+
+TimeStamp: 17:27:11
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: UP
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:11
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
 Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
-Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:12
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 1
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:12
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Request received by Scheduler from Source : Elevator # 2
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:12
+Request received by Scheduler from Source : Elevator # 3
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+
+TimeStamp: 17:27:13
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: UP
+currentFloor: 2
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:13
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
 Stopping the timer for elevator: 1
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:13
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: IDLE
+
+TimeStamp: 17:27:13
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 2
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:13
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Request received by Scheduler from Source : Elevator # 2
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:13
+Request received by Scheduler from Source : Elevator # 3
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 3
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 2
+destinationFloor: 21
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:14
+************************
+Source : Elevator # 0
+Added a passenger: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: false
+originFloor: 1
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 2
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:14
 Elevator Number: 2
 Processing Fault, Person Request: 
 destinationFloor: 3
@@ -53,7 +710,7 @@ fault: 1
 faultCompleted: false
 
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:14
 ************************
 Source : Elevator # 2
 Added a passenger: 
@@ -66,7 +723,19 @@ fault: 1
 faultCompleted: false
 
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
 Scheduler sent a request to Elevator: 
 id: 2
 UDPInfo: 
@@ -82,12 +751,91 @@ ElevatorDoorRequest:
 Request for doors to be: CLOSED
 Fault: 1
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 3
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 2
+destinationFloor: 21
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:14
 Request received by Scheduler from Source : Elevator # 2
 ElevatorFaultRequest:
 Fault: DOOR_FAULT
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:14
 Scheduler sent a request to Elevator: 
 id: 2
 UDPInfo: 
@@ -103,8 +851,360 @@ ElevatorEmergencyRequest emergencyState: FIX
  code: 1 doors: null, direction: null
 
 
-TimeStamp: 09:24:51
-Elevator Number: 1
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 3
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:14
+************************
+Source : Elevator # 1
+Added a passenger: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: false
+originFloor: 2
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 21
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: IDLE
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 3
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:14
+************************
+Source : Elevator # 3
+Added a passenger: 
+Request: 
+destinationFloor: 1
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:14
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:14
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:15
+Request received by Scheduler from Source : Elevator # 3
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Starting the timer for elevator: 3
+
+TimeStamp: 17:27:15
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:15
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 1
+
+TimeStamp: 17:27:15
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+
+TimeStamp: 17:27:15
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:15
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:15
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:15
+Request received by Scheduler from Source : Elevator # 3
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: DOWN
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 1
+direction: DOWN
+currentFloor: 2
+destinationFloor: 1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 21
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:16
+Elevator Number: 0
 Processing Fault, Person Request: 
 destinationFloor: 0
 destinationFloorCompleted: false
@@ -114,9 +1214,9 @@ fault: 2
 faultCompleted: false
 
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:16
 ************************
-Source : Elevator # 1
+Source : Elevator # 0
 Added a passenger: 
 Request: 
 destinationFloor: 0
@@ -127,14 +1227,39 @@ fault: 2
 faultCompleted: false
 
 
-TimeStamp: 09:24:51
-Scheduler sent a request to Elevator: 
-id: 1
+TimeStamp: 17:27:16
+************************
+Source : Elevator # 0
+Added a passenger: 
+Request: 
+destinationFloor: 0
+destinationFloorCompleted: false
+originFloor: 2
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 2
 UDPInfo: 
-inSocketPort: 5004
+inSocketPort: 5014
 inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5005
-# of passengers: 1
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
 direction: IDLE
 currentFloor: 2
 destinationFloor: 0
@@ -142,14 +1267,49 @@ doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 Fault: 2
-Starting the timer for elevator: 0
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 3
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: DOWN
+Stopping the timer for elevator: 3
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: IDLE
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:16
 Request received by Scheduler from Source : Elevator # 1
-ElevatorFaultRequest:
-Fault: DOOR_FAULT
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
 
-TimeStamp: 09:24:51
+TimeStamp: 17:27:16
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
@@ -158,85 +1318,341 @@ inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
 outSocketPort: 5005
 # of passengers: 1
 direction: IDLE
+currentFloor: 3
+destinationFloor: 21
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 0
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
+direction: IDLE
 currentFloor: 2
 destinationFloor: 0
 doorStatus: OPENED
 ElevatorEmergencyRequest emergencyState: FIX
  code: 1 doors: null, direction: null
 
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
 
-TimeStamp: 09:24:52
-Elevator Number: 0
-Processing Fault, Person Request: 
-destinationFloor: 2
-destinationFloorCompleted: false
-originFloor: 3
-originFloorCompleted: false
-fault: 1
-faultCompleted: false
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 3
+ElevatorDoorRequest:
+Request for doors to be: OPENED
 
 
-TimeStamp: 09:24:52
-************************
-Source : Elevator # 0
-Added a passenger: 
-Request: 
-destinationFloor: 2
-destinationFloorCompleted: false
-originFloor: 3
-originFloorCompleted: true
-fault: 1
-faultCompleted: false
-
-
-TimeStamp: 09:24:52
-Scheduler sent a request to Elevator: 
-id: 0
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 1
 UDPInfo: 
-inSocketPort: 5002
+inSocketPort: 5012
 inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 2
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:16
+************************
+Source : Elevator # 1
+Completed passengers request: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: true
+originFloor: 2
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
 direction: IDLE
 currentFloor: 3
-destinationFloor: 1
+destinationFloor: 21
 doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
-Fault: 1
 
-TimeStamp: 09:24:52
-Request received by Scheduler from Source : Elevator # 0
-ElevatorFaultRequest:
-Fault: DOOR_FAULT
 
-TimeStamp: 09:24:52
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 3
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:16
 Scheduler sent a request to Elevator: 
-id: 0
+id: 3
 UDPInfo: 
-inSocketPort: 5002
+inSocketPort: 5008
 inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
-outSocketPort: 5003
-# of passengers: 2
+outSocketPort: 5009
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
 direction: IDLE
 currentFloor: 3
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 3
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:16
+************************
+Source : Elevator # 3
+Completed passengers request: 
+Request: 
 destinationFloor: 1
+destinationFloorCompleted: true
+originFloor: 3
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Floor: 
+id: 1
+UDPInfo: 
+inSocketPort: 5012
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5013
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:16
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5008
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5009
+# of passengers: 0
+direction: IDLE
+currentFloor: 1
+destinationFloor: -1
 doorStatus: OPENED
-ElevatorEmergencyRequest emergencyState: FIX
- code: 1 doors: null, direction: null
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
 
 
-TimeStamp: 09:24:56
+TimeStamp: 17:27:16
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 4
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:17
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 4
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:17
+Request received by Scheduler from Source : Elevator # 3
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:17
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 5
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:18
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 5
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:18
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 6
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:18
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 6
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:18
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 7
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:19
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 7
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:19
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 8
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:19
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 8
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:19
 Request received by Scheduler from Source : Elevator # 2
 ElevatorEmergencyRequest emergencyState: FIX
  code: 0 doors: CLOSED, direction: IDLE
 
 Starting the timer for elevator: 2
 
-TimeStamp: 09:24:56
+TimeStamp: 17:27:20
 Scheduler sent a request to Elevator: 
 id: 2
 UDPInfo: 
@@ -252,58 +1668,330 @@ ElevatorMotorRequest:
 Motor to move: UP
 
 
-TimeStamp: 09:24:56
+TimeStamp: 17:27:20
 Request received by Scheduler from Source : Elevator # 1
-ElevatorEmergencyRequest emergencyState: FIX
- code: 0 doors: CLOSED, direction: IDLE
+ElevatorArrivalRequest:
+Floor arrived at: 9
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
 
-
-TimeStamp: 09:24:56
+TimeStamp: 17:27:20
 Scheduler sent a request to Elevator: 
 id: 1
 UDPInfo: 
 inSocketPort: 5004
 inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
 outSocketPort: 5005
-# of passengers: 1
-direction: IDLE
-currentFloor: 2
-destinationFloor: 0
+# of passengers: 0
+direction: UP
+currentFloor: 9
+destinationFloor: 21
 doorStatus: CLOSED
-ElevatorDoorRequest:
-Request for doors to be: OPENED
+ElevatorMotorRequest:
+Motor to move: UP
 
+
+TimeStamp: 17:27:20
+Request received by Scheduler from Source : Elevator # 2
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
 Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
+
+TimeStamp: 17:27:21
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 1
+direction: UP
+currentFloor: 2
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:21
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 10
+Current direction: UP
+Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
 
-TimeStamp: 09:24:57
+TimeStamp: 17:27:21
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 10
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:21
+Request received by Scheduler from Source : Elevator # 2
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 2
+
+TimeStamp: 17:27:22
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+
+TimeStamp: 17:27:22
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:22
 Request received by Scheduler from Source : Elevator # 0
 ElevatorEmergencyRequest emergencyState: FIX
  code: 0 doors: CLOSED, direction: IDLE
 
 Starting the timer for elevator: 0
 
-TimeStamp: 09:24:57
+TimeStamp: 17:27:22
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5002
 inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
 outSocketPort: 5003
-# of passengers: 2
+# of passengers: 3
 direction: IDLE
-currentFloor: 3
-destinationFloor: 1
+currentFloor: 2
+destinationFloor: 0
 doorStatus: CLOSED
 ElevatorMotorRequest:
 Motor to move: DOWN
 
+
+TimeStamp: 17:27:22
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 11
+Current direction: UP
 Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
 
-TimeStamp: 09:24:58
+TimeStamp: 17:27:23
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 11
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:23
+Request received by Scheduler from Source : Elevator # 2
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:23
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:23
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:23
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: DOWN
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:23
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
+direction: DOWN
+currentFloor: 1
+destinationFloor: 0
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:23
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 12
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:24
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 12
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:24
+Request received by Scheduler from Source : Elevator # 2
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:24
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5006
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5007
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:24
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: DOWN
+Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:24
+Scheduler sent a request to Floor: 
+id: 0
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5011
+
+ElevatorArrivalRequest:
+Floor arrived at: 0
+Current direction: IDLE
+
+TimeStamp: 17:27:24
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
+direction: IDLE
+currentFloor: 0
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:24
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 13
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:25
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 13
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:25
+Request received by Scheduler from Source : Elevator # 2
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:25
 Elevator Number: 2
 Finished Processing Fault, Person Request: 
 destinationFloor: 3
@@ -314,7 +2002,7 @@ fault: 1
 faultCompleted: true
 
 
-TimeStamp: 09:24:58
+TimeStamp: 17:27:25
 ************************
 Source : Elevator # 2
 Completed passengers request: 
@@ -326,11 +2014,137 @@ originFloorCompleted: true
 fault: 1
 faultCompleted: true
 
-Stopping the timer for elevator: 0
-Stopping the timer for elevator: 1
 
-TimeStamp: 09:24:59
-Elevator Number: 1
+TimeStamp: 17:27:25
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:25
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:25
+Scheduler sent a request to Floor: 
+id: 0
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5011
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:25
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
+direction: IDLE
+currentFloor: 0
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:25
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 14
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:26
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 14
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:26
+Request received by Scheduler from Source : Elevator # 2
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:26
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:26
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 3
+direction: IDLE
+currentFloor: 0
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:26
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 15
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:26
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 15
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:26
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:26
+Elevator Number: 0
 Finished Processing Fault, Person Request: 
 destinationFloor: 0
 destinationFloorCompleted: true
@@ -340,9 +2154,9 @@ fault: 2
 faultCompleted: true
 
 
-TimeStamp: 09:24:59
+TimeStamp: 17:27:26
 ************************
-Source : Elevator # 1
+Source : Elevator # 0
 Completed passengers request: 
 Request: 
 destinationFloor: 0
@@ -353,7 +2167,951 @@ fault: 2
 faultCompleted: true
 
 
-TimeStamp: 09:24:59
+TimeStamp: 17:27:26
+Scheduler sent a request to Floor: 
+id: 0
+UDPInfo: 
+inSocketPort: 5010
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5011
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:26
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 16
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:27
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 16
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:27
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:27
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 17
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:27
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 17
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:27
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDestinationRequest:
+Destination: -1
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:28
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 18
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:28
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 18
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:28
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 1
+Current direction: UP
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:29
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: UP
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:29
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 19
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:29
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 19
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:29
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: UP
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:30
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: UP
+currentFloor: 2
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:30
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 20
+Current direction: UP
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:31
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: UP
+currentFloor: 20
+destinationFloor: 21
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 17:27:31
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: UP
+Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:31
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: IDLE
+
+TimeStamp: 17:27:31
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:31
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 21
+Current direction: UP
+Stopping the timer for elevator: 1
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Floor: 
+id: 21
+UDPInfo: 
+inSocketPort: 5052
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5053
+
+ElevatorArrivalRequest:
+Floor arrived at: 21
+Current direction: IDLE
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 21
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Floor: 
+id: 21
+UDPInfo: 
+inSocketPort: 5052
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5053
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 21
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 21
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:32
+************************
+Source : Elevator # 0
+Completed passengers request: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: true
+originFloor: 1
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:32
+Elevator Number: 0
+Processing Fault, Person Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: false
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 17:27:32
+************************
+Source : Elevator # 0
+Added a passenger: 
+Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: true
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Floor: 
+id: 3
+UDPInfo: 
+inSocketPort: 5016
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5017
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:32
+************************
+Source : Elevator # 1
+Added a passenger: 
+Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 21
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Floor: 
+id: 21
+UDPInfo: 
+inSocketPort: 5052
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5053
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 21
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 0
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 21
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 20
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:32
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 20
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:32
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 19
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:33
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 19
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:33
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 18
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:34
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 18
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:34
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 17
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:34
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 17
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:34
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 16
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:35
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 16
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:35
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 15
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:35
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 15
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:35
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 14
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:36
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 14
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:36
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 13
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:37
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 13
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:37
+Request received by Scheduler from Source : Elevator # 0
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+Starting the timer for elevator: 0
+
+TimeStamp: 17:27:37
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:37
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 12
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:37
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 12
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:37
+Request received by Scheduler from Source : Elevator # 0
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: DOWN
+Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:38
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: IDLE
+
+TimeStamp: 17:27:38
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:38
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 11
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:38
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 11
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:38
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:38
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:38
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:39
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 10
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:39
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 10
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:39
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:39
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5002
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5003
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:39
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 9
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:40
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 9
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:40
+Request received by Scheduler from Source : Elevator # 0
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:40
 Elevator Number: 0
 Finished Processing Fault, Person Request: 
 destinationFloor: 2
@@ -364,7 +3122,7 @@ fault: 1
 faultCompleted: true
 
 
-TimeStamp: 09:24:59
+TimeStamp: 17:27:40
 ************************
 Source : Elevator # 0
 Completed passengers request: 
@@ -376,13 +3134,309 @@ originFloorCompleted: true
 fault: 1
 faultCompleted: true
 
-Starting the timer for elevator: 1
-Starting the timer for elevator: 0
+
+TimeStamp: 17:27:40
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:40
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 8
+Current direction: DOWN
 Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
-Stopping the timer for elevator: 0
+
+TimeStamp: 17:27:40
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 8
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:40
+Request received by Scheduler from Source : Elevator # 0
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:40
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 7
+Current direction: DOWN
 Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
-Starting the timer for elevator: 0
+
+TimeStamp: 17:27:41
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 7
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:41
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 6
+Current direction: DOWN
 Stopping the timer for elevator: 1
-Stopping the timer for elevator: 0
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:42
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 6
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:42
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 5
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:42
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 5
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:42
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 4
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:43
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 4
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:43
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 3
+Current direction: DOWN
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 17:27:43
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: DOWN
+currentFloor: 3
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 17:27:43
+Request received by Scheduler from Source : Elevator # 1
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: DOWN
+Stopping the timer for elevator: 1
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorArrivalRequest:
+Floor arrived at: 2
+Current direction: IDLE
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:27:44
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:27:44
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:27:44
+Request received by Scheduler from Source : Elevator # 1
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+TimeStamp: 17:27:44
+************************
+Source : Elevator # 1
+Completed passengers request: 
+Request: 
+destinationFloor: 2
+destinationFloorCompleted: true
+originFloor: 21
+originFloorCompleted: true
+fault: 0
+faultCompleted: false
+
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Floor: 
+id: 2
+UDPInfo: 
+inSocketPort: 5014
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5015
+
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:44
+Scheduler sent a request to Elevator: 
+id: 1
+UDPInfo: 
+inSocketPort: 5004
+inetAddress: Sebastians-MacBook-Pro.local/10.0.0.34
+outSocketPort: 5005
+# of passengers: 0
+direction: IDLE
+currentFloor: 2
+destinationFloor: -1
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 17:27:44
+Request received by Scheduler from Source : Elevator # 1
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+

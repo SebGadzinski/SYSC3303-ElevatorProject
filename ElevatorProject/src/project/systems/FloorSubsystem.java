@@ -70,7 +70,7 @@ public class FloorSubsystem extends AbstractSubsystem implements Runnable {
 	public synchronized ReadRequestResult readRequest() {
 
 		// match input against a regex
-		this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d) ([a-zA-Z]+) (\\d) (\\d)");
+		this.scanner.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d\\d\\d) (\\d\\d) ([a-zA-Z]+) (\\d\\d) (\\d)");
 		MatchResult matchResult = this.scanner.match();
 
 		// store the matched data in a new request instance

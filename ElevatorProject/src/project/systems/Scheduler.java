@@ -1,6 +1,7 @@
 package project.systems;
 
 import project.Config;
+import project.gui.ElevatorProjectGUI;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.state_machines.SchedulerStateMachine.SchedulerState;
@@ -14,6 +15,7 @@ import project.utils.objects.general.CreateFile;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static project.Config.*;
@@ -32,6 +34,9 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     private final List<SchedulerElevatorInfo> elevators;
     private final List<SchedulerFloorInfo> floors;
     private final CreateFile file;
+    private ElevatorProjectGUI projectGUI;
+	private ArrayList<LinkedHashMap<Integer, Integer>> destinationRequests = new ArrayList<LinkedHashMap<Integer, Integer>>();
+
 
     /**
      * A parameterized Scheduler constructor that initializes all fields, including those inherited.
@@ -59,6 +64,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
         floors = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FLOORS; ++i) {
             floors.add(new SchedulerFloorInfo(Integer.toString(i), project.Config.FLOORS_UDP_INFO[i]));
+            destinationRequests.add(new LinkedHashMap<Integer, Integer>());
         }
     }
 
@@ -155,6 +161,8 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     FileRequest fileRequest = (FileRequest) request;
                 	SchedulerElevatorInfo elevator = selectElevator(fileRequest);
                     handleFileRequest(fileRequest, elevator);
+                    // Update GUI
+                    projectGUI.updateElevator(elevator);
                 }
                 if (request.getSource().getSubsystem() == SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM) {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
@@ -185,6 +193,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     else if (request instanceof ElevatorEmergencyRequest) {
                     	handleElevatorEmergencyRequest((ElevatorEmergencyRequest) request, elevator);
                     }
+                    projectGUI.updateElevator(elevator);   
                 }
             }
             case INVALID_REQUEST -> file.writeToFile(this + " received and discarded an invalid request");
@@ -206,6 +215,10 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                 false,
                 fileRequest.getFault()
         );
+        
+        //Adding person to floor : GUI
+        projectGUI.addRequestToFloor(personRequest.hashCode(), fileRequest.getOriginFloor(), personRequest.getDestinationFloor());
+        
         if(fileRequest.getFault() > 0) {
         	elevator.setPrintingEnabled(true);
         	printToFileFromElevator("\nTimeStamp: " + getTimeStamp(), elevator);
@@ -214,6 +227,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     		if(Config.FAULT_PRINTING)
     			elevator.setPrintingEnabled(false);
         }
+        
         elevator.addToRequests(personRequest);
         printToFileFromElevator("Added Request to list of requests to: \n" + elevator.getSource(), elevator);
         
@@ -272,6 +286,8 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      * @param elevator: The SchedulerElevatorInfo to be manipulated
      */
     private void handleElevatorArrivalRequest(ElevatorArrivalRequest arrivalRequest, SchedulerElevatorInfo elevator) {
+    	elevator.setLamp(arrivalRequest.getFloorArrivedAt(), false);
+    	
     	//Stop the timer that is checking if the elevator kept moving or wont stop
     	elevator.setPrintingEnabled(true);
     	elevator.stopTimer();
@@ -406,7 +422,10 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
                     elevator.addPassenger();
                     printToFileFromElevator("\nTimeStamp: " + getTimeStamp(), elevator);
                     printToFileFromElevator("************************\n" + elevator.getSource()
-                            + "\nAdded a passenger: \n" + requests.get(actualIndex), elevator);                    
+                            + "\nAdded a passenger: \n" + requests.get(actualIndex), elevator); 
+                    //Removing person to floor : GUI
+	                projectGUI.removeRequestFromFloor(requests.get(actualIndex).hashCode(), requests.get(actualIndex).getOriginFloor());                
+	                elevator.setLamp(requests.get(actualIndex).getDestinationFloor(), true);
                 }
                 // Remove all the people coming from the elevator at this floor (people at floor)
                 if (requests.get(actualIndex).isOriginFloorCompleted()
@@ -448,7 +467,8 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
      * @param faultRequest: The ElevatorFaultRequest to be processed.
      * @param elevator: The SchedulerElevatorInfo to be manipulated
      */
-    private void handleElevatorFaultRequest(ElevatorFaultRequest faultRequest, SchedulerElevatorInfo elevator) {    	
+    private void handleElevatorFaultRequest(ElevatorFaultRequest faultRequest, SchedulerElevatorInfo elevator) {
+    	elevator.setRepairing(true);
     	dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.FIX, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
                 elevator);
     }
@@ -462,6 +482,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     private void handleElevatorEmergencyRequest(ElevatorEmergencyRequest emergencyRequest, SchedulerElevatorInfo elevator) {    	
     	if(ElevatorEmergencyRequest.COMPLETED_EMERGENCY == emergencyRequest.getStatus() && emergencyRequest.getEmergencyState() == ElevatorEmergency.FIX) {
     		// Check if anyone needs to be dropped off on this floor
+    		elevator.setRepairing(false);
     		elevator.setDirection(emergencyRequest.getDirectionState());
     		elevator.setDoorStatus(emergencyRequest.getDoorState());
             if (needToOpenDoors(elevator)) {
@@ -492,6 +513,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     	}
     	//If it was a SHUTDOWN, remove the elevators from the operational elevators list
     	else {
+    		elevator.setShutDown(true);;
     		elevators.remove(elevator);
         	if(elevators.size() == 0) {
         		for(int i = 0; i < this.floors.size(); i++) {
@@ -686,6 +708,10 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     @Override
     public void run() {
         file.writeToFile("Scheduler operational...\n");
+        projectGUI = new ElevatorProjectGUI();
+        Thread GUIThread = new Thread(projectGUI);
+        GUIThread.start();
+        file.writeToFile("GUI operational...\n");
         while (true) {
             consumeRequest(fetchRequest());
         }

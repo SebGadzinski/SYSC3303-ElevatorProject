@@ -1,6 +1,7 @@
 package project.utils.datastructs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
@@ -16,7 +17,8 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
     private int currentFloor;
     private Thread timerWorker;
     private ElevatorTimerWorker timer;
-    private boolean printingEnabled = false;
+    private boolean printingEnabled, shutDown, repairing;
+    public HashMap<Integer, Boolean> lamps;
 
     public SchedulerElevatorInfo(String id, UDPInfo udpInfo, ElevatorDirection direction,
                                  ElevatorDoorStatus doorStatus, int currentFloor) {
@@ -29,6 +31,7 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
         this.timer = new ElevatorTimerWorker(Config.TIMER_TIMEOUT);
         this.timerWorker = new Thread(this.timer, "timer" + id);
         this.printingEnabled = !Config.FAULT_PRINTING;
+        this.lamps = new HashMap<Integer, Boolean>();
         requests = new ArrayList<>();
     }
 
@@ -75,6 +78,14 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
 
     public void setCurrentFloor(int currentFloor) {
         this.currentFloor = currentFloor;
+    }
+    
+    public void setLamp(int lampNumber, boolean isOn) {
+    	lamps.put(lampNumber, isOn);
+    }
+    
+    public HashMap<Integer, Boolean> getLamps() {
+    	return lamps;
     }
 
     public void setPersonRequestOriginFloor(int index, int newFloor) {
@@ -162,6 +173,22 @@ public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
 
 	public void setPrintingEnabled(boolean printingEnabled) {
 		this.printingEnabled = printingEnabled;
+	}
+	
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
+	}
+
+	public boolean isRepairing() {
+		return repairing;
+	}
+
+	public void setRepairing(boolean repairing) {
+		this.repairing = repairing;
 	}
 
 	@Override
