@@ -2,687 +2,160 @@
 ElevatorSubsystem: 1 operational...
 
 
-TimeStamp: 17:27:09
+TimeStamp: 17:54:11
 Elevator #1 received: 
 FileRequest: 
-Creation Time:  18:19:44.319
-Direction: DOWN
-Pick Up: 21
-Destination Floor: 2
-Fault:  0
+Creation Time:  18:17:17.020
+Direction: UP
+Pick Up: 1
+Destination Floor: 3
+Fault:  1
 
-TimeStamp: 17:27:09
+TimeStamp: 17:54:11
 Elevator #1 sent: 
 ElevatorDestinationRequest:
-Destination: 21
+Destination: 1
 
-TimeStamp: 17:27:10
+TimeStamp: 17:54:12
 Elevator #1 received: 
 ElevatorMotorRequest:
 Motor to move: UP
 
 
-TimeStamp: 17:27:10
+TimeStamp: 17:54:12
 Elevator #1 sent: 
 ElevatorArrivalRequest:
 Floor arrived at: 1
 Current direction: UP
 
-TimeStamp: 17:27:12
+TimeStamp: 17:54:14
+Elevator #1 received: 
+ElevatorMotorRequest:
+Motor to move: IDLE
+
+
+TimeStamp: 17:54:14
+Elevator #1 sent: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:54:15
+Elevator #1 received: 
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+
+TimeStamp: 17:54:15
+Elevator #1 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:54:16
+Elevator #1 received: 
+ElevatorPassengerWaitRequest: 
+Wait state: WAITING
+Wait time: 10
+
+TimeStamp: 17:54:16
+Elevator #1 sent: 
+ElevatorPassengerWaitRequest: 
+Wait state: FINISHED
+Wait time: 0
+
+FAULT IS: 1
+
+TimeStamp: 17:54:16
+Elevator #1 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 17:54:16
+Elevator #1 sent: 
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 17:54:17
+Elevator #1 received: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 17:54:22
+Elevator #1 sent: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+
+TimeStamp: 17:54:23
 Elevator #1 received: 
 ElevatorMotorRequest:
 Motor to move: UP
 
 
-TimeStamp: 17:27:12
+TimeStamp: 17:54:23
 Elevator #1 sent: 
 ElevatorArrivalRequest:
 Floor arrived at: 2
 Current direction: UP
 
-TimeStamp: 17:27:13
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: IDLE
-
-
-TimeStamp: 17:27:13
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:14
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:14
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:14
-Elevator #1 received: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:14
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: FINISHED
-Wait time: 0
-
-TimeStamp: 17:27:14
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:14
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:14
+TimeStamp: 17:54:25
 Elevator #1 received: 
 ElevatorMotorRequest:
 Motor to move: UP
 
 
-TimeStamp: 17:27:14
+TimeStamp: 17:54:25
 Elevator #1 sent: 
 ElevatorArrivalRequest:
 Floor arrived at: 3
 Current direction: UP
 
-TimeStamp: 17:27:15
+TimeStamp: 17:54:26
 Elevator #1 received: 
 ElevatorMotorRequest:
 Motor to move: IDLE
 
 
-TimeStamp: 17:27:15
+TimeStamp: 17:54:26
 Elevator #1 sent: 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 
-TimeStamp: 17:27:16
+TimeStamp: 17:54:27
 Elevator #1 received: 
 ElevatorDoorRequest:
 Request for doors to be: OPENED
 
 
-TimeStamp: 17:27:16
+TimeStamp: 17:54:27
 Elevator #1 sent: 
 ElevatorPassengerWaitRequest: 
 Wait state: WAITING
 Wait time: 10
 
-TimeStamp: 17:27:16
+TimeStamp: 17:54:27
 Elevator #1 received: 
 ElevatorPassengerWaitRequest: 
 Wait state: WAITING
 Wait time: 10
 
-TimeStamp: 17:27:16
+TimeStamp: 17:54:27
 Elevator #1 sent: 
 ElevatorPassengerWaitRequest: 
 Wait state: FINISHED
 Wait time: 0
 
-TimeStamp: 17:27:16
+TimeStamp: 17:54:29
 Elevator #1 received: 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 
-TimeStamp: 17:27:16
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:16
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:16
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 4
-Current direction: UP
-
-TimeStamp: 17:27:17
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:17
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 5
-Current direction: UP
-
-TimeStamp: 17:27:18
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:18
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 6
-Current direction: UP
-
-TimeStamp: 17:27:18
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:18
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 7
-Current direction: UP
-
-TimeStamp: 17:27:19
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:19
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 8
-Current direction: UP
-
-TimeStamp: 17:27:19
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:19
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 9
-Current direction: UP
-
-TimeStamp: 17:27:20
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:20
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 10
-Current direction: UP
-
-TimeStamp: 17:27:21
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:21
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 11
-Current direction: UP
-
-TimeStamp: 17:27:23
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:23
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 12
-Current direction: UP
-
-TimeStamp: 17:27:24
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:24
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 13
-Current direction: UP
-
-TimeStamp: 17:27:25
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:25
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 14
-Current direction: UP
-
-TimeStamp: 17:27:26
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:26
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 15
-Current direction: UP
-
-TimeStamp: 17:27:26
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:26
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 16
-Current direction: UP
-
-TimeStamp: 17:27:27
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:27
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 17
-Current direction: UP
-
-TimeStamp: 17:27:27
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:27
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 18
-Current direction: UP
-
-TimeStamp: 17:27:28
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:28
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 19
-Current direction: UP
-
-TimeStamp: 17:27:29
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:29
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 20
-Current direction: UP
-
-TimeStamp: 17:27:31
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: UP
-
-
-TimeStamp: 17:27:31
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 21
-Current direction: UP
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: IDLE
-
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: FINISHED
-Wait time: 0
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 20
-Current direction: DOWN
-
-TimeStamp: 17:27:32
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:32
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 19
-Current direction: DOWN
-
-TimeStamp: 17:27:33
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:33
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 18
-Current direction: DOWN
-
-TimeStamp: 17:27:34
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:34
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 17
-Current direction: DOWN
-
-TimeStamp: 17:27:34
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:34
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 16
-Current direction: DOWN
-
-TimeStamp: 17:27:35
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:35
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 15
-Current direction: DOWN
-
-TimeStamp: 17:27:35
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:35
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 14
-Current direction: DOWN
-
-TimeStamp: 17:27:36
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:36
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 13
-Current direction: DOWN
-
-TimeStamp: 17:27:37
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:37
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 12
-Current direction: DOWN
-
-TimeStamp: 17:27:37
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:37
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 11
-Current direction: DOWN
-
-TimeStamp: 17:27:38
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:38
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 10
-Current direction: DOWN
-
-TimeStamp: 17:27:39
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:39
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 9
-Current direction: DOWN
-
-TimeStamp: 17:27:40
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:40
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 8
-Current direction: DOWN
-
-TimeStamp: 17:27:40
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:40
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 7
-Current direction: DOWN
-
-TimeStamp: 17:27:41
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:41
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 6
-Current direction: DOWN
-
-TimeStamp: 17:27:42
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:42
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 5
-Current direction: DOWN
-
-TimeStamp: 17:27:42
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:42
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 4
-Current direction: DOWN
-
-TimeStamp: 17:27:43
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:43
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 3
-Current direction: DOWN
-
-TimeStamp: 17:27:43
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: DOWN
-
-
-TimeStamp: 17:27:43
-Elevator #1 sent: 
-ElevatorArrivalRequest:
-Floor arrived at: 2
-Current direction: DOWN
-
-TimeStamp: 17:27:44
-Elevator #1 received: 
-ElevatorMotorRequest:
-Motor to move: IDLE
-
-
-TimeStamp: 17:27:44
-Elevator #1 sent: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:44
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: OPENED
-
-
-TimeStamp: 17:27:44
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:44
-Elevator #1 received: 
-ElevatorPassengerWaitRequest: 
-Wait state: WAITING
-Wait time: 10
-
-TimeStamp: 17:27:44
-Elevator #1 sent: 
-ElevatorPassengerWaitRequest: 
-Wait state: FINISHED
-Wait time: 0
-
-TimeStamp: 17:27:44
-Elevator #1 received: 
-ElevatorDoorRequest:
-Request for doors to be: CLOSED
-
-
-TimeStamp: 17:27:44
+TimeStamp: 17:54:29
 Elevator #1 sent: 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED

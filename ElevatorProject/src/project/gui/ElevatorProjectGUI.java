@@ -54,18 +54,18 @@ public class ElevatorProjectGUI implements Runnable{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Set up the frame
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container container = frame.getContentPane();
-
+		container.setLayout(backgroundGridBagLayout);
+		
+		//Set Up Elevator Panels
 		for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
 			elevatorFloorPanels.add(new JPanel[Config.NUMBER_OF_FLOORS]);
 		}
-		
-		container.setLayout(backgroundGridBagLayout);
-		
 		Container elevatorsFrame = new Container();
 		elevatorsFrame.setLayout(elevatorGridLayout);
 		for(int i = 0; i < elevatorContainers.length; i++) {
@@ -86,14 +86,14 @@ public class ElevatorProjectGUI implements Runnable{
 		for(int i = 0; i < elevatorFloorPanels.size(); i++) {
 			Collections.reverse(Arrays.asList(elevatorFloorPanels.get(i)));
 		}
-		
+		//Add them to the GUI
 		for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
 			elevatorGUIs[i] = new ElevatorGUI(Integer.toString(i), new HashMap<Integer, Boolean>(), 0, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, -1);
 			moveElevatorToFloor(i, 0);
 		}
-		
 		container.add(elevatorsFrame);
 		
+		//Set Up Floor Panels
 		Container floorsFrame = new Container();
 		floorsFrame.setLayout(floorGridLayout);
 		for(int i = 0; i < floorPanels.length; i++) {
@@ -109,11 +109,179 @@ public class ElevatorProjectGUI implements Runnable{
 			destinationRequests.add(new LinkedHashMap<Integer, Integer>());
 		}
 		
+		//Put the floor panels in proper order
 		Collections.reverse(Arrays.asList(floorPanels));
-		
 		container.add(floorsFrame);
 	}
 	
+	/*
+	 * ============ ELEVATOR UI FUNCTIONS ============
+	 */
+	
+    /**
+     * Updates the elevator and its panel
+     *
+     * @param elevator: Elevator that is to be updated
+     */
+	public synchronized void updateElevator(SchedulerElevatorInfo elevator) {
+		updateElevatorLabelDimension();
+		int id = Integer.parseInt(elevator.getId());
+		
+		if(!elevator.isRepairing() && elevatorGUIs[id].isElevatorUnderRepair()) {
+			elevatorGUIs[id].setElevatorUnderRepair(false);
+		}
+		
+		if(elevator.isRepairing()) {
+			elevatorGUIs[id].setElevatorUnderRepair(true);
+			elevatorUnderRepair(id);		
+		}
+		else if(elevator.isShutDown()) {
+			elevatorGUIs[id].setElevatorShutDown(true);
+			elevatorShutDown(id);		
+		}
+		else {
+			elevatorGUIs[id].setDestination(elevator.getCurrentDestinationFloor());
+			elevatorGUIs[id].setLamps(elevator.getLamps());
+			elevatorGUIs[id].setPassengers(elevator.getPassengers());
+			elevatorGUIs[id].setDoorState(elevator.getDoorStatus());
+			elevatorGUIs[id].setDirection(elevator.getDirection());
+			moveElevatorToFloor(id, elevator.getCurrentFloor());
+		}
+	}
+	
+    /**
+     * Updates the elevators destination
+     *    
+     * @param id: Elevator identification
+     * @param destination: Elevator destination
+     */
+	public synchronized void updateElevatorLamps(int id, int destination) {
+		updateElevatorLabelDimension();
+		elevatorGUIs[id].setDestination(destination);;
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].removeAll();
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].add(elevatorGUIs[id].getLampsLabel(elevatorLabelDimension));
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].setBackground(Color.white);
+	}
+	
+    /**
+     * Updates the elevators lamps
+     *    
+     * @param id: Elevator identification
+     * @param destination: Elevator lamps
+     */
+	public synchronized void updateElevatorLamps(int id, HashMap<Integer, Boolean> lamps) {
+		updateElevatorLabelDimension();
+		elevatorGUIs[id].setLamps(lamps);
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].removeAll();
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].add(elevatorGUIs[id].getLampsLabel(elevatorLabelDimension));
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].setBackground(Color.white);
+	}
+	
+    /**
+     * Updates the elevators amount of passengers
+     *    
+     * @param id: Elevator identification
+     * @param destination: Elevator amount of passengers
+     */
+	public synchronized void updateElevatorPassengers(int id, int passengers) {
+		updateElevatorLabelDimension();
+		elevatorGUIs[id].setPassengers(passengers);
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].removeAll();
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].add(elevatorGUIs[id].getPassengersLabel(elevatorLabelDimension));
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].setBackground(Color.white);
+	}
+	
+    /**
+     * Updates the elevators doors status
+     *    
+     * @param id: Elevator identification
+     * @param destination: Elevator door status
+     */
+	public synchronized void updateElevatorDoors(int id, ElevatorDoorStatus doorState) {
+		updateElevatorLabelDimension();
+		elevatorGUIs[id].setDoorState(doorState);
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].removeAll();
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].add(elevatorGUIs[id].getDoorStateLabel(elevatorLabelDimension));
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].setBackground(Color.white);
+	}
+	
+    /**
+     * Updates the elevators direction
+     *    
+     * @param id: Elevator identification
+     * @param destination: Elevator direction
+     */
+	public synchronized void updateElevatorDirection(int id, ElevatorDirection direction) {
+		updateElevatorLabelDimension();
+		elevatorGUIs[id].setDirection(direction);
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].removeAll();
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].add(elevatorGUIs[id].getDirectionLabel(elevatorLabelDimension));
+		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].setBackground(Color.white);
+	}
+	
+    /**
+     * Sets the elevator in repair mode
+     *    
+     * @param id: Elevator identification
+     */
+	public synchronized void elevatorUnderRepair(int id) {
+		clearAllFloorsFromElevator(id);
+		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.yellow);
+		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.yellow);
+		}
+	}
+	
+    /**
+     * Sets the elevator out of repair mode
+     *    
+     * @param id: Elevator identification
+     */
+	public synchronized void elevatorFinishedRepair(int id) {
+		clearAllFloorsFromElevator(id);
+		moveElevatorToFloor(id, elevatorCurrentFloors[id]);
+	}
+	
+    /**
+     * Sets the elevator out of shutdown mode
+     *    
+     * @param id: Elevator identification
+     */
+	public synchronized void elevatorShutDown(int id) {
+		clearAllFloorsFromElevator(id);
+		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.red);
+		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.red);
+		}
+	}
+	
+    /**
+     * Updates a floor UI
+     *    
+     * @param orginFloor: The floor that the person is on
+     */
+	public synchronized void updateFloor(int orginFloor) {
+		floorPanels[orginFloor].removeAll();
+		
+		JLabel floorNumberLabel = new JLabel("Floor " + orginFloor + ": " + (orginFloor < 10 ? " " : ""));
+		floorNumberLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		floorPanels[orginFloor].add(floorNumberLabel);
+		
+		Iterator it = destinationRequests.get(orginFloor).entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        floorPanels[orginFloor].add(new JLabel("<Dest:" + pair.getValue() + "> "));
+	    }
+	    
+		floorPanels[orginFloor].updateUI();
+	}
+	
+    /**
+     * Moves the elevator to a floor and updates the information UI
+     *
+     * @param elevatorId: Elevators identification
+     * @param floor: Floor the elevator is moved to
+     */
 	private synchronized void moveElevatorToFloor(int elevatorId, int floor) {
 		updateElevatorLabelDimension();
 		clearAllFloorsFromElevator(elevatorId);
@@ -159,126 +327,11 @@ public class ElevatorProjectGUI implements Runnable{
 		
 	}
 	
-	//Update Elevator Function (ALL Params)
-	public synchronized void updateElevator(SchedulerElevatorInfo elevator) {
-		updateElevatorLabelDimension();
-		int id = Integer.parseInt(elevator.getId());
-		
-		if(!elevator.isRepairing() && elevatorGUIs[id].isElevatorUnderRepair()) {
-			elevatorGUIs[id].setElevatorUnderRepair(false);
-		}
-		
-		if(elevator.isRepairing()) {
-			elevatorGUIs[id].setElevatorUnderRepair(true);
-			elevatorUnderRepair(id);		
-		}
-		else if(elevator.isShutDown()) {
-			elevatorGUIs[id].setElevatorShutDown(true);
-			elevatorShutDown(id);		
-		}
-		else {
-			elevatorGUIs[id].setDestination(elevator.getCurrentDestinationFloor());
-			elevatorGUIs[id].setLamps(elevator.getLamps());
-			elevatorGUIs[id].setPassengers(elevator.getPassengers());
-			elevatorGUIs[id].setDoorState(elevator.getDoorStatus());
-			elevatorGUIs[id].setDirection(elevator.getDirection());
-			moveElevatorToFloor(id, elevator.getCurrentFloor());
-		}
-	}
-	
-	//Update Destination
-	public synchronized void updateElevatorLamps(int id, int destination) {
-		updateElevatorLabelDimension();
-		elevatorGUIs[id].setDestination(destination);;
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].removeAll();
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].add(elevatorGUIs[id].getLampsLabel(elevatorLabelDimension));
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-1].setBackground(Color.white);
-	}
-	
-	//Update Lamp
-	public synchronized void updateElevatorLamps(int id, HashMap<Integer, Boolean> lamps) {
-		updateElevatorLabelDimension();
-		elevatorGUIs[id].setLamps(lamps);
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].removeAll();
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].add(elevatorGUIs[id].getLampsLabel(elevatorLabelDimension));
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-2].setBackground(Color.white);
-	}
-	
-	//Update Direction
-	public synchronized void updateElevatorPassengers(int id, int passengers) {
-		updateElevatorLabelDimension();
-		elevatorGUIs[id].setPassengers(passengers);
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].removeAll();
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].add(elevatorGUIs[id].getPassengersLabel(elevatorLabelDimension));
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-3].setBackground(Color.white);
-	}
-	
-	//Update Passengers
-	public synchronized void updateElevatorDoors(int id, ElevatorDoorStatus doorState) {
-		updateElevatorLabelDimension();
-		elevatorGUIs[id].setDoorState(doorState);
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].removeAll();
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].add(elevatorGUIs[id].getDoorStateLabel(elevatorLabelDimension));
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-4].setBackground(Color.white);
-	}
-	
-	//Update Door State
-	public synchronized void updateElevatorDirection(int id, ElevatorDirection direction) {
-		updateElevatorLabelDimension();
-		elevatorGUIs[id].setDirection(direction);
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].removeAll();
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].add(elevatorGUIs[id].getDirectionLabel(elevatorLabelDimension));
-		elevatorFloorPanels.get(id)[elevatorIdFloors[id]-5].setBackground(Color.white);
-	}
-	
-	public synchronized void elevatorUnderRepair(int id) {
-		clearAllFloorsFromElevator(id);
-		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.yellow);
-		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
-			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.yellow);
-		}
-	}
-	
-	public synchronized void elevatorFinishedRepair(int id) {
-		clearAllFloorsFromElevator(id);
-		moveElevatorToFloor(id, elevatorCurrentFloors[id]);
-	}
-	
-	public synchronized void elevatorShutDown(int id) {
-		clearAllFloorsFromElevator(id);
-		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.red);
-		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
-			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.red);
-		}
-	}
-	
-	public synchronized void addRequestToFloor(int requestId, int orginFloor, int destinationFloor) {
-		destinationRequests.get(orginFloor).put(requestId, destinationFloor);
-		updateFloor(orginFloor);
-	}
-	
-	public synchronized void updateFloor(int orginFloor) {
-		floorPanels[orginFloor].removeAll();
-		
-		JLabel floorNumberLabel = new JLabel("Floor " + orginFloor + ": " + (orginFloor < 10 ? " " : ""));
-		floorNumberLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		floorPanels[orginFloor].add(floorNumberLabel);
-		
-		Iterator it = destinationRequests.get(orginFloor).entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
-	        floorPanels[orginFloor].add(new JLabel("<Dest:" + pair.getValue() + "> "));
-	    }
-	    
-		floorPanels[orginFloor].updateUI();
-	}
-
-	//Take away from floor
-	public synchronized void removeRequestFromFloor(int requestId, int orginFloor) {
-		destinationRequests.get(orginFloor).remove(requestId);
-		updateFloor(orginFloor);
-	}
-	
+    /**
+     * Clears the UI of all the floors in the elevator panel
+     *    
+     * @param id: Elevator identification
+     */
 	private void clearAllFloorsFromElevator(int elevatorId) {
 		for(int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
 			elevatorFloorPanels.get(elevatorId)[i].removeAll();
@@ -286,6 +339,45 @@ public class ElevatorProjectGUI implements Runnable{
 		}
 	}
 	
+    /**
+     * Updates the label dimension of a label in elevator panel
+     * 
+     */
+	private void updateElevatorLabelDimension() {
+		elevatorLabelDimension = elevatorFloorPanels.get(0)[0].getSize();
+	}
+	
+	/*
+	 * ============ FLOOR UI FUNCTIONS ============
+	 */
+	
+    /**
+     * Adds a person with a destination to a floor
+     *    
+     * @param requestId: Request Identification
+     * @param orginFloor: The floor that the person is on
+     * @param destinationFloor: The floor that the person wishes to go
+     */
+	public synchronized void addRequestToFloor(int requestId, int orginFloor, int destinationFloor) {
+		destinationRequests.get(orginFloor).put(requestId, destinationFloor);
+		updateFloor(orginFloor);
+	}
+	
+    /**
+     * Removes person with request from floor (They got on the elevator)
+     * 
+     * @param requestId: Request Identification
+     * @param orginFloor: The floor that the person is on
+     */
+	public synchronized void removeRequestFromFloor(int requestId, int orginFloor) {
+		destinationRequests.get(orginFloor).remove(requestId);
+		updateFloor(orginFloor);
+	}
+	
+    /**
+     * Clears the UI of all the floors in floor panel
+     * 
+     */
 	private void clearAllFloors() {
 		for(int i = 0; i < Config.NUMBER_OF_FLOORS; i++) {
 			floorPanels[i].removeAll();
@@ -293,15 +385,23 @@ public class ElevatorProjectGUI implements Runnable{
 		}
 	}
 	
-	//Floors are in reverse order
+	/*
+	 * ============ OTHER FUNCTIONS ============
+	 */
+	
+    /**
+     * When the floors are in reverse order, use this to get index
+     *    
+     * @param floorIndex: Index of normal order floors
+     */
 	private int floorIndex(int floorIndex) {
 		return Config.NUMBER_OF_FLOORS - 1 - floorIndex;
 	}
-	
-	private void updateElevatorLabelDimension() {
-		elevatorLabelDimension = elevatorFloorPanels.get(0)[0].getSize();
-	}
 
+    /**
+     * Runs the UI
+     * 
+     */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

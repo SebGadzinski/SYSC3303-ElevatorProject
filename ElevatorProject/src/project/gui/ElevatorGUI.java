@@ -26,6 +26,9 @@ public class ElevatorGUI {
 	private ElevatorDirection direction;
 	private boolean elevatorUnderRepair, elevatorShutDown;
 	
+	/*
+	 * Initiates all attributes of elevator GUI
+	 */
 	public ElevatorGUI(String id, HashMap<Integer, Boolean> lamps, int passengers, ElevatorDoorStatus doorState,
 			ElevatorDirection direction, int destination ) {
 		this.id = id;
@@ -43,10 +46,9 @@ public class ElevatorGUI {
 		destinationLabel = new JLabel("dest: ");
 	}
 
-	public HashMap<Integer, Boolean> getLamps() {
-		return lamps;
-	}
-
+	/*
+	 * Updates the lamps label with current lamps that are on
+	 */
 	public void updateLamps() {
 		Iterator it = lamps.entrySet().iterator();
 		String lampsOn = "lamps on: ";
@@ -60,24 +62,40 @@ public class ElevatorGUI {
 		lampsLabel.updateUI();
 	}
 	
+	/*
+	 * Updates the passengers label with current passengers
+	 */
 	public void updatePassengers(){
 		passengersLabel.setText("passengers: " + Integer.toString(passengers));
 		passengersLabel.updateUI();
 	}
 	
+	/*
+	 * Updates the door label with the current door state
+	 */
 	public void updateDoorState(){
 		doorStateLabel.setText("doors: " + doorState);
 		doorStateLabel.updateUI();
 	}
 	
+	/*
+	 * Updates the direction label with the current direction
+	 */
 	public void updateDirection(){
 		directionLabel.setText("direction: " + direction);
 		directionLabel.updateUI();
 	}
 	
+	/*
+	 * Updates the destination label with the current destination
+	 */
 	public void updateDestination(){
 		destinationLabel.setText("dest: " + destination);
 		destinationLabel.updateUI();
+	}
+	
+	public HashMap<Integer, Boolean> getLamps() {
+		return lamps;
 	}
 	
 	public void setLamp(int lampNumber, boolean isOn){
