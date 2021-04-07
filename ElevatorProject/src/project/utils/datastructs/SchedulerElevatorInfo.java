@@ -8,7 +8,6 @@ import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
 public class SchedulerElevatorInfo extends SchedulerSubsystemInfo {
-
     private ElevatorDirection direction;
     private ElevatorDoorStatus doorStatus;
     private ArrayList<PersonRequest> requests;

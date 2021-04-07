@@ -321,7 +321,8 @@ public class ElevatorProjectGUI implements Runnable{
 			elevatorFloorPanels.get(elevatorId)[floor].setBackground(Color.black);
 			JLabel currentFloor = new JLabel("Floor: " + floor);
 			currentFloor.setSize(elevatorLabelDimension);
-			currentFloor.setForeground(Color.white);;
+			currentFloor.setForeground(Color.white);
+			currentFloor.setHorizontalTextPosition(JLabel.CENTER);
 			elevatorFloorPanels.get(elevatorId)[floor].add(currentFloor);
 		}
 		
