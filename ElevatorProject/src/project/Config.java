@@ -5,6 +5,7 @@ import project.utils.datastructs.UDPInfo;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -23,9 +24,11 @@ public final class Config {
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
     
-    public static final int LOAD_TIME = 9500;
+    public static final int LOAD_TIME = 9500; 
     public static final int UNLOAD_TIME = 8850;
-    public static final int VELOCITY = 7700;
+    public static final int MAX_TIME = 11000; //time it takes to move up or down 1 floor (based on iter 0)
+    public static final int MIN_TIME = 6000; //time it takes to move up or down 1 floor (based on iter 0)
+
 
     // Faults config
     //--------------------------------------------------------------------------------------------
@@ -74,5 +77,16 @@ public final class Config {
         }
         return ports.pollFirst();
     }
+    
+    /**
+     * Generate a random travel time for the elevator using max 
+     * and min as the recorded values from iter 0
+     * 
+     * @return a travel time to simulate an elevator moving
+     */
+    public static int elevator_time() {
+    	Random random = new Random();
+    	return random.nextInt(MAX_TIME - MIN_TIME) + MIN_TIME;
+    	}
 
 }

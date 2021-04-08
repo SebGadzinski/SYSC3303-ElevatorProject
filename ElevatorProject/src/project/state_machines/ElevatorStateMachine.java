@@ -74,7 +74,7 @@ public class ElevatorStateMachine {
 				if (request instanceof ElevatorMotorRequest) {
 					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
 					try {
-						Thread.sleep(Config.VELOCITY);
+						Thread.sleep(Config.elevator_time());
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
