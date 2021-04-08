@@ -73,6 +73,12 @@ public class ElevatorStateMachine {
 			case MOVING -> {
 				if (request instanceof ElevatorMotorRequest) {
 					ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+					try {
+						Thread.sleep(Config.VELOCITY);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					requestToSendToScheduler = handleMotorRequest(motorRequest);
 				} else {
 					System.out.println("Invalid Request For MOVING State");

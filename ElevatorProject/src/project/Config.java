@@ -22,6 +22,10 @@ public final class Config {
     public static final int NUMBER_OF_FLOORS = 30;
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
+    
+    public static final int LOAD_TIME = 9500;
+    public static final int UNLOAD_TIME = 8850;
+    public static final int VELOCITY = 7700;
 
     // Faults config
     //--------------------------------------------------------------------------------------------
@@ -39,7 +43,7 @@ public final class Config {
     public static InetAddress localhost;
 
     static {
-        for (int port = 5000; port < 5100; ++port) ports.add(port);
+        for (int port = 5600; port < 5700; ++port) ports.add(port);
         try {
             localhost = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
