@@ -13,11 +13,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 
 public class ElevatorGUI {
-	public static final int AMOUNT_OF_ELEMENTS = 6;
+	public static int AMOUNT_OF_ELEMENTS(){
+		if(Config.NUMBER_OF_FLOORS < 3) return 1;
+		else if (Config.NUMBER_OF_FLOORS < 5) return 2;
+		else if (Config.NUMBER_OF_FLOORS < 7) return 3;
+		else if (Config.NUMBER_OF_FLOORS < 9) return 4;
+		else if (Config.NUMBER_OF_FLOORS < 11) return 5;
+		else return 6;
+	}
+	
 	String id, topLabelString;
 	JLabel idLabel, destinationLabel, lampsLabel, passengersLabel, doorStateLabel, directionLabel;
 	private HashMap<Integer, Boolean> lamps;

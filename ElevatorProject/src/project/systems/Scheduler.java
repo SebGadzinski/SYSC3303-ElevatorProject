@@ -87,7 +87,6 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
-    			//System.out.println(elevatorInfo.getTimerRunning());	
     		}
     	}
 

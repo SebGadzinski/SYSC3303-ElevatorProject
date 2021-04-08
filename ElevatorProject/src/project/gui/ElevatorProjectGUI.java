@@ -47,7 +47,13 @@ public class ElevatorProjectGUI implements Runnable{
 	 * Create the application.
 	 */
 	public ElevatorProjectGUI() {
-		initialize();
+		if(Config.NUMBER_OF_ELEVATORS <= 0 || Config.NUMBER_OF_FLOORS <= 1) {
+			System.out.println("Invalid number or floors or elevators");
+			System.exit(-1);
+		}
+		else {
+			initialize();
+		}
 	}
 
 	/**
@@ -78,7 +84,7 @@ public class ElevatorProjectGUI implements Runnable{
 			}
 			elevatorsFrame.add(elevatorContainers[i]);
 			elevatorCurrentFloors[i] = 0;
-			elevatorIdFloors[i] = ElevatorGUI.AMOUNT_OF_ELEMENTS;
+			elevatorIdFloors[i] = ElevatorGUI.AMOUNT_OF_ELEMENTS();
 		}
 		updateElevatorLabelDimension();
 		
@@ -227,7 +233,7 @@ public class ElevatorProjectGUI implements Runnable{
 	public synchronized void elevatorUnderRepair(int id) {
 		clearAllFloorsFromElevator(id);
 		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.yellow);
-		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS(); i++) {
 			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.yellow);
 		}
 	}
@@ -250,7 +256,7 @@ public class ElevatorProjectGUI implements Runnable{
 	public synchronized void elevatorShutDown(int id) {
 		clearAllFloorsFromElevator(id);
 		elevatorFloorPanels.get(id)[elevatorCurrentFloors[id]].setBackground(Color.red);
-		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+		for (int i = 0 ; i < ElevatorGUI.AMOUNT_OF_ELEMENTS(); i++) {
 			elevatorFloorPanels.get(id)[elevatorIdFloors[id] - i].setBackground(Color.red);
 		}
 	}
@@ -286,15 +292,15 @@ public class ElevatorProjectGUI implements Runnable{
 		updateElevatorLabelDimension();
 		clearAllFloorsFromElevator(elevatorId);
 		elevatorCurrentFloors[elevatorId] = floor;
-		elevatorIdFloors[elevatorId] = (floor <= ElevatorGUI.AMOUNT_OF_ELEMENTS - 1 ? floor + ElevatorGUI.AMOUNT_OF_ELEMENTS : floor - 1);
+		elevatorIdFloors[elevatorId] = (floor <= ElevatorGUI.AMOUNT_OF_ELEMENTS() - 1 ? floor + ElevatorGUI.AMOUNT_OF_ELEMENTS() : floor - 1);
 		
 		if(elevatorGUIs[elevatorId].isElevatorUnderRepair()) {
-			for(int i = 0; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+			for(int i = 0; i < ElevatorGUI.AMOUNT_OF_ELEMENTS(); i++) {
 				elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId] - i].setBackground(Color.yellow);
 			}			
 		}
 		else if(elevatorGUIs[elevatorId].isElevatorShutDown()) {
-			for(int i = 0; i < ElevatorGUI.AMOUNT_OF_ELEMENTS; i++) {
+			for(int i = 0; i < ElevatorGUI.AMOUNT_OF_ELEMENTS(); i++) {
 				elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId] - i].setBackground(Color.red);
 			}			
 		}
@@ -302,21 +308,31 @@ public class ElevatorProjectGUI implements Runnable{
 			//Set Up Id Label
 			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]].add(elevatorGUIs[elevatorId].getIdLabel(elevatorLabelDimension));
 			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]].setBackground(Color.white);
-			//Set Up Destination Label
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-1].add(elevatorGUIs[elevatorId].getDestinationLabel(elevatorLabelDimension));
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-1].setBackground(Color.white);
-			//Set Up Lamps Label
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-2].add(elevatorGUIs[elevatorId].getLampsLabel(elevatorLabelDimension));
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-2].setBackground(Color.white);
-			//Set UP Passengers Label
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-3].add(elevatorGUIs[elevatorId].getPassengersLabel(elevatorLabelDimension));
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-3].setBackground(Color.white);
-			//Set Up door state
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-4].add(elevatorGUIs[elevatorId].getDoorStateLabel(elevatorLabelDimension));
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-4].setBackground(Color.white);
-			//Set Up direction
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-5].add(elevatorGUIs[elevatorId].getDirectionLabel(elevatorLabelDimension));
-			elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-5].setBackground(Color.white);
+			if(Config.NUMBER_OF_FLOORS > 3) {
+				//Set Up Destination Label
+				elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-1].add(elevatorGUIs[elevatorId].getDestinationLabel(elevatorLabelDimension));
+				elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-1].setBackground(Color.white);
+				if(Config.NUMBER_OF_FLOORS > 5) {
+					//Set Up Lamps Label
+					elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-2].add(elevatorGUIs[elevatorId].getLampsLabel(elevatorLabelDimension));
+					elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-2].setBackground(Color.white);
+					if(Config.NUMBER_OF_FLOORS > 7) {
+						//Set UP Passengers Label
+						elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-3].add(elevatorGUIs[elevatorId].getPassengersLabel(elevatorLabelDimension));
+						elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-3].setBackground(Color.white);
+						if(Config.NUMBER_OF_FLOORS > 9) {
+							//Set Up door state
+							elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-4].add(elevatorGUIs[elevatorId].getDoorStateLabel(elevatorLabelDimension));
+							elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-4].setBackground(Color.white);
+							if(Config.NUMBER_OF_FLOORS > 11) {
+								//Set Up direction
+								elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-5].add(elevatorGUIs[elevatorId].getDirectionLabel(elevatorLabelDimension));
+								elevatorFloorPanels.get(elevatorId)[elevatorIdFloors[elevatorId]-5].setBackground(Color.white);
+							}
+						}
+					}
+				}
+			}
 			
 			elevatorFloorPanels.get(elevatorId)[floor].setBackground(Color.black);
 			JLabel currentFloor = new JLabel("Floor: " + floor);

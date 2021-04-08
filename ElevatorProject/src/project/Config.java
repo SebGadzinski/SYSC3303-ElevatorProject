@@ -19,7 +19,7 @@ public final class Config {
     public static final int ELEVATOR_DOOR_TIME = 5; // seconds
     public static final int ELEVATOR_PASSENGER_WAIT_TIME = 10; // seconds
     public static final int NUMBER_OF_ELEVATORS = 4;
-    public static final int NUMBER_OF_FLOORS = 30;
+    public static final int NUMBER_OF_FLOORS = 2;
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
 
@@ -39,7 +39,7 @@ public final class Config {
     public static InetAddress localhost;
 
     static {
-        for (int port = 5000; port < 5100; ++port) ports.add(port);
+        for (int port = 5600; port < 5700; ++port) ports.add(port);
         try {
             localhost = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
