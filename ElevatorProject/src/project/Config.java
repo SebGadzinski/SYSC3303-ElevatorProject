@@ -21,7 +21,7 @@ public final class Config {
     public static final int MIN_ELEVATOR_FLOOR_TO_FLOOR_TRAVEL_TIME = 6000; // milliseconds
     public static final int MAX_ELEVATOR_FLOOR_TO_FLOOR_TRAVEL_TIME = 11000; // milliseconds
     public static final int NUMBER_OF_ELEVATORS = 4;
-    public static final int NUMBER_OF_FLOORS = 2;
+    public static final int NUMBER_OF_FLOORS = 9;
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
 
