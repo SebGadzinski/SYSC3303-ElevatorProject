@@ -776,10 +776,11 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 		file.writeToFile("GUI operational...\n");
 		this.inputRead();
 		System.out.println(this.inputs);
-		while ((this.inputs + this.requestCount) > 0) {
+		// this.inputs + this.requestCount) > 0
+		while (true) {
 			consumeRequest(fetchRequest());
 		}
-		System.out.println("done");
+		// System.out.println("done");
 	}
 
 	public void inputRead() {
@@ -817,5 +818,4 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 		Long finalTime = endTime - startTime;
 		System.out.println(finalTime);
 	}
-
 }

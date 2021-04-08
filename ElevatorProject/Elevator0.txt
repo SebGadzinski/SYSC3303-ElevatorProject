@@ -1,24 +1,49 @@
 
-FAULT IS: 2
+FAULT IS: 1
 
-TimeStamp: 21:57:27
+TimeStamp: 22:06:20
 Elevator #0 received: 
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
-Fault: 2
+Fault: 1
 
-TimeStamp: 21:57:27
+TimeStamp: 22:06:20
 Elevator #0 sent: 
 ElevatorFaultRequest:
 Fault: DOOR_FAULT
 
-TimeStamp: 21:57:27
+TimeStamp: 22:06:20
 Elevator #0 received: 
 ElevatorEmergencyRequest emergencyState: FIX
  code: 1 doors: null, direction: null
 
 
-TimeStamp: 21:57:32
+TimeStamp: 22:06:25
+Elevator #0 sent: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+
+FAULT IS: 1
+
+TimeStamp: 22:06:59
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 22:06:59
+Elevator #0 sent: 
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 22:06:59
+Elevator #0 received: 
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 22:07:04
 Elevator #0 sent: 
 ElevatorEmergencyRequest emergencyState: FIX
  code: 0 doors: CLOSED, direction: IDLE
