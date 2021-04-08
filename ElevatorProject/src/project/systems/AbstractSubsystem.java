@@ -11,9 +11,9 @@ import java.util.Date;
  * Abstracts the UDP mechanism and request serialization.
  *
  * @author Paul Roode
- * @version Iteration 4
+ * @version Iteration 5
  */
-public abstract class AbstractSubsystem {
+public abstract class AbstractSubsystem implements Runnable {
 
     protected static final int MAX_PACKET_SIZE = 10000; // bytes
 
@@ -30,8 +30,8 @@ public abstract class AbstractSubsystem {
         try {
             inSocket = new DatagramSocket(new InetSocketAddress(inetAddress, inSocketPort));
             outSocket = new DatagramSocket(new InetSocketAddress(inetAddress, outSocketPort));
-        } catch (SocketException se) {
-            se.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
             System.exit(1);
         }
     }
@@ -63,18 +63,17 @@ public abstract class AbstractSubsystem {
                     new InetSocketAddress(destinationInetAddress, destinationSocketPort),
                     outSocket
             );
-            
 
-        } catch (IOException ioe) {
+        } catch (IOException e) {
 
-            ioe.printStackTrace();
+            e.printStackTrace();
 
         } finally {
 
             try {
                 byteArrayOutputStream.close();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }
@@ -111,8 +110,8 @@ public abstract class AbstractSubsystem {
                 if (objectInput != null) {
                     objectInput.close();
                 }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }
@@ -138,8 +137,8 @@ public abstract class AbstractSubsystem {
 
         try {
             sendingSocket.send(packetToSend);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -156,20 +155,24 @@ public abstract class AbstractSubsystem {
         DatagramPacket receivedPacket = new DatagramPacket(packetData, packetData.length);
         try {
             receivingSocket.receive(receivedPacket);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
             System.exit(1);
         }
         return receivedPacket;
     }
-    
-	/**
-	 * Get current time stamp
-	 */
-	protected String getTimeStamp() {
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		return formatter.format(date);
-	}
+
+    /**
+     * Gets the current timestamp.
+     *
+     * @return the current timestamp as a String.
+     */
+    protected String getTimestamp() {
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+        return timeFormatter.format(new Date());
+    }
+
+    @Override
+    public abstract void run();
 
 }
