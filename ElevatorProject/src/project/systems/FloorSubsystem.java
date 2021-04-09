@@ -25,10 +25,10 @@ import static project.utils.datastructs.SubsystemSource.Subsystem.FLOOR_SUBSYSTE
  */
 public class FloorSubsystem extends AbstractSubsystem {
 
-    private Scanner scanner; // for reading request batch files
-    private final int floorNo;
-    private boolean upLamp, downLamp;
-    private final UDPInfo schedulerUDPInfo;
+    protected Scanner scanner; // for reading request batch files
+    protected final int floorNo;
+    protected boolean upLamp, downLamp;
+    protected final UDPInfo schedulerUDPInfo;
 
     public FloorSubsystem(UDPInfo floorUDPInfo, int floorNo, UDPInfo schedulerUDPInfo) {
 
@@ -105,7 +105,7 @@ public class FloorSubsystem extends AbstractSubsystem {
      *
      * @param request the request to be dealt with
      */
-    public void handleRequest(Request request) {
+    public Request handleRequest(Request request) {
         System.out.println("\nTimeStamp: " + getTimestamp());
         System.out.println("[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
         if (request instanceof ElevatorArrivalRequest) {
@@ -125,6 +125,8 @@ public class FloorSubsystem extends AbstractSubsystem {
             System.exit(1);
         } else
             System.out.println("\nInvalid Request\n");
+        
+        return request;
     }
 
     /**
