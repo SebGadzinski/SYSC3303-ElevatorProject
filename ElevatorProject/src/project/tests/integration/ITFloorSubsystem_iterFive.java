@@ -18,7 +18,12 @@ import project.utils.datastructs.UDPInfo;
 
 class ITFloorSubsystem_iterFive {
 
-	
+	/**
+	 * This test is mainly aimed at making sure that the FloorSubsystem is functioning
+	 * Only a single request is made for all of the floors and then it is made sure that 
+	 * the respective floor (in this case 1) gets a confirmation packet that the passenger
+	 * had arrived
+	 */
 	@Test
 	void test() {
 	
@@ -64,6 +69,7 @@ class ITFloorSubsystem_iterFive {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	System.out.println("ABOUT TO FINISH");
         assertEquals(floors[0].receivedArrival(), 1);     
 	}
 
