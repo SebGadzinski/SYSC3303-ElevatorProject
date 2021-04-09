@@ -20,7 +20,7 @@ import project.utils.datastructs.SubsystemSource;
  * Tests the real-time capability of the system.
  *
  * @author Paul Roode
- * @version Iteration 4
+ * @version Iteration 5
  */
 public class TestRealTimeElevatorArrival {
 

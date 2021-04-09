@@ -6,7 +6,6 @@ import project.utils.datastructs.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.InetAddress;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
@@ -31,18 +30,9 @@ public class FloorSubsystem extends AbstractSubsystem {
     private boolean upLamp, downLamp;
     private final UDPInfo schedulerUDPInfo;
 
-    /**
-     * A parameterized constructor of a FloorSubsystem.
-     *
-     * @param inetAddress      The socket IP address.
-     * @param inSocketPort     The inlet socket port number.
-     * @param outSocketPort    The outlet socket port number.
-     * @param floorNo          The floor number.
-     * @param schedulerUDPInfo The UDP info for the Scheduler.
-     */
-    public FloorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int floorNo, UDPInfo schedulerUDPInfo) {
+    public FloorSubsystem(UDPInfo floorUDPInfo, int floorNo, UDPInfo schedulerUDPInfo) {
 
-        super(inetAddress, inSocketPort, outSocketPort);
+        super(floorUDPInfo);
         this.floorNo = floorNo;
         this.schedulerUDPInfo = schedulerUDPInfo;
         downLamp = false;
@@ -169,16 +159,9 @@ public class FloorSubsystem extends AbstractSubsystem {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        for (int i = 0; i < NUMBER_OF_FLOORS; ++i) {
-            UDPInfo floorUDPInfo = FLOORS_UDP_INFO[i];
-            FloorSubsystem floorSubsystem = new FloorSubsystem(
-                    floorUDPInfo.getInetAddress(),
-                    floorUDPInfo.getInSocketPort(),
-                    floorUDPInfo.getOutSocketPort(),
-                    i,
-                    SCHEDULER_UDP_INFO
-            );
-            Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem " + i);
+        for (int floorNum = 0; floorNum < NUMBER_OF_FLOORS; ++floorNum) {
+            FloorSubsystem floorSubsystem = new FloorSubsystem(FLOORS_UDP_INFO[floorNum], floorNum, SCHEDULER_UDP_INFO);
+            Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem " + floorNum);
             floorSubsystemThread.start();
         }
     }
