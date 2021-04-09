@@ -2,3 +2,472 @@ Scheduler operational...
 
 GUI operational...
 
+
+TimeStamp: 14:37:55
+Elevator Number: 2
+Fault Detected With Person Request: 
+destinationFloor: 0
+destinationFloorCompleted: false
+originFloor: 2
+originFloorCompleted: false
+fault: 2
+faultCompleted: false
+
+
+TimeStamp: 14:37:55
+Elevator Number: 3
+Fault Detected With Person Request: 
+destinationFloor: 3
+destinationFloorCompleted: false
+originFloor: 1
+originFloorCompleted: false
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 14:37:55
+Elevator Number: 0
+Fault Detected With Person Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: false
+fault: 1
+faultCompleted: false
+
+Starting the timer for elevator: 1
+Starting the timer for elevator: 2
+Starting the timer for elevator: 3
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 1
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 1
+
+TimeStamp: 14:38:11
+Elevator Number: 3
+Processing Fault, Person Request: 
+destinationFloor: 3
+destinationFloorCompleted: false
+originFloor: 1
+originFloorCompleted: false
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 14:38:11
+************************
+Source : Elevator # 3
+Added a passenger: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: false
+originFloor: 1
+originFloorCompleted: true
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 14:38:11
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5606
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5607
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 3
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 14:38:11
+Elevator Number: 2
+Processing Fault, Person Request: 
+destinationFloor: 0
+destinationFloorCompleted: false
+originFloor: 2
+originFloorCompleted: false
+fault: 2
+faultCompleted: false
+
+
+TimeStamp: 14:38:11
+************************
+Source : Elevator # 2
+Added a passenger: 
+Request: 
+destinationFloor: 0
+destinationFloorCompleted: false
+originFloor: 2
+originFloorCompleted: true
+fault: 2
+faultCompleted: false
+
+
+TimeStamp: 14:38:11
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5604
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5605
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 0
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 2
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+
+TimeStamp: 14:38:12
+Request received by Scheduler from Source : Elevator # 3
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 14:38:12
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5606
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5607
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 3
+doorStatus: OPENED
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 14:38:12
+Request received by Scheduler from Source : Elevator # 2
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 14:38:12
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5604
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5605
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 0
+doorStatus: OPENED
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Stopping the timer for elevator: 1
+
+TimeStamp: 14:38:19
+Request received by Scheduler from Source : Elevator # 3
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+Starting the timer for elevator: 3
+
+TimeStamp: 14:38:19
+Scheduler sent a request to Elevator: 
+id: 3
+UDPInfo: 
+inSocketPort: 5606
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5607
+# of passengers: 1
+direction: IDLE
+currentFloor: 1
+destinationFloor: 3
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: UP
+
+
+TimeStamp: 14:38:19
+Request received by Scheduler from Source : Elevator # 2
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+
+TimeStamp: 14:38:19
+Scheduler sent a request to Elevator: 
+id: 2
+UDPInfo: 
+inSocketPort: 5604
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5605
+# of passengers: 1
+direction: IDLE
+currentFloor: 2
+destinationFloor: 0
+doorStatus: CLOSED
+ElevatorDoorRequest:
+Request for doors to be: OPENED
+
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Starting the timer for elevator: 1
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 1
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+
+TimeStamp: 14:38:31
+Elevator Number: 3
+Finished Processing Fault, Person Request: 
+destinationFloor: 3
+destinationFloorCompleted: true
+originFloor: 1
+originFloorCompleted: true
+fault: 1
+faultCompleted: true
+
+
+TimeStamp: 14:38:31
+************************
+Source : Elevator # 3
+Completed passengers request: 
+Request: 
+destinationFloor: 3
+destinationFloorCompleted: true
+originFloor: 1
+originFloorCompleted: true
+fault: 1
+faultCompleted: true
+
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+
+TimeStamp: 14:38:34
+Elevator Number: 2
+Finished Processing Fault, Person Request: 
+destinationFloor: 0
+destinationFloorCompleted: true
+originFloor: 2
+originFloorCompleted: true
+fault: 2
+faultCompleted: true
+
+
+TimeStamp: 14:38:34
+************************
+Source : Elevator # 2
+Completed passengers request: 
+Request: 
+destinationFloor: 0
+destinationFloorCompleted: true
+originFloor: 2
+originFloorCompleted: true
+fault: 2
+faultCompleted: true
+
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+
+TimeStamp: 14:39:24
+Elevator Number: 0
+Processing Fault, Person Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: false
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 14:39:24
+************************
+Source : Elevator # 0
+Added a passenger: 
+Request: 
+destinationFloor: 2
+destinationFloorCompleted: false
+originFloor: 3
+originFloorCompleted: true
+fault: 1
+faultCompleted: false
+
+
+TimeStamp: 14:39:24
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5600
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5601
+# of passengers: 2
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 1
+
+TimeStamp: 14:39:24
+Request received by Scheduler from Source : Elevator # 0
+ElevatorFaultRequest:
+Fault: DOOR_FAULT
+
+TimeStamp: 14:39:24
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5600
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5601
+# of passengers: 2
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: OPENED
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 14:39:29
+Request received by Scheduler from Source : Elevator # 0
+ElevatorEmergencyRequest emergencyState: FIX
+ code: 0 doors: CLOSED, direction: IDLE
+
+Starting the timer for elevator: 0
+
+TimeStamp: 14:39:29
+Scheduler sent a request to Elevator: 
+id: 0
+UDPInfo: 
+inSocketPort: 5600
+inetAddress: DESKTOP-BJB5NF0/10.0.0.135
+outSocketPort: 5601
+# of passengers: 2
+direction: IDLE
+currentFloor: 3
+destinationFloor: 2
+doorStatus: CLOSED
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+Stopping the timer for elevator: 0
+
+TimeStamp: 14:39:33
+Elevator Number: 0
+Finished Processing Fault, Person Request: 
+destinationFloor: 2
+destinationFloorCompleted: true
+originFloor: 3
+originFloorCompleted: true
+fault: 1
+faultCompleted: true
+
+
+TimeStamp: 14:39:33
+************************
+Source : Elevator # 0
+Completed passengers request: 
+Request: 
+destinationFloor: 2
+destinationFloorCompleted: true
+originFloor: 3
+originFloorCompleted: true
+fault: 1
+faultCompleted: true
+
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Performance Of The Scheduler in NanoSeconds: 110226682900
