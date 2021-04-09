@@ -1,15 +1,11 @@
 package project.tests.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import project.Config;
-import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
 import project.utils.datastructs.ElevatorTimerWorker;
-import project.utils.datastructs.SchedulerElevatorInfo;
-import project.utils.datastructs.UDPInfo;
 
 /**
  * Test the timeout thread for each elevator
@@ -43,7 +39,6 @@ class ITFaultsTimer {
         this.timerWorker.interrupt();
         while (this.timerWorker.getState() != Thread.State.TERMINATED) {
         }
-        ;
     }
 
     public synchronized boolean isTimerRunning() {
@@ -59,13 +54,13 @@ class ITFaultsTimer {
     }
 
     /**
-     * Start the timeout timer.  This would begin when the schedulder
+     * Start the timeout timer.  This would begin when the scheduler
      * receives a motor request.  Wait MORE than the timeout time and
      * check the see if the timeout expired variable it set to true.
      * This means that the elevator timed out and must be shutdown
      */
     @Test
-    void timeoutTest() {
+    void testTimeout() {
         this.startTimer();
         try {
             Thread.sleep(1500);
@@ -83,7 +78,7 @@ class ITFaultsTimer {
      * We can confirm this by checking the output of the timeOut variable
      */
     @Test
-    void resetClockTest() {
+    void testResetClock() {
         this.startTimer();
         try {
             Thread.sleep(500);

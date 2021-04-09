@@ -8,7 +8,6 @@ import project.utils.datastructs.*;
 import project.utils.datastructs.ElevatorEmergencyRequest.ElevatorEmergency;
 import project.utils.objects.general.CreateFile;
 
-import java.net.InetAddress;
 import java.util.HashMap;
 
 import static project.Config.*;
@@ -18,8 +17,11 @@ import static project.utils.datastructs.SubsystemSource.Subsystem.ELEVATOR_SUBSY
 /**
  * Receives data from the scheduler and then sends it right back
  *
- * @author Iter1 (Chase Badalato), Iter2 (Sebastian Gadzinski), Iter3 (Sebastian
- * Gadzinski), Iter4 (Sebastian Gadzinski and Chase Fridgen)
+ * @author Chase Badalato
+ * @author Sebastian Gadzinski
+ * @author Chase Fridgen
+ * @author Paul Roode
+ * @version Iteration 5
  */
 public class ElevatorSubsystem extends AbstractSubsystem {
 
@@ -27,17 +29,25 @@ public class ElevatorSubsystem extends AbstractSubsystem {
     public HashMap<Integer, Boolean> lamps;
     public int elevatorNumber;
     private final CreateFile file;
-    private int numOfRequests;
+    private int numRequests;
     private boolean printingEnabled;
     private final UDPInfo schedulerUDPInfo;
 
-    public ElevatorSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort, int elevatorNumber, UDPInfo schedulerUDPInfo) {
-        super(inetAddress, inSocketPort, outSocketPort);
-        this.stateMachine = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0, new HashMap<>());
+    public ElevatorSubsystem(UDPInfo elevatorUDPInfo, int elevatorNumber, UDPInfo schedulerUDPInfo) {
+        super(elevatorUDPInfo);
+        stateMachine = new ElevatorStateMachine(
+                ElevatorState.IDLE,
+                ElevatorDoorStatus.CLOSED,
+                ElevatorDirection.IDLE,
+                0,
+                new HashMap<>()
+        );
         this.elevatorNumber = elevatorNumber;
         file = new CreateFile("Elevator" + elevatorNumber + ".txt");
-        this.numOfRequests = 0;
-        if (FAULT_PRINTING) this.printingEnabled = false;
+        numRequests = 0;
+        if (FAULT_PRINTING) {
+            printingEnabled = false;
+        }
         this.schedulerUDPInfo = schedulerUDPInfo;
     }
 
@@ -68,7 +78,7 @@ public class ElevatorSubsystem extends AbstractSubsystem {
      */
     public synchronized void handleRequest(Request request) {
 
-        this.numOfRequests++;
+        this.numRequests++;
         this.createFault(request);
 
         Request response = null;
@@ -220,16 +230,9 @@ public class ElevatorSubsystem extends AbstractSubsystem {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        for (int i = 0; i < NUMBER_OF_ELEVATORS; ++i) {
-            UDPInfo elevatorUDPInfo = ELEVATORS_UDP_INFO[i];
-            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(
-                    elevatorUDPInfo.getInetAddress(),
-                    elevatorUDPInfo.getInSocketPort(),
-                    elevatorUDPInfo.getOutSocketPort(),
-                    i,
-                    SCHEDULER_UDP_INFO
-            );
-            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "ElevatorSubsystem " + i);
+        for (int elevatorNum = 0; elevatorNum < NUMBER_OF_ELEVATORS; ++elevatorNum) {
+            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(ELEVATORS_UDP_INFO[elevatorNum], elevatorNum, SCHEDULER_UDP_INFO);
+            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "ElevatorSubsystem " + elevatorNum);
             elevatorSubsystemThread.start();
         }
     }

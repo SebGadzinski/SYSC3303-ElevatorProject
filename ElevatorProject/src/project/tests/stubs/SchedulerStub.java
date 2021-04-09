@@ -1,15 +1,15 @@
 package project.tests.stubs;
 
+import project.systems.Scheduler;
+import project.utils.datastructs.Request;
+import project.utils.datastructs.UDPInfo;
+
 import java.net.InetAddress;
 
-import project.systems.AbstractSubsystem;
+public class SchedulerStub extends Scheduler {
 
-import project.utils.datastructs.Request;
-
-public class SchedulerStub extends AbstractSubsystem {
-
-    public SchedulerStub(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
-        super(inetAddress, inSocketPort, outSocketPort);
+    public SchedulerStub(UDPInfo schedulerUDPInfo, UDPInfo[] elevatorsUDPInfo, UDPInfo[] floorsUDPInfo) {
+        super(schedulerUDPInfo, elevatorsUDPInfo, floorsUDPInfo);
     }
 
     public int sendRequestPub(Request request, InetAddress destinationInetAddress, int destinationSocketPort) {

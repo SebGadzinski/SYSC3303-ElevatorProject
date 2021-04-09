@@ -1,14 +1,15 @@
 package project.tests.stubs;
 
+import project.systems.ElevatorSubsystem;
+import project.utils.datastructs.Request;
+import project.utils.datastructs.UDPInfo;
+
 import java.net.InetAddress;
 
-import project.systems.AbstractSubsystem;
-import project.utils.datastructs.Request;
+public class ElevatorSubsystemStub extends ElevatorSubsystem {
 
-public class ElevatorSubsystemStub extends AbstractSubsystem {
-
-    public ElevatorSubsystemStub(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
-        super(inetAddress, inSocketPort, outSocketPort);
+    public ElevatorSubsystemStub(UDPInfo elevatorUDPInfo, int elevatorNumber, UDPInfo schedulerUDPInfo) {
+        super(elevatorUDPInfo, elevatorNumber, schedulerUDPInfo);
     }
 
     public int sendRequestPub(Request request, InetAddress destinationInetAddress, int destinationSocketPort) {

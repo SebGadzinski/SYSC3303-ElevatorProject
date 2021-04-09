@@ -12,7 +12,6 @@ import project.utils.datastructs.FloorEmergencyRequest.FloorEmergency;
 import project.utils.datastructs.SubsystemSource.Subsystem;
 import project.utils.objects.general.CreateFile;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +22,8 @@ import static project.Config.*;
  * A request/response transmission intermediary for elevator and floor subsystems;
  * schedules and coordinates elevators in optimally servicing passenger requests.
  *
- * @author Paul Roode (iter 3 and 2), Sebastian Gadzinski (iter 3 and 1)
+ * @author Sebastian Gadzinski
+ * @author Paul Roode
  * @version Iteration 5
  */
 
@@ -36,16 +36,9 @@ public class Scheduler extends AbstractSubsystem {
     private ElevatorProjectGUI projectGUI;
     private final ArrayList<LinkedHashMap<Integer, Integer>> destinationRequests = new ArrayList<>();
 
-    /**
-     * A parameterized Scheduler constructor that initializes all fields, including those inherited.
-     *
-     * @param inetAddress   The Scheduler's IP address.
-     * @param inSocketPort  The Scheduler's inlet socket port number.
-     * @param outSocketPort The Scheduler's outlet socket port number.
-     */
-    public Scheduler(InetAddress inetAddress, int inSocketPort, int outSocketPort, UDPInfo[] elevatorsUDPInfo, UDPInfo[] floorsUDPInfo) {
+    public Scheduler(UDPInfo schedulerUDPInfo, UDPInfo[] elevatorsUDPInfo, UDPInfo[] floorsUDPInfo) {
 
-        super(inetAddress, inSocketPort, outSocketPort);
+        super(schedulerUDPInfo);
         file = new CreateFile("schedulerFile.txt");
         state = SchedulerState.AWAIT_REQUEST;
 
@@ -515,10 +508,8 @@ public class Scheduler extends AbstractSubsystem {
                             elevator);
                 }
             }
-            if (Config.FAULT_PRINTING)
-                elevator.setPrintingEnabled(false);
         }
-        //If it was a SHUTDOWN, remove the elevators from the operational elevators list
+        // If it was a SHUTDOWN, remove the elevators from the operational elevators list
         else {
             elevator.setShutDown(true);
             elevators.remove(elevator);
@@ -528,9 +519,9 @@ public class Scheduler extends AbstractSubsystem {
                 }
                 System.exit(1);
             }
-            if (Config.FAULT_PRINTING)
-                elevator.setPrintingEnabled(false);
         }
+        if (Config.FAULT_PRINTING)
+            elevator.setPrintingEnabled(false);
     }
 
     /**
@@ -729,13 +720,7 @@ public class Scheduler extends AbstractSubsystem {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        Scheduler scheduler = new Scheduler(
-                SCHEDULER_UDP_INFO.getInetAddress(),
-                SCHEDULER_UDP_INFO.getInSocketPort(),
-                SCHEDULER_UDP_INFO.getOutSocketPort(),
-                ELEVATORS_UDP_INFO,
-                FLOORS_UDP_INFO
-        );
+        Scheduler scheduler = new Scheduler(SCHEDULER_UDP_INFO, ELEVATORS_UDP_INFO, FLOORS_UDP_INFO);
         Thread schedulerThread = new Thread(scheduler);
         schedulerThread.start();
     }

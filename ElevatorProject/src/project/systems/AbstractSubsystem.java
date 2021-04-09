@@ -1,6 +1,7 @@
 package project.systems;
 
 import project.utils.datastructs.Request;
+import project.utils.datastructs.UDPInfo;
 
 import java.io.*;
 import java.net.*;
@@ -22,14 +23,12 @@ public abstract class AbstractSubsystem implements Runnable {
     /**
      * Initializes the inlet and outlet Datagram sockets, binding them to the given socket addresses.
      *
-     * @param inetAddress   The socket IP address.
-     * @param inSocketPort  The inlet socket port number.
-     * @param outSocketPort The outlet socket port number.
+     * @param udpInfo Comprises the socket IP address, and inlet and outlet socket port numbers.
      */
-    protected AbstractSubsystem(InetAddress inetAddress, int inSocketPort, int outSocketPort) {
+    protected AbstractSubsystem(UDPInfo udpInfo) {
         try {
-            inSocket = new DatagramSocket(new InetSocketAddress(inetAddress, inSocketPort));
-            outSocket = new DatagramSocket(new InetSocketAddress(inetAddress, outSocketPort));
+            inSocket = new DatagramSocket(new InetSocketAddress(udpInfo.getInetAddress(), udpInfo.getInSocketPort()));
+            outSocket = new DatagramSocket(new InetSocketAddress(udpInfo.getInetAddress(), udpInfo.getOutSocketPort()));
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(1);
