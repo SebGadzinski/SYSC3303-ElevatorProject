@@ -53,7 +53,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 	private SchedulerState state;
 	private final List<SchedulerElevatorInfo> elevators;
 	private final List<SchedulerFloorInfo> floors;
-	private final CreateFile file;
+	public static CreateFile file;
 	private ElevatorProjectGUI projectGUI;
 	private ArrayList<LinkedHashMap<Integer, Integer>> destinationRequests = new ArrayList<LinkedHashMap<Integer, Integer>>();
 	private Scanner scanner;
@@ -339,8 +339,7 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 		ElevatorMotorRequest motorRequest = new ElevatorMotorRequest(getSource(), elevator.getDirection());
 
 		if (elevator.getCurrentFloor() == elevator.getCurrentDestinationFloor()) {
-			this.requestCount--;
-			System.out.println(this.requestCount);
+
 			elevator.setCurrentDestinationFloor(-1);
 		}
 
@@ -475,6 +474,8 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 				if (requests.get(actualIndex).isOriginFloorCompleted()
 						&& !requests.get(actualIndex).isDestinationFloorCompleted()
 						&& requests.get(actualIndex).getDestinationFloor() == elevator.getCurrentFloor()) {
+					this.requestCount--;
+					// System.out.println(this.requestCount);
 					PersonRequest personRequest = elevator.removeFromRequests(actualIndex);
 					elevator.subtractPassenger();
 					personRequest.setDestinationFloorCompleted(true);
@@ -775,12 +776,9 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 		GUIThread.start();
 		file.writeToFile("GUI operational...\n");
 		this.inputRead();
-		System.out.println(this.inputs);
-		// this.inputs + this.requestCount) > 0
-		while (true) {
+		while ((this.inputs + this.requestCount) > 0) {
 			consumeRequest(fetchRequest());
 		}
-		// System.out.println("done");
 	}
 
 	public void inputRead() {
@@ -816,6 +814,6 @@ public class Scheduler extends AbstractSubsystem implements Runnable {
 		endTime = System.nanoTime();
 
 		Long finalTime = endTime - startTime;
-		System.out.println(finalTime);
+		file.writeToFile("Performance Of The Scheduler in NanoSeconds: " + finalTime);
 	}
 }
