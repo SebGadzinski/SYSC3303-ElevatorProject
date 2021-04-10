@@ -761,6 +761,15 @@ public class Scheduler extends AbstractSubsystem {
     }
 
     /**
+     * Gets whether the GUI is running.
+     *
+     * @return true if the GUI is running, false otherwise.
+     */
+    public boolean isGUIRunning() {
+        return projectGUI.isRunning();
+    }
+
+    /**
      * Drives this Scheduler to fetch and dispatch requests.
      */
     @Override

@@ -411,6 +411,15 @@ public class ElevatorProjectGUI implements Runnable {
     }
 
     /**
+     * Gets whether this GUI is running.
+     *
+     * @return true if this GUI is running, false otherwise.
+     */
+    public boolean isRunning() {
+        return running.get();
+    }
+
+    /**
      * Safely stops this GUI.
      */
     public void stop() {

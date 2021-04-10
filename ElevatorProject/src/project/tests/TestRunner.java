@@ -22,7 +22,7 @@ import java.util.List;
  * Discovers and executes all tests and prints the results.
  *
  * @author Paul Roode
- * @version Iteration 4
+ * @version Iteration 5
  */
 public class TestRunner {
 
@@ -41,6 +41,7 @@ public class TestRunner {
 
         // print test results
         TestExecutionSummary testExecutionSummary = summaryGeneratingListener.getSummary();
+        System.out.println("TestRunner says:");
         System.out.println("Tests found - " + testExecutionSummary.getTestsFoundCount());
         System.out.println("Tests passed - " + testExecutionSummary.getTestsSucceededCount());
         List<Failure> failures = testExecutionSummary.getFailures();
