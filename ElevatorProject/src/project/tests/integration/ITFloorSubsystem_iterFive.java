@@ -69,7 +69,6 @@ class ITFloorSubsystem_iterFive {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("ABOUT TO FINISH");
         assertEquals(floors[0].receivedArrival(), 1);     
 	}
 
