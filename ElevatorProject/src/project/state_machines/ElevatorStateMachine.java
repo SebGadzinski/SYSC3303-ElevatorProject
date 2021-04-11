@@ -159,6 +159,7 @@ public class ElevatorStateMachine {
                     }
                     if (!motorFault) {
                         setUpState(ElevatorDirection.UP, ElevatorState.MOVING);
+                        waitForTime(Config.getRandomElevatorFloorToFloorTravelTime());
                         currentFloor += 1;
                     } else {
                         return motorFault();
@@ -174,7 +175,7 @@ public class ElevatorStateMachine {
                     }
                     if (!motorFault) {
                         setUpState(ElevatorDirection.DOWN, ElevatorState.MOVING);
-                        waitForTime(Config.ELEVATOR_DOOR_TIME);
+                        waitForTime(Config.getRandomElevatorFloorToFloorTravelTime());
                         currentFloor = currentFloor - 1;
                     } else {
                         return motorFault();
