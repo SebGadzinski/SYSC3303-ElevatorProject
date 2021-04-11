@@ -41,7 +41,8 @@ public class TestRunner {
 
         // print test results
         TestExecutionSummary testExecutionSummary = summaryGeneratingListener.getSummary();
-        System.out.println("TestRunner says:");
+        System.out.println("###########################################################################");
+        System.out.println("TestRunner reporting:");
         System.out.println("Tests found - " + testExecutionSummary.getTestsFoundCount());
         System.out.println("Tests passed - " + testExecutionSummary.getTestsSucceededCount());
         List<Failure> failures = testExecutionSummary.getFailures();

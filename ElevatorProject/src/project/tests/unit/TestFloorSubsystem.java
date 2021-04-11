@@ -1,8 +1,7 @@
 package project.tests.unit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static project.Config.getPort;
-import static project.Config.localhost;
+import static project.Config.*;
 import static project.state_machines.ElevatorStateMachine.ElevatorDirection.UP;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,8 @@ public class TestFloorSubsystem {
         FloorSubsystem floorSubsystem = new FloorSubsystem(
                 new UDPInfo(localhost, getPort(), getPort()),
                 0,
-                new UDPInfo(localhost, getPort(), getPort())
+                new UDPInfo(localhost, getPort(), getPort()),
+                REQUEST_BATCH_FILENAME
         );
         FloorSubsystemStub floorSubsystemStub = new FloorSubsystemStub();
 

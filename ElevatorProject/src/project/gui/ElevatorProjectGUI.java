@@ -427,7 +427,7 @@ public class ElevatorProjectGUI implements Runnable {
     }
 
     /**
-     * Runs the UI
+     * Runs this GUI.
      */
     @Override
     public void run() {
@@ -435,7 +435,7 @@ public class ElevatorProjectGUI implements Runnable {
         frame.setVisible(true);
         while (running.get()) {
         }
-        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        frame.setVisible(false);
     }
 
 }
