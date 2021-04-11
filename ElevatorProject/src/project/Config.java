@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 public final class Config {
 
     public static final int ELEVATOR_DOOR_TIME = 3000; // seconds
-    public static final int ELEVATOR_PASSENGER_WAIT_TIME = 10; // seconds
+    public static final int ELEVATOR_PASSENGER_WAIT_TIME = 2000; // seconds
     public static final int MAX_ELEVATOR_FLOOR_TO_FLOOR_TRAVEL_TIME = 700; // milliseconds
     public static final int MIN_ELEVATOR_FLOOR_TO_FLOOR_TRAVEL_TIME = 400; // milliseconds
     public static final int NUMBER_OF_ELEVATORS = 4;
