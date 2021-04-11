@@ -29,6 +29,7 @@ import project.utils.datastructs.ElevatorMotorRequest;
 import project.utils.datastructs.ElevatorPassengerWaitRequest;
 import project.utils.datastructs.ElevatorPassengerWaitRequest.WaitState;
 import project.utils.datastructs.FileRequest;
+import project.utils.datastructs.FileRequestFufilled;
 import project.utils.datastructs.FloorEmergencyRequest;
 import project.utils.datastructs.FloorEmergencyRequest.FloorEmergency;
 import project.utils.datastructs.PersonRequest;
@@ -485,6 +486,8 @@ public class Scheduler extends AbstractSubsystem {
                             + "\nCompleted passengers request: \n" + personRequest, elevator);
                     if (personRequest.getFault() > 0 && personRequest.isFaultCompleted())
                         elevator.setPrintingEnabled(false);
+                    dispatchRequestToFloorSubsystem(new FileRequestFufilled(getSource(), 0, true),
+                            floors.get(elevator.getCurrentFloor()));
                 }
             }
             dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.CLOSED),
