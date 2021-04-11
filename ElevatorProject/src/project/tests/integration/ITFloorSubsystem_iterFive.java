@@ -21,20 +21,20 @@ class ITFloorSubsystem_iterFive {
     @Test
     void test() {
 
-        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getPort(), getPort());
+        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
 
         FloorSubsystemStub2 floors[] = new FloorSubsystemStub2[NUMBER_OF_FLOORS];
         ElevatorSubsystem elevators[] = new ElevatorSubsystem[NUMBER_OF_ELEVATORS];
 
         UDPInfo[] floorArray = new UDPInfo[NUMBER_OF_FLOORS];
         for (int i = 0; i < NUMBER_OF_FLOORS; i++) {
-            floorArray[i] = new UDPInfo(localhost, getPort(), getPort());
+            floorArray[i] = new UDPInfo(localhost, getTestPort(), getTestPort());
             floors[i] = new FloorSubsystemStub2(floorArray[i], i, schedulerUDPInfo, REQUEST_BATCH_FILENAME);
         }
 
         UDPInfo[] elevatorArray = new UDPInfo[NUMBER_OF_ELEVATORS];
         for (int i = 0; i < NUMBER_OF_ELEVATORS; i++) {
-            elevatorArray[i] = new UDPInfo(localhost, getPort(), getPort());
+            elevatorArray[i] = new UDPInfo(localhost, getTestPort(), getTestPort());
             elevators[i] = new ElevatorSubsystem(elevatorArray[i], i, schedulerUDPInfo);
         }
 

@@ -6,7 +6,7 @@ import static project.Config.NUMBER_OF_ELEVATORS;
 import static project.Config.NUMBER_OF_FLOORS;
 import static project.Config.NUMBER_OF_REQUESTS;
 import static project.Config.REQUEST_BATCH_FILENAME;
-import static project.Config.getPort;
+import static project.Config.getTestPort;
 import static project.Config.localhost;
 
 import java.time.Duration;
@@ -41,24 +41,24 @@ public class ITAllSubsystems {
     public static void setup() {
 
         // Initialize subsystem UDP info
-        //-----------------------------------------------------------------------------------------------------
-        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getPort(), getPort());
+        //---------------------------------------------------------------------------------------------------------
+        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
 
         UDPInfo[] elevatorsUDPInfo = new UDPInfo[NUMBER_OF_ELEVATORS];
         for (int elevatorNum = 0; elevatorNum < NUMBER_OF_ELEVATORS; ++elevatorNum) {
-            elevatorsUDPInfo[elevatorNum] = new UDPInfo(localhost, getPort(), getPort());
+            elevatorsUDPInfo[elevatorNum] = new UDPInfo(localhost, getTestPort(), getTestPort());
         }
 
         UDPInfo[] floorsUDPInfo = new UDPInfo[NUMBER_OF_FLOORS];
         for (int floorNum = 0; floorNum < NUMBER_OF_FLOORS; ++floorNum) {
-            floorsUDPInfo[floorNum] = new UDPInfo(localhost, getPort(), getPort());
+            floorsUDPInfo[floorNum] = new UDPInfo(localhost, getTestPort(), getTestPort());
         }
-        //-----------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
 
         // Spin up the subsystem threads
-        //-----------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
         scheduler = new Scheduler(schedulerUDPInfo, elevatorsUDPInfo, floorsUDPInfo);
-        Thread schedulerThread = new Thread(scheduler);
+        Thread schedulerThread = new Thread(scheduler, "TestScheduler");
         schedulerThread.start();
 
         for (int elevatorNum = 0; elevatorNum < NUMBER_OF_ELEVATORS; ++elevatorNum) {
@@ -67,7 +67,7 @@ public class ITAllSubsystems {
                     elevatorNum,
                     schedulerUDPInfo
             );
-            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "ElevatorSubsystem " + elevatorNum);
+            Thread elevatorSubsystemThread = new Thread(elevatorSubsystem, "TestElevatorSubsystem " + elevatorNum);
             elevatorSubsystemThread.start();
         }
 
@@ -86,10 +86,10 @@ public class ITAllSubsystems {
                     REQUEST_BATCH_FILENAME
             );
             floorSubsystems[floorNum] = floorSubsystem;
-            Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem " + floorNum);
+            Thread floorSubsystemThread = new Thread(floorSubsystem, "TestFloorSubsystem " + floorNum);
             floorSubsystemThread.start();
         }
-        //-----------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
 
     }
 
@@ -124,6 +124,7 @@ public class ITAllSubsystems {
             }
             assertEquals(NUMBER_OF_REQUESTS, numArrivals);
         }
+
     }
 
 }

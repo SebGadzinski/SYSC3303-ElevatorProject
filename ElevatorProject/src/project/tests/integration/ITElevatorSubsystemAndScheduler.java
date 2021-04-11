@@ -1,7 +1,7 @@
 package project.tests.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static project.Config.getPort;
+import static project.Config.getTestPort;
 import static project.Config.localhost;
 import static project.state_machines.ElevatorStateMachine.ElevatorDirection.UP;
 
@@ -23,8 +23,8 @@ public class ITElevatorSubsystemAndScheduler {
     @Test
     public void testElevatorSubsystemAndScheduler() {
 
-        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getPort(), getPort());
-        UDPInfo elevator0UDPInfo = new UDPInfo(localhost, getPort(), getPort());
+        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
+        UDPInfo elevator0UDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
 
         Scheduler scheduler = new Scheduler(
                 schedulerUDPInfo,
