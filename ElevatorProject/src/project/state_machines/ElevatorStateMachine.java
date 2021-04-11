@@ -72,11 +72,12 @@ public class ElevatorStateMachine {
                 case MOVING -> {
                     if (request instanceof ElevatorMotorRequest) {
                         ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
-                        try {
-                            Thread.sleep(Config.getRandomElevatorFloorToFloorTravelTime());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        if(motorRequest.getRequestedDirection() != ElevatorDirection.IDLE)
+	                        try {
+	                            Thread.sleep(Config.getRandomElevatorFloorToFloorTravelTime());
+	                        } catch (InterruptedException e) {
+	                            e.printStackTrace();
+	                        }
                         requestToSendToScheduler = handleMotorRequest(motorRequest);
                     } else {
                         System.out.println("Invalid Request For MOVING State");
