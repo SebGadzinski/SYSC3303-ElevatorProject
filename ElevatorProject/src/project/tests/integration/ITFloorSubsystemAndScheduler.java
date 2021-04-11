@@ -2,7 +2,7 @@ package project.tests.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static project.Config.REQUEST_BATCH_FILENAME;
-import static project.Config.getPort;
+import static project.Config.getTestPort;
 import static project.Config.localhost;
 import static project.state_machines.ElevatorStateMachine.ElevatorDirection.UP;
 
@@ -24,8 +24,8 @@ public class ITFloorSubsystemAndScheduler {
     @Test
     public void testFloorSubsystemAndScheduler() {
 
-        UDPInfo floor0UDPInfo = new UDPInfo(localhost, getPort(), getPort());
-        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getPort(), getPort());
+        UDPInfo floor0UDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
+        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
 
         FloorSubsystem floorSubsystem = new FloorSubsystem(floor0UDPInfo, 0, schedulerUDPInfo, REQUEST_BATCH_FILENAME);
         SchedulerStub schedulerStub = new SchedulerStub(schedulerUDPInfo, new UDPInfo[]{}, new UDPInfo[]{floor0UDPInfo});

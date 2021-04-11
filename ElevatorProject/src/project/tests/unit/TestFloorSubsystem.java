@@ -23,9 +23,9 @@ public class TestFloorSubsystem {
     public void testFloorSubsystem() {
 
         FloorSubsystem floorSubsystem = new FloorSubsystem(
-                new UDPInfo(localhost, getPort(), getPort()),
+                new UDPInfo(localhost, getTestPort(), getTestPort()),
                 0,
-                new UDPInfo(localhost, getPort(), getPort()),
+                new UDPInfo(localhost, getTestPort(), getTestPort()),
                 REQUEST_BATCH_FILENAME
         );
         FloorSubsystemStub floorSubsystemStub = new FloorSubsystemStub();
