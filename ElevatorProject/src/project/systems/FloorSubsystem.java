@@ -29,19 +29,19 @@ public class FloorSubsystem extends AbstractSubsystem {
     protected final int floorNo;
     protected boolean upLamp, downLamp;
     protected final UDPInfo schedulerUDPInfo;
-    private int numArrivals;
+    private int numFileRequestsFulfilled;
 
-    public FloorSubsystem(UDPInfo floorUDPInfo, int floorNo, UDPInfo schedulerUDPInfo) {
+    public FloorSubsystem(UDPInfo floorUDPInfo, int floorNo, UDPInfo schedulerUDPInfo, String inputFileName) {
 
         super(floorUDPInfo);
         this.floorNo = floorNo;
         this.schedulerUDPInfo = schedulerUDPInfo;
         downLamp = false;
         upLamp = false;
-        numArrivals = 0;
+        numFileRequestsFulfilled = 0;
 
         try {
-            scanner = new Scanner(new File(Paths.get(REQUEST_BATCH_FILENAME).toAbsolutePath().toString()));
+            scanner = new Scanner(new File(Paths.get(inputFileName).toAbsolutePath().toString()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -111,8 +111,9 @@ public class FloorSubsystem extends AbstractSubsystem {
         System.out.println("\nTimeStamp: " + getTimestamp());
         System.out.println("[FLOOR " + this.floorNo + "] Received a request from SCHEDULER\n");
         if (request instanceof ElevatorArrivalRequest) {
-            ++numArrivals;
             System.out.println(getSource() + "\nElevator Arriving\n");
+        } else if (request instanceof FileRequestFulfilledConfirmationRequest) {
+            ++numFileRequestsFulfilled;
         } else if (request instanceof ElevatorDoorRequest) {
             ElevatorDoorRequest doorRequest = (ElevatorDoorRequest) request;
             if (doorRequest.getRequestedDoorStatus() == ElevatorDoorStatus.OPENED) {
@@ -162,8 +163,8 @@ public class FloorSubsystem extends AbstractSubsystem {
      *
      * @return the number of confirmed destination arrivals.
      */
-    public int getNumArrivals() {
-        return numArrivals;
+    public int getNumFileRequestsFulfilled() {
+        return numFileRequestsFulfilled;
     }
 
     /**
@@ -173,7 +174,12 @@ public class FloorSubsystem extends AbstractSubsystem {
      */
     public static void main(String[] args) {
         for (int floorNum = 0; floorNum < NUMBER_OF_FLOORS; ++floorNum) {
-            FloorSubsystem floorSubsystem = new FloorSubsystem(FLOORS_UDP_INFO[floorNum], floorNum, SCHEDULER_UDP_INFO);
+            FloorSubsystem floorSubsystem = new FloorSubsystem(
+                    FLOORS_UDP_INFO[floorNum],
+                    floorNum,
+                    SCHEDULER_UDP_INFO,
+                    REQUEST_BATCH_FILENAME
+            );
             Thread floorSubsystemThread = new Thread(floorSubsystem, "FloorSubsystem " + floorNum);
             floorSubsystemThread.start();
         }
