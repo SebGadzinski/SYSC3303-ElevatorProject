@@ -48,6 +48,8 @@ public class TestRunner {
         List<Failure> failures = testExecutionSummary.getFailures();
         failures.forEach(failure -> System.out.println("Failure - " + failure.getException()));
 
+        System.exit(0); // prevent hanging test threads
+
     }
 
     /**

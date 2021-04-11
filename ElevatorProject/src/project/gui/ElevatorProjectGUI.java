@@ -435,7 +435,6 @@ public class ElevatorProjectGUI implements Runnable {
         frame.setVisible(true);
         while (running.get()) {
         }
-        frame.setVisible(false);
     }
 
 }
