@@ -396,12 +396,6 @@ public class Scheduler extends AbstractSubsystem {
             }
         } else {
             elevator.setDoorStatus(ElevatorDoorStatus.OPENED);
-            try {
-                Thread.sleep(ELEVATOR_DOOR_TIME * 1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
             dispatchRequestToFloorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
                     floors.get(elevator.getCurrentFloor()));
             dispatchRequestToElevatorSubsystem(new ElevatorDoorRequest(getSource(), ElevatorDoorStatus.OPENED),
