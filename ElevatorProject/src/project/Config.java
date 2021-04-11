@@ -22,18 +22,27 @@ public final class Config {
     public static final int MAX_ELEVATOR_FLOOR_TO_FLOOR_TRAVEL_TIME = 700; // milliseconds
     public static final int NUMBER_OF_ELEVATORS = 4;
     public static final int NUMBER_OF_FLOORS = 22;
+    public static final int NUMBER_OF_REQUESTS = 8;
     public static final int REQUEST_QUEUE_CAPACITY = 10;
     public static final String REQUEST_BATCH_FILENAME = "input.txt";
 
+    // Test config
+    //----------------------------------------------------------------------------------------
+    public static final int TEST_NUMBER_OF_ELEVATORS = 4;
+    public static final int TEST_NUMBER_OF_FLOORS = 4;
+    public static final int TEST_NUMBER_OF_REQUESTS = 3;
+    public static final String TEST_REQUEST_BATCH_FILENAME = "testInput.txt";
+    //----------------------------------------------------------------------------------------
+
     // Faults config
-    //--------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
     public static final int FIX_ELEVATOR_TIME = 5000; // milliseconds
     public static final int TIMER_TIMEOUT = 20000; // milliseconds
     public static final boolean FAULT_PRINTING = true;
-    //--------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
 
     // UDP config
-    //--------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
     private static final ConcurrentSkipListSet<Integer> ports = new ConcurrentSkipListSet<>();
     public static InetAddress localhost;
     public static final UDPInfo[] ELEVATORS_UDP_INFO = new UDPInfo[NUMBER_OF_ELEVATORS];
@@ -58,7 +67,7 @@ public final class Config {
         }
         SCHEDULER_UDP_INFO = new UDPInfo(localhost, getPort(), getPort());
     }
-    //--------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
 
     private Config() {
         throw new UnsupportedOperationException(); // prevents instantiation from reflection
