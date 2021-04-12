@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends AbstractSubsystem {
     public int elevatorNumber;
     private final CreateFile file;
     private int numRequests;
-    private boolean printingEnabled, hardFault = false;
+    private boolean printingEnabled = true, hardFault = false;
     private final UDPInfo schedulerUDPInfo;
 
     public ElevatorSubsystem(UDPInfo elevatorUDPInfo, int elevatorNumber, UDPInfo schedulerUDPInfo) {
