@@ -230,6 +230,7 @@ public class ElevatorStateMachine {
         if (doorFault) {
             return doorFault();
         }
+        
 
         // Imitate wait time
         waitForTime(request.getWaitTime());

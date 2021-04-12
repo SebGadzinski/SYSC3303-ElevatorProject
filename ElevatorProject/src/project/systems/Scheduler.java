@@ -194,10 +194,12 @@ public class Scheduler extends AbstractSubsystem {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
 
                     if (elevator.getTimeOut()) {
+                    	elevator.setPrintingEnabled(true);
                         file.writeToFile("Shutting down elevator: " + elevator.getId());
                         this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(),
                                         ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
                                 elevator);
+                        
                     }
                     // If anybody has a request on this floor open the doors, otherwise go toward
                     // destination
@@ -549,6 +551,8 @@ public class Scheduler extends AbstractSubsystem {
         // If it was a SHUTDOWN, remove the elevators from the operational elevators
         // list
         else {
+        	System.out.print("WTF WHY DIDNT THIS WORK");
+        	projectGUI.elevatorShutDown(Integer.parseInt(elevator.getId()));
             elevator.setShutDown(true);
             elevators.remove(elevator);
             if (elevators.size() == 0) {

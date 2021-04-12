@@ -1,5 +1,6 @@
 package project.systems;
 
+import project.Config;
 import project.state_machines.ElevatorStateMachine;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
@@ -145,6 +146,13 @@ public class ElevatorSubsystem extends AbstractSubsystem {
                 this.makeDoorFault();
             } else if (request.getFault() == 2) {
                 this.makeMotorFault();
+            } else if (request.getFault() == 3) {
+            	try {
+					Thread.sleep(Config.TIMER_TIMEOUT + 5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }
     }
