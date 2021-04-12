@@ -192,37 +192,38 @@ public class Scheduler extends AbstractSubsystem {
                 }
                 if (request.getSource().getSubsystem() == SubsystemSource.Subsystem.ELEVATOR_SUBSYSTEM) {
                     SchedulerElevatorInfo elevator = elevators.get(Integer.parseInt(request.getSource().getId()));
-
-                    if (elevator.getTimeOut()) {
-                    	elevator.setPrintingEnabled(true);
-                        file.writeToFile("Shutting down elevator: " + elevator.getId());
-                        this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(),
-                                        ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
-                                elevator);
-                        
-                    }
-                    // If anybody has a request on this floor open the doors, otherwise go toward
-                    // destination
-                    else if (request instanceof ElevatorDestinationRequest) {
-                        handleElevatorDestinationRequest((ElevatorDestinationRequest) request, elevator);
-                    }
-                    // If anybody has a request on this floor open the doors, otherwise go towards
-                    // destination
-                    else if (request instanceof ElevatorArrivalRequest) {
-                        handleElevatorArrivalRequest((ElevatorArrivalRequest) request, elevator);
-                    }
-                    // Tell elevator to open or close doors, if closing go to next destination or
-                    // continue ongoing
-                    else if (request instanceof ElevatorDoorRequest) {
-                        handleElevatorDoorRequest((ElevatorDoorRequest) request, elevator);
-                    } else if (request instanceof ElevatorPassengerWaitRequest) {
-                        handleElevatorPassengerWaitRequest((ElevatorPassengerWaitRequest) request, elevator);
-                    } else if (request instanceof ElevatorFaultRequest) {
-                        handleElevatorFaultRequest((ElevatorFaultRequest) request, elevator);
-                    } else if (request instanceof ElevatorEmergencyRequest) {
-                        handleElevatorEmergencyRequest((ElevatorEmergencyRequest) request, elevator);
-                    }
-                    projectGUI.updateElevator(elevator);
+                    if(!elevator.isShutDown()) {
+	                    if (request instanceof ElevatorEmergencyRequest) {
+	                        handleElevatorEmergencyRequest((ElevatorEmergencyRequest) request, elevator);
+	                    }
+	                    if (!elevator.isShutDown() && elevator.getTimeOut()) {
+	                    	elevator.setPrintingEnabled(true);
+	                        file.writeToFile("Shutting down elevator: " + elevator.getId());
+	                        this.dispatchRequestToElevatorSubsystem(new ElevatorEmergencyRequest(getSource(),
+	                                        ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.INCOMPLETE_EMERGENCY, null, null),
+	                                elevator);
+	                    }
+	                    // If anybody has a request on this floor open the doors, otherwise go toward
+	                    // destination
+	                    else if (request instanceof ElevatorDestinationRequest) {
+	                        handleElevatorDestinationRequest((ElevatorDestinationRequest) request, elevator);
+	                    }
+	                    // If anybody has a request on this floor open the doors, otherwise go towards
+	                    // destination
+	                    else if (request instanceof ElevatorArrivalRequest) {
+	                        handleElevatorArrivalRequest((ElevatorArrivalRequest) request, elevator);
+	                    }
+	                    // Tell elevator to open or close doors, if closing go to next destination or
+	                    // continue ongoing
+	                    else if (request instanceof ElevatorDoorRequest) {
+	                        handleElevatorDoorRequest((ElevatorDoorRequest) request, elevator);
+	                    } else if (request instanceof ElevatorPassengerWaitRequest) {
+	                        handleElevatorPassengerWaitRequest((ElevatorPassengerWaitRequest) request, elevator);
+	                    } else if (request instanceof ElevatorFaultRequest) {
+	                        handleElevatorFaultRequest((ElevatorFaultRequest) request, elevator);
+	                    }
+	                    projectGUI.updateElevator(elevator);
+	                }
                 }
             }
             case INVALID_REQUEST -> file.writeToFile(this + " received and discarded an invalid request");
@@ -242,7 +243,7 @@ public class Scheduler extends AbstractSubsystem {
 
         // Adding person to floor : GUI
         projectGUI.addRequestToFloor(personRequest.hashCode(), fileRequest.getOriginFloor(),
-                personRequest.getDestinationFloor());
+                personRequest.getDestinationFloor(), Integer.parseInt(elevator.getId()));
 
         if (fileRequest.getFault() > 0) {
             elevator.setPrintingEnabled(true);
@@ -551,11 +552,24 @@ public class Scheduler extends AbstractSubsystem {
         // If it was a SHUTDOWN, remove the elevators from the operational elevators
         // list
         else {
-        	System.out.print("WTF WHY DIDNT THIS WORK");
         	projectGUI.elevatorShutDown(Integer.parseInt(elevator.getId()));
             elevator.setShutDown(true);
-            elevators.remove(elevator);
-            if (elevators.size() == 0) {
+            
+            ArrayList<PersonRequest> personRequests = elevator.getRequests();
+            for(int i = 0; i < elevator.getNumberOfRequests(); i++) {
+            	if(!personRequests.get(i).isOriginFloorCompleted()) {
+                	projectGUI.removeRequestFromFloor(personRequests.get(i).hashCode(), personRequests.get(i).getOriginFloor());
+                	FileRequest fileRequest = new FileRequest( "", personRequests.get(i).getOriginFloor(), getDirectionFromFloor(personRequests.get(i).getDestinationFloor(), personRequests.get(i).getOriginFloor()) , personRequests.get(i).getDestinationFloor(), null, personRequests.get(i).getFault());
+                	SchedulerElevatorInfo newElevator = selectElevator(fileRequest);
+                	handleFileRequest(fileRequest, newElevator);
+            	}
+            }
+            
+            boolean areAllElevatorShutDown = true;
+            for(int i = 0; i < Config.NUMBER_OF_ELEVATORS; i++) {
+            	if(!elevators.get(i).isShutDown()) areAllElevatorShutDown = false;
+            }
+            if(areAllElevatorShutDown){
                 for (SchedulerFloorInfo floor : this.floors) {
                     this.dispatchRequestToFloorSubsystem(
                             new FloorEmergencyRequest(getSource(), FloorEmergency.SHUTDOWN), floor);
@@ -713,6 +727,10 @@ public class Scheduler extends AbstractSubsystem {
                 if (Math.abs(fileRequest.getOriginFloor() - elevator.getCurrentFloor()) < Math
                         .abs(fileRequest.getOriginFloor() - chosenElevator.getCurrentFloor())) {
                     chosenElevator = elevator;
+                }
+                if (elevator.getNumberOfRequests() + 1 < chosenElevator.getNumberOfRequests()) {
+                    chosenElevator = elevator;
+                    elevatorWasPicked = true;
                 }
             }
         }

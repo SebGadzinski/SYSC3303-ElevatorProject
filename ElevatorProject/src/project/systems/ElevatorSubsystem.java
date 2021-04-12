@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends AbstractSubsystem {
     public int elevatorNumber;
     private final CreateFile file;
     private int numRequests;
-    private boolean printingEnabled;
+    private boolean printingEnabled, hardFault = false;
     private final UDPInfo schedulerUDPInfo;
 
     public ElevatorSubsystem(UDPInfo elevatorUDPInfo, int elevatorNumber, UDPInfo schedulerUDPInfo) {
@@ -91,10 +91,8 @@ public class ElevatorSubsystem extends AbstractSubsystem {
                 response = stateMachine.handleRequest(emergencyRequest);
                 fixSystem();
             } else {
-                emergencyRequest.setSource(getSource());
-                emergencyRequest.setStatus(COMPLETED_EMERGENCY);
-                sendResponse(emergencyRequest);
-                System.exit(-1);
+                ElevatorEmergencyRequest terminationRequest = new ElevatorEmergencyRequest(getSource(), ElevatorEmergency.SHUTDOWN, ElevatorEmergencyRequest.COMPLETED_EMERGENCY, null, null);
+                sendResponse(terminationRequest);
             }
         } else if (request instanceof FileRequest) {
             FileRequest fileRequest = (FileRequest) request;
@@ -115,6 +113,15 @@ public class ElevatorSubsystem extends AbstractSubsystem {
 
         } else if (request instanceof ElevatorMotorRequest) {
             ElevatorMotorRequest motorRequest = (ElevatorMotorRequest) request;
+            if(hardFault && motorRequest.getRequestedDirection() != ElevatorDirection.IDLE) {
+            	try {
+					Thread.sleep(Config.TIMER_TIMEOUT + 5000);
+					hardFault = false;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
             printToFile(responseString + motorRequest);
 
             response = stateMachine.handleRequest(motorRequest);
@@ -147,12 +154,7 @@ public class ElevatorSubsystem extends AbstractSubsystem {
             } else if (request.getFault() == 2) {
                 this.makeMotorFault();
             } else if (request.getFault() == 3) {
-            	try {
-					Thread.sleep(Config.TIMER_TIMEOUT + 5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            	hardFault = true;
             }
         }
     }

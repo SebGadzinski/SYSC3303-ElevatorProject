@@ -1,11 +1,29 @@
 package project.utils.datastructs;
 
 public class Pair {
-	public int numUntilFault;
-	public int fault;
+	private int key;
+	private int value;
 
-	public Pair(int num, int fault) {
-		this.numUntilFault = num;
-		this.fault = fault;
+	public Pair(int key, int value) {
+		this.key = key;
+		this.value = value;
 	}
+
+	public int getKey() {
+		return key;
+	}
+
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
+	
 }

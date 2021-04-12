@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import project.Config;
 import project.state_machines.ElevatorStateMachine.ElevatorDirection;
 import project.state_machines.ElevatorStateMachine.ElevatorDoorStatus;
+import project.utils.datastructs.Pair;
 import project.utils.datastructs.SchedulerElevatorInfo;
 
 import java.awt.GridLayout;
@@ -37,7 +38,7 @@ public class ElevatorProjectGUI implements Runnable {
     private Container[] elevatorContainers = new Container[Config.NUMBER_OF_ELEVATORS];
     private JPanel[] floorPanels = new JPanel[Config.NUMBER_OF_FLOORS];
     private ArrayList<JPanel[]> elevatorFloorPanels = new ArrayList<JPanel[]>();
-    private ArrayList<LinkedHashMap<Integer, Integer>> destinationRequests = new ArrayList<LinkedHashMap<Integer, Integer>>();
+    private ArrayList<LinkedHashMap<Integer, Pair>> destinationRequests = new ArrayList<LinkedHashMap<Integer, Pair>>();
     private Color tileColor1 = new Color(240, 240, 240);
     private Color tileColor2 = Color.LIGHT_GRAY;
     private int[] elevatorIdFloors = new int[Config.NUMBER_OF_ELEVATORS];
@@ -112,7 +113,7 @@ public class ElevatorProjectGUI implements Runnable {
             floorNumberLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             floorPanels[i].add(floorNumberLabel);
             floorsFrame.add(floorPanels[i]);
-            destinationRequests.add(new LinkedHashMap<Integer, Integer>());
+            destinationRequests.add(new LinkedHashMap<Integer, Pair>());
         }
 
         //Put the floor panels in proper order
@@ -275,7 +276,8 @@ public class ElevatorProjectGUI implements Runnable {
         Iterator it = destinationRequests.get(orginFloor).entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            floorPanels[orginFloor].add(new JLabel("<Dest:" + pair.getValue() + "> "));
+            Pair value = (Pair) pair.getValue();
+            floorPanels[orginFloor].add(new JLabel("<Dest:" + value.getValue() + " | E: " + value.getKey() + "> "));
         }
 
         floorPanels[orginFloor].updateUI();
@@ -371,8 +373,8 @@ public class ElevatorProjectGUI implements Runnable {
      * @param orginFloor:       The floor that the person is on
      * @param destinationFloor: The floor that the person wishes to go
      */
-    public synchronized void addRequestToFloor(int requestId, int orginFloor, int destinationFloor) {
-        destinationRequests.get(orginFloor).put(requestId, destinationFloor);
+    public synchronized void addRequestToFloor(int requestId, int orginFloor, int destinationFloor, int elevatorId) {
+        destinationRequests.get(orginFloor).put(requestId, new Pair(elevatorId, destinationFloor));
         updateFloor(orginFloor);
     }
 

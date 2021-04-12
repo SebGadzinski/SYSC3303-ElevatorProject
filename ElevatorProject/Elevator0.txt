@@ -1,0 +1,38 @@
+
+FAULT IS: 3
+
+TimeStamp: 01:07:47
+Elevator #0 received: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+Fault: 3
+
+TimeStamp: 01:07:50
+Elevator #0 sent: 
+ElevatorDoorRequest:
+Request for doors to be: CLOSED
+
+
+TimeStamp: 01:07:50
+Elevator #0 received: 
+ElevatorMotorRequest:
+Motor to move: DOWN
+
+
+TimeStamp: 01:08:15
+Elevator #0 sent: 
+ElevatorArrivalRequest:
+Floor arrived at: 9
+Current direction: DOWN
+
+TimeStamp: 01:08:15
+Elevator #0 received: 
+ElevatorEmergencyRequest emergencyState: SHUTDOWN
+ code: 1 doors: null, direction: null
+
+
+TimeStamp: 01:08:15
+Elevator #0 sent: 
+ElevatorEmergencyRequest emergencyState: SHUTDOWN
+ code: 0 doors: null, direction: null
+
