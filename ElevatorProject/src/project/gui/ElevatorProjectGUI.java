@@ -277,7 +277,8 @@ public class ElevatorProjectGUI implements Runnable {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Pair value = (Pair) pair.getValue();
-            floorPanels[orginFloor].add(new JLabel("<Dest:" + value.getValue() + " | E: " + value.getKey() + "> "));
+//            floorPanels[orginFloor].add(new JLabel("<Dest:" + value.getValue() + " | E: " + value.getKey() + "> "));
+            floorPanels[orginFloor].add(new JLabel("<Dest:" + value.getValue() + "> "));
         }
 
         floorPanels[orginFloor].updateUI();

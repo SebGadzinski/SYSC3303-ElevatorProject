@@ -3,7 +3,7 @@ Scheduler operational...
 GUI operational...
 
 
-TimeStamp: 01:05:57
+TimeStamp: 09:09:27
 Elevator Number: 0
 Fault Detected With Person Request: 
 destinationFloor: 8
@@ -13,54 +13,84 @@ originFloorCompleted: false
 fault: 3
 faultCompleted: false
 
-Starting the timer for elevator: 1
 Starting the timer for elevator: 0
 Starting the timer for elevator: 2
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 1
 Starting the timer for elevator: 1
+Starting the timer for elevator: 3
 Stopping the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 1
-Starting the timer for elevator: 1
+Starting the timer for elevator: 0
 Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
 Stopping the timer for elevator: 1
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 0
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 1
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Starting the timer for elevator: 3
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
 Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
 Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
 Starting the timer for elevator: 0
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
 Starting the timer for elevator: 1
 Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
 Stopping the timer for elevator: 1
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
+Stopping the timer for elevator: 0
 Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
 Stopping the timer for elevator: 3
@@ -68,47 +98,25 @@ Starting the timer for elevator: 3
 Stopping the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 3
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Starting the timer for elevator: 3
-Stopping the timer for elevator: 2
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
 Stopping the timer for elevator: 3
 Starting the timer for elevator: 3
 Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 3
+Starting the timer for elevator: 3
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 3
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
 Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
@@ -116,6 +124,48 @@ Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
 Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 0
+Starting the timer for elevator: 0
+Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
 Stopping the timer for elevator: 0
 Starting the timer for elevator: 0
@@ -132,59 +182,8 @@ Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
 Stopping the timer for elevator: 2
 Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 0
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 2
-Stopping the timer for elevator: 2
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
-Starting the timer for elevator: 0
-Stopping the timer for elevator: 0
 
-TimeStamp: 01:07:47
+TimeStamp: 09:10:54
 Elevator Number: 0
 Processing Fault, Person Request: 
 destinationFloor: 8
@@ -195,7 +194,7 @@ fault: 3
 faultCompleted: false
 
 
-TimeStamp: 01:07:47
+TimeStamp: 09:10:54
 ************************
 Source : Elevator # 0
 Added a passenger: 
@@ -208,14 +207,14 @@ fault: 3
 faultCompleted: false
 
 
-TimeStamp: 01:07:47
+TimeStamp: 09:10:54
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5600
 inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5601
-# of passengers: 3
+# of passengers: 2
 direction: IDLE
 currentFloor: 10
 destinationFloor: 2
@@ -223,22 +222,26 @@ doorStatus: OPENED
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 Fault: 3
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
 
-TimeStamp: 01:07:50
+TimeStamp: 09:10:58
 Request received by Scheduler from Source : Elevator # 0
 ElevatorDoorRequest:
 Request for doors to be: CLOSED
 
 Starting the timer for elevator: 0
 
-TimeStamp: 01:07:50
+TimeStamp: 09:10:58
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5600
 inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5601
-# of passengers: 3
+# of passengers: 2
 direction: IDLE
 currentFloor: 10
 destinationFloor: 2
@@ -246,22 +249,35 @@ doorStatus: CLOSED
 ElevatorMotorRequest:
 Motor to move: DOWN
 
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
+Starting the timer for elevator: 2
+Stopping the timer for elevator: 2
 
-TimeStamp: 01:08:15
+TimeStamp: 09:11:24
 Request received by Scheduler from Source : Elevator # 0
 ElevatorArrivalRequest:
 Floor arrived at: 9
 Current direction: DOWN
 Shutting down elevator: 0
 
-TimeStamp: 01:08:15
+TimeStamp: 09:11:24
 Scheduler sent a request to Elevator: 
 id: 0
 UDPInfo: 
 inSocketPort: 5600
 inetAddress: Sebastians-MacBook-Pro.local/127.0.0.1
 outSocketPort: 5601
-# of passengers: 3
+# of passengers: 2
 direction: IDLE
 currentFloor: 10
 destinationFloor: 2
@@ -270,8 +286,32 @@ ElevatorEmergencyRequest emergencyState: SHUTDOWN
  code: 1 doors: null, direction: null
 
 
-TimeStamp: 01:08:15
+TimeStamp: 09:11:24
 Request received by Scheduler from Source : Elevator # 0
 ElevatorEmergencyRequest emergencyState: SHUTDOWN
  code: 0 doors: null, direction: null
 
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
+Starting the timer for elevator: 1
+Stopping the timer for elevator: 1
