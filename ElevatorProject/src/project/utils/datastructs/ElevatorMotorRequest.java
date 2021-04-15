@@ -6,8 +6,13 @@ public class ElevatorMotorRequest extends Request {
 
     private ElevatorDirection requestedDirection;
 
+    public ElevatorMotorRequest(SubsystemSource source, ElevatorDirection requestedDirection, int fault) {
+		super(source, fault);
+        this.requestedDirection = requestedDirection;
+    }
+    
     public ElevatorMotorRequest(SubsystemSource source, ElevatorDirection requestedDirection) {
-        super(source);
+		super(source, 0);
         this.requestedDirection = requestedDirection;
     }
 

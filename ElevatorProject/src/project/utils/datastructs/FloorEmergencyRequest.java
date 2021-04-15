@@ -8,8 +8,13 @@ public class FloorEmergencyRequest extends Request{
     public enum FloorEmergency {
     	FIX, SHUTDOWN
     }
+	public FloorEmergencyRequest(SubsystemSource source, FloorEmergency emergencyState, int fault) {
+		super(source, fault);
+		this.emergencyState = emergencyState;
+	}
+	
 	public FloorEmergencyRequest(SubsystemSource source, FloorEmergency emergencyState) {
-		super(source);
+		super(source, 0);
 		this.emergencyState = emergencyState;
 	}
 

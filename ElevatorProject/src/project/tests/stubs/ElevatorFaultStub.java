@@ -9,11 +9,16 @@ import project.state_machines.ElevatorStateMachine.ElevatorState;
 
 public class ElevatorFaultStub {
 
-    private ElevatorStateMachine esm;
+    private final ElevatorStateMachine esm;
 
     public ElevatorFaultStub() {
-        esm = new ElevatorStateMachine(ElevatorState.IDLE, ElevatorDoorStatus.CLOSED, ElevatorDirection.IDLE, 0,
-                new HashMap<>());
+        esm = new ElevatorStateMachine(
+                ElevatorState.IDLE,
+                ElevatorDoorStatus.CLOSED,
+                ElevatorDirection.IDLE,
+                0,
+                new HashMap<>()
+        );
     }
 
     public void MakeStateFault() {
@@ -23,10 +28,8 @@ public class ElevatorFaultStub {
     public ElevatorState checkIfFault(int i) {
         if (i == 0) {
             this.MakeStateFault();
-            return this.esm.getState();
-        } else {
-            return this.esm.getState();
         }
+        return this.esm.getState();
     }
 
 }

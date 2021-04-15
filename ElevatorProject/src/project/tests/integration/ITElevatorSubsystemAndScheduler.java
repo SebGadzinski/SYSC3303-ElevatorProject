@@ -1,31 +1,47 @@
 package project.tests.integration;
 
-import project.state_machines.ElevatorStateMachine.ElevatorDirection;
-import project.systems.Scheduler;
-import project.tests.stubs.ElevatorSubsystemStub;
-import project.utils.datastructs.FileRequest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static project.Config.*;
+import static project.Config.getTestPort;
+import static project.Config.localhost;
+import static project.state_machines.ElevatorStateMachine.ElevatorDirection.UP;
 
 import org.junit.jupiter.api.Test;
 
+import project.systems.Scheduler;
+import project.tests.stubs.ElevatorSubsystemStub;
+import project.utils.datastructs.FileRequest;
+import project.utils.datastructs.UDPInfo;
+
+/**
+ * Comprises integration tests for ElevatorSubsystem and Scheduler.
+ */
 public class ITElevatorSubsystemAndScheduler {
 
+    /**
+     * Tests communication between ElevatorSubsystem and Scheduler.
+     */
     @Test
-    public void testElevatorSubsystem() {
+    public void testElevatorSubsystemAndScheduler() {
 
-        Scheduler scheduler = new Scheduler(localhost, getPort(), getPort());
-        ElevatorSubsystemStub elevatorSubsystemStub = new ElevatorSubsystemStub(localhost, getPort(), getPort());
+        UDPInfo schedulerUDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
+        UDPInfo elevator0UDPInfo = new UDPInfo(localhost, getTestPort(), getTestPort());
 
-        FileRequest fileRequest = new FileRequest("18:17:17.020", 0, ElevatorDirection.UP, 3, scheduler.getSource());
+        Scheduler scheduler = new Scheduler(
+                schedulerUDPInfo,
+                new UDPInfo[]{elevator0UDPInfo},
+                new UDPInfo[]{}
+        );
+        ElevatorSubsystemStub elevatorSubsystemStub = new ElevatorSubsystemStub(elevator0UDPInfo, 0, schedulerUDPInfo);
+
+        FileRequest fileRequest = new FileRequest("18:17:17.020", 0, UP, 3, scheduler.getSource());
 
         int numSendSuccesses = 0;
-        numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, localhost, getPort());
-        numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, localhost, getPort());
-        numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, localhost, getPort());
+        int numSendSuccessesTarget = 5;
+        for (int i = 0; i < numSendSuccessesTarget; ++i) {
+            numSendSuccesses += elevatorSubsystemStub.sendRequestPub(fileRequest, schedulerUDPInfo.getInetAddress(), schedulerUDPInfo.getInSocketPort());
+        }
 
-        assertEquals(3, numSendSuccesses);
+        assertEquals(numSendSuccessesTarget, numSendSuccesses);
 
     }
 

@@ -17,7 +17,7 @@ public class ElevatorEmergencyRequest extends Request {
     }
 
 	public ElevatorEmergencyRequest(SubsystemSource source, ElevatorEmergency emergencyState, int status, ElevatorDoorStatus doorState, ElevatorDirection directionState) {
-		super(source);
+		super(source, 0);
 		this.emergencyState = emergencyState;
 		this.status = status;
 		this.doorState = doorState;

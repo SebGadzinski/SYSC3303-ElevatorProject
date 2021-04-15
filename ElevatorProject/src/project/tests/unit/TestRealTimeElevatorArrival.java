@@ -20,11 +20,11 @@ import project.utils.datastructs.SubsystemSource;
  * Tests the real-time capability of the system.
  *
  * @author Paul Roode
- * @version Iteration 4
+ * @version Iteration 5
  */
 public class TestRealTimeElevatorArrival {
 
-    private static final int TIME_FOR_ELEVATOR_ARRIVAL = 2;
+    private static final int TIME_FOR_ELEVATOR_ARRIVAL = 3;
     private static final TemporalUnit TIME_FOR_ELEVATOR_ARRIVAL_UNITS = ChronoUnit.SECONDS;
     private static final TemporalUnit REALTIME_PRECISION = ChronoUnit.SECONDS;
 

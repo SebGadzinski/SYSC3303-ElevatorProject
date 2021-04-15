@@ -34,9 +34,9 @@ public class SubsystemSource implements Serializable {
 
     @Override
     public String toString() {
-        return "Source: \n"
-                + "id: " + id + "\n"
-                + "subsystem: " + subsystem + "\n";
+    	if(subsystem == Subsystem.ELEVATOR_SUBSYSTEM) return "Source : Elevator # " + id;
+    	else if(subsystem == Subsystem.FLOOR_SUBSYSTEM) return "Source : Floor # " + id;
+    	else return "Source : Scheduler";
     }
 
 }
