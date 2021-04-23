@@ -1,6 +1,6 @@
 # Multithreaded Elevator System v3.0
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
-### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
+### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Chase Fridgen (101077379)
 
 ---
 
@@ -15,7 +15,7 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and their contributions***
 
 Paul Roode
-> Added an abstraction layer by extracting the UDP mechanism and request serialization into an AbstractSubsystem class, from which all subsystems (ElevatorSubsystem, FloorSubsystem, and Scheduler) inherit; and updated the concrete subsystem classes accordingly. Refactored UDP configuration to accommodate multiple hosts. De-smelled and formatted all src files. 
+> Added an abstraction layer by abstracting the UDP mechanism and request serialization into an AbstractSubsystem class from which all subsystems inherit, and updated the concrete subsystem subclasses accordingly.  Refactored UDP configuration to enable the hosting of subsystems across different servers.  De-smelled and formatted all src files, and updated the README.
 
 <br>
 
@@ -26,11 +26,6 @@ Chase Badalato
 
 Sebastian Gadzinksi
 > Worked on the Scheduler and ElevatorSubsystem classes.
-
-<br>
-
-Oluwaseyi Sehinde-Ibini
-> Nothing.
 
 <br>
 
