@@ -41,9 +41,9 @@ After spinning up subsystem threads in the order specified above, observe the GU
 
 Navigate to the src/project/tests directory and run TestRunner as a Java Application.  TestRunner discovers and executes all tests (based on JUnit annotations) and outputs the results to the terminal once all tests have finished.
 
-Because a couple of the integration tests spin up subsystem threads of their own, one or more GUIs may pop up as the application is functionally tested.  Do not close these test GUIs, as doing so will cause the tests to terminate.  The ITAllSubsystems class (“IT” being short for “integration test”) in particular functionally tests the full execution of the application, and so you will have to wait for the same duration as if you were running the application for its tests to complete, ~110 s.  You may then observe the test results outputted to the terminal by TestRunner, i.e., the number of tests discovered, the number of tests passed, and detailed descriptions of any failures.
+Because a couple of the integration tests spin up subsystem threads of their own, one or more GUIs may pop up as the application is functionally tested.  Do not close these test GUIs, as doing so will cause the tests to terminate.  The ITAllSubsystems class ("IT" being short for "integration test") in particular functionally tests the full execution of the application, and so you will have to wait for the same duration as if you were running the application for its tests to complete, ~110 s.  You may then observe the test results outputted to the terminal by TestRunner, i.e., the number of tests discovered, the number of tests passed, and detailed descriptions of any failures.
 
-Note that it is safe to run TestRunner and the application (as specified in the previous section, Application) concurrently—the subsystems have been architected and configured such that subsystem threads can be spun up from anywhere in the codebase with no possibility of interference with other threads.
+Note that it is safe to run TestRunner and the application (as specified in the previous section, *Running the application*) concurrently—the subsystems have been architected and configured such that subsystem threads can be spun up from anywhere in the codebase with no possibility of interference with other threads.
 
 ---
 
