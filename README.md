@@ -1,6 +1,6 @@
 # Multithreaded Elevator System v2.0
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
-### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
+### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Chase Fridgen (101077379)
 
 ---
 
@@ -15,7 +15,7 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and Their Contributions***
 
 Paul Roode
-> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly. Made the scheduler state machine diagram. Formatted this README.
+> Fully implemented the scheduler state machine (i.e., SchedulerStateMachine.java) and retrofitted Scheduler.java accordingly.  Made the scheduler state machine diagram.  Updated the README.
 
 <br>
 
@@ -26,11 +26,6 @@ Chase Badalato
 
 Sebastian Gadzinksi
 > Updated Request.java, allowing for different requests to be made. Also worked on the elevator subsystem and elevator state machine class and diagram. I also worked on the UML sequence diagram.
-
-<br>
-
-Oluwaseyi Sehinde-Ibini
-> Worked on tests for the system to ensure it worked properly.
 
 <br>
 
