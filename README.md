@@ -1,12 +1,12 @@
 # Multithreaded Elevator System v1.0
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
-### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Oluwaseyi Sehinde-Ibini (101092822), Chase Fridgen (101077379)
+### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Chase Fridgen (101077379)
 
 ---
 
 ***Welcome!***
 
-We hope you enjoy the first iteration of our multithreaded elevator system!
+We hope you enjoy the 1st iteration of our multithreaded elevator system!
 
 This project aims to design a real-time elevator control system that will quickly and efficiently transport passengers between floors.
 
@@ -15,7 +15,7 @@ This project aims to design a real-time elevator control system that will quickl
 ***Authors and their contributions***
 
 Paul Roode
-> Fully implemented the following classes: FloorSubsystem, Runner, Request, and ReadRequestResult. Partially fleshed out others as needed (e.g., to facilitate thread-safe cooperation between components), and formatted this README.
+> Fully implemented the following classes: FloorSubsystem, Runner (for initializing subsystem threads and running the application), Request, and ReadRequestResult.  Fleshed out others as needed (e.g., to facilitate thread-safe cooperation between components), and formatted the README.
 
 <br>
 
@@ -26,11 +26,6 @@ Chase Badalato
 
 Sebastian Gadzinksi
 > Set up the initial project hierarchy and GitHub repo, and implemented Scheduler and helped establish its connection to ElevatorSubsystem and FloorSubsystem. Helped implement JUnit tests for verification.
-
-<br>
-
-Oluwaseyi Sehinde-Ibini
-> Worked through and understood what the project classes and subsystems were doing. Used this knowledge to write the README file content that explains the aim of the project and what the classes within the project are doing (i.e., Main components below).
 
 <br>
 
