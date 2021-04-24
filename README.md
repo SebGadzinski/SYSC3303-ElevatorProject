@@ -1,4 +1,4 @@
-# Multithreaded Elevator System v5.0 (Iteration 5)
+# Real-Time, Concurrent, Distributed Elevator Control System v5.0 (Iteration 5)
 ## SYSC 3303 L5, Winter 2021 – Real-Time Concurrent Systems
 ### Team 4 – Paul Roode (101056469), Chase Badalato (101072570), Sebastian Gadzinksi (101083974), Chase Fridgen (101077379)
 
@@ -8,7 +8,7 @@
 
 We hope you enjoy the 5th iteration of our multithreaded elevator system!
 
-This project aims to design a real-time elevator control system that quickly and efficiently transports passengers between floors.
+This project aims to design a real-time, concurrent, distributed elevator control system that quickly and efficiently transports passengers between floors.
 
 ---
 
@@ -31,7 +31,7 @@ Navigate to the src/project/systems directory and run the subsystems therein as 
 2. ElevatorSubsystem or Scheduler, whichever you did not choose in step 1;
 3. FloorSubsystem.
 
-The FloorSubsystem thread must be started last as it consumes the request input file and initiates the servicing of requests.  Starting Scheduler will cause the GUI to load, so do not be alarmed when it pops up after you start running Scheduler.  Do not close the GUI window while the program executes, as doing so will terminate the Scheduler thread (but feel free to minimize or resize the GUI).
+The FloorSubsystem thread must be started last, as it consumes the request input file and initiates the servicing of requests.  Starting Scheduler will cause the GUI to load, so do not be alarmed when it pops up after you start running Scheduler.  Do not close the GUI window while the program executes, as doing so will terminate the Scheduler thread (but feel free to minimize or resize the GUI).
 
 After spinning up subsystem threads in the order specified above, observe the GUI and terminal while the subsystems coordinate on fulfilling requests, as well as the outputted ElevatorX.txt files and schedulerFile.txt file in the project root directory.
 
@@ -55,4 +55,4 @@ FloorSubsystem | Acts as the client; sends floor requests to the scheduler for r
 ElevatorSubsystem | Receives relayed floor requests from the scheduler and sends them to the routed elevator node.
 Scheduler | Acts as the system server and manages interactions between the elevator and floor systems; once a floor request is received, it is routed to the appropriate elevator and relays the request to the ElevatorSubsystem.
 Floor | Node of the FloorSubsystem; handles its own floor requests, and has its own floor number, up/down buttons, and floor lamps.
-Elevator | Node of the ElevatorSubsystem; handles its own movement and opening/closing of doors, keeps track of all pending floor requests and lamps, and updates the scheduler about its status.
+Elevator | Node of the ElevatorSubsystem; handles its own movement and opening/closing of doors, keeps track of all pending floor requests and lamps, and updates the scheduler regarding its status.
